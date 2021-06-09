@@ -28,7 +28,6 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
@@ -199,18 +198,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             }
             query = query + "v=" + versionToSearch;//$NON-NLS-1$
         }
-        searchUrl = searchUrl + query;
-        Request request = Request.Get(searchUrl);
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
-        Header authority = new BasicHeader("Authorization", basicAuth); //$NON-NLS-1$
-        request.addHeader(authority);
-        Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
-        request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-        doRequest(searchUrl);//
-        HttpResponse response = request.execute().returnResponse();
-        String content = EntityUtils.toString(response.getEntity());
+        searchUrl = searchUrl + query;
+        String content = doRequest(searchUrl);//
         if (content.isEmpty()) {
             return resultList;
         }
@@ -307,19 +297,9 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
             }
             q += "repos=" + repositoryId;//$NON-NLS-1$
         }
-
-        searchUrl = searchUrl + q;
-        Request request = Request.Get(searchUrl);
-        String userPass = serverBean.getUserName() + ":" + serverBean.getPassword(); //$NON-NLS-1$
-        String basicAuth = "Basic " + new String(new Base64().encode(userPass.getBytes())); //$NON-NLS-1$
-        Header authority = new BasicHeader("Authorization", basicAuth); //$NON-NLS-1$
-        request.addHeader(authority);
-        Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
-        request.addHeader(resultDetailHeader);
         List<MavenArtifact> resultList = new ArrayList<MavenArtifact>();
-        doRequest(searchUrl);//
-        HttpResponse response = request.execute().returnResponse();
-        String content = EntityUtils.toString(response.getEntity());
+        searchUrl = searchUrl + q;
+        String content = doRequest(searchUrl);//
         if (content.isEmpty()) {
             return resultList;
         }
@@ -511,6 +491,8 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                     String auth = userName + ":" + serverBean.getPassword();
                     String authHeader = "Basic " + new String(Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8)));
                     httpGet.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+                    Header resultDetailHeader = new BasicHeader("X-Result-Detail", "info"); //$NON-NLS-1$ //$NON-NLS-2$
+                    httpGet.addHeader(resultDetailHeader);
                     httpClient.setCredentialsProvider(null);
                 }
                 HttpResponse response = httpClient.execute(httpGet);
