@@ -57,8 +57,6 @@ public interface IGITProviderService extends IService {
 
     String getDefaultBranch(Project project);
 
-    boolean isDisableScreenShot();
-
     public static IGITProviderService get() {
         GlobalServiceRegister register = GlobalServiceRegister.getDefault();
         if (!register.isServiceRegistered(IGITProviderService.class)) {
