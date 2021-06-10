@@ -171,6 +171,7 @@ import org.talend.core.repository.utils.RoutineUtils;
 import org.talend.core.repository.utils.TDQServiceRegister;
 import org.talend.core.repository.utils.URIHelper;
 import org.talend.core.repository.utils.XmiResourceManager;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.constants.UpdateConstants;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
@@ -191,7 +192,7 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
-import org.talend.repository.ui.utils.GitProviderUtil;
+import org.talend.repository.ui.login.LoginHelper;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
@@ -2563,7 +2564,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         Resource screenshotResource = null;
         EClass eClass = item.eClass();
         boolean screenshotFlag = false;
-        boolean disableScreenShot = GitProviderUtil.isDisableScreenShot();
+        boolean disableScreenShot = isDisableScreenshot();
         if (eClass.eContainer() == PropertiesPackage.eINSTANCE) {
             switch (eClass.getClassifierID()) {
 
@@ -2936,7 +2937,7 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         Resource screenshotsResource = null;
         EClass eClass = item.eClass();
 
-        boolean disableScreenShot = GitProviderUtil.isDisableScreenShot();
+        boolean disableScreenShot = isDisableScreenshot();
 
         if (eClass.eContainer() == PropertiesPackage.eINSTANCE) {
             switch (eClass.getClassifierID()) {
@@ -3147,6 +3148,13 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             saveProject(project);
         }
 
+    }
+
+    private boolean isDisableScreenshot() {
+        if (!LoginHelper.isRemotesConnection()) {
+            return false;
+        }
+        return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isDisableScreenshot();
     }
 
     private List<Resource> getReferenceFilesResources(Item item, Resource propertyResource, boolean needLoad) {
