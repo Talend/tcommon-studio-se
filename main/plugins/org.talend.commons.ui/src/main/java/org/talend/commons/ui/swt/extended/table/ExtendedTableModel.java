@@ -190,6 +190,7 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
        
        if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
            tableViewer.replace(bean, index);
+           tableViewer.refresh(bean, true, true);
        }
        this.beansList.replaceElement(index, bean);
    }
