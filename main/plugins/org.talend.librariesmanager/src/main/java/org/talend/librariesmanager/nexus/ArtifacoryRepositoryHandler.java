@@ -33,6 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
@@ -56,6 +57,8 @@ import net.sf.json.JSONObject;
  *
  */
 public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandler {
+
+    private static Logger LOGGER = Logger.getLogger(ArtifacoryRepositoryHandler.class);
 
     private String SEARCH_SERVICE = "api/search/gavc?"; //$NON-NLS-1$
 
@@ -499,6 +502,7 @@ public class ArtifacoryRepositoryHandler extends AbstractArtifactRepositoryHandl
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     sb.append(EntityUtils.toString(response.getEntity()));
                 } else {
+                    LOGGER.info("Try to search " + url + " failed!");
                     throw new Exception(response.toString());
                 }
                 return response;
