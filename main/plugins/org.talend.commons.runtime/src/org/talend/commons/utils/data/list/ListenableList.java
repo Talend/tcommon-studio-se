@@ -537,6 +537,11 @@ public class ListenableList<T> implements IExtendedList<T> {
         fireReplacedEvent(index, replacedObject, element, false);
         return replacedObject;
     }
+    
+    @Override
+    public void replaceElement(int index, T element) {
+        this.list.set(index, element);
+    }
 
     /*
      * (non-Javadoc)
