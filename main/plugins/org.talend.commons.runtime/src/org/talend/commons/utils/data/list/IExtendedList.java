@@ -29,6 +29,8 @@ public interface IExtendedList<T> extends List<T> {
     public void swapElements(List<Integer> indicesOrigin, List<Integer> indicesTarget);
 
     public void swapElement(T object1, T object2);
+    
+    public void replaceElement(int index, T object2);
 
     /**
      * Getter for useEquals.
