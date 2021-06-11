@@ -891,16 +891,31 @@ public class AggregatorPomsHelper {
         } else {
             model.getModules().addAll(collectRefProjectModules(null));
         }
+        boolean isCIMode = false;
+        if (IRunProcessService.get() != null) {
+            isCIMode = IRunProcessService.get().isCIMode();
+        }
+
         createRootPom(model, true, monitor);
         installRootPom(true);
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
         }
+
         // codes pom
         monitor.subTask("Synchronize code poms"); //$NON-NLS-1$
-        updateCodeProjects(monitor, true, true);
+
+        if (isCIMode) {
+            System.setProperty("ignore.ci.mode", Boolean.TRUE.toString());
+            updateCodeProjects(monitor, true, true);
+            System.setProperty("ignore.ci.mode", Boolean.FALSE.toString());
+        } else {
+            updateCodeProjects(monitor, true, true);
+        }
+
         CodesJarM2CacheManager.updateCodesJarProject(monitor, true, true, true);
+
         monitor.worked(1);
         if (monitor.isCanceled()) {
             return;
@@ -956,6 +971,15 @@ public class AggregatorPomsHelper {
         if (monitor.isCanceled()) {
             return;
         }
+        if (isCIMode) {
+            for (ERepositoryObjectType codeType : ERepositoryObjectType.getAllTypesOfCodes()) {
+                ITalendProcessJavaProject codeProject = getCodesProject(codeType);
+                if (codeProject != null) {
+                    updateCodeProjectPom(monitor, codeType, codeProject.getProjectPom());
+                }
+            }
+        }
+
         monitor.done();
     }
 
