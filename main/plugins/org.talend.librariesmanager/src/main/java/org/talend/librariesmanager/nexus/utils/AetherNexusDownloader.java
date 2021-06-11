@@ -65,7 +65,6 @@ public class AetherNexusDownloader implements IDownloadHelper, DownloadListener 
             resolver.removeDownloadListener(this);
             ModuleStatusProvider.putDeployStatus(mavenUri, ELibraryInstallStatus.DEPLOYED);
             ModuleStatusProvider.putStatus(mavenUri, ELibraryInstallStatus.INSTALLED);
-
             if (this.isCancel()) {
                 return;
             }
