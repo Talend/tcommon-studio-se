@@ -26,9 +26,11 @@ import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.designer.maven.aether.util.AetherNexusDownloadProvider;
+import org.talend.designer.maven.model.TalendMavenConstants;
+import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
 
-public class AetherNexusDownloader implements IDownloadHelper, DownloadListener {
+public class AetherArtifactDownloader implements IDownloadHelper, DownloadListener {
 
     private List<DownloadListener> fListeners = new ArrayList<DownloadListener>();
 
@@ -63,9 +65,17 @@ public class AetherNexusDownloader implements IDownloadHelper, DownloadListener 
                 throw ex;
             }
             resolver.removeDownloadListener(this);
+            if (resolvedFile.getAbsolutePath().toLowerCase().endsWith(TalendMavenConstants.PACKAGING_JAR)) {
+                String pomFilePath = resolvedFile.getAbsolutePath().substring(0,
+                        resolvedFile.getAbsolutePath().length() - TalendMavenConstants.PACKAGING_JAR.length())
+                        + TalendMavenConstants.PACKAGING_POM;
+                File pomFile = new File(pomFilePath);
+                if (!pomFile.exists()) {
+                    PomUtil.generatePomFile(pomFile, parseMvnUrl);
+                }
+            }
             ModuleStatusProvider.putDeployStatus(mavenUri, ELibraryInstallStatus.DEPLOYED);
             ModuleStatusProvider.putStatus(mavenUri, ELibraryInstallStatus.INSTALLED);
-
             if (this.isCancel()) {
                 return;
             }

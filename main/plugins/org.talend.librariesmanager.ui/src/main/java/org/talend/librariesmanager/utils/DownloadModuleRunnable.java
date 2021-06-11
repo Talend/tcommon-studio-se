@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.librariesmanager.utils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,21 +26,17 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.ops4j.pax.url.mvn.Handler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.ILibrariesService;
-import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
-import org.talend.core.model.general.ModuleStatusProvider;
 import org.talend.core.model.general.ModuleToInstall;
 import org.talend.librariesmanager.librarydata.LibraryDataService;
 import org.talend.librariesmanager.ui.LibManagerUiPlugin;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizard;
 import org.talend.librariesmanager.ui.wizards.AcceptModuleLicensesWizardDialog;
-import org.talend.librariesmanager.utils.nexus.NexusDownloadManager;
-import org.talend.librariesmanager.utils.nexus.NexusDownloadHelperWithProgress;
+import org.talend.librariesmanager.utils.nexus.ArtifactDownloadManager;
 
 abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
 
@@ -109,7 +104,7 @@ abstract public class DownloadModuleRunnable implements IRunnableWithProgress {
         if (monitor != null && monitor.isCanceled()) {
             return;
         }
-        NexusDownloadManager downloadManager = new NexusDownloadManager(canBeDownloadList, monitor);
+        ArtifactDownloadManager downloadManager = new ArtifactDownloadManager(canBeDownloadList, monitor);
         downloadManager.start();
         List<ModuleToInstall> finishedList = downloadManager.getDownloadFinishedList();
         for (ModuleToInstall module : finishedList) {

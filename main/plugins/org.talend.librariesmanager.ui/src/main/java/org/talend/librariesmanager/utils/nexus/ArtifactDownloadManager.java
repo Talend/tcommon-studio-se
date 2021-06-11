@@ -36,9 +36,9 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.librariesmanager.nexus.utils.AetherNexusDownloader;
+import org.talend.librariesmanager.nexus.utils.AetherArtifactDownloader;
 
-public class NexusDownloadManager implements DownloadListener {
+public class ArtifactDownloadManager implements DownloadListener {
 
     protected IProgressMonitor progressMonitor;
 
@@ -54,14 +54,14 @@ public class NexusDownloadManager implements DownloadListener {
 
     private Map<ModuleToInstall, Exception> downloadFailedMap = new HashMap<ModuleToInstall, Exception>();
 
-    public NexusDownloadManager(List<ModuleToInstall> moduleList, IProgressMonitor progressMonitor) {
+    public ArtifactDownloadManager(List<ModuleToInstall> moduleList, IProgressMonitor progressMonitor) {
         this.moduleList = moduleList;
         this.progressMonitor = progressMonitor;
     }
 
     public void start() {
         executor = new ThreadPoolExecutor(maxThreadNum, maxThreadNum, 0, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(), new NexusDownloadThreadFactory());
+                new LinkedBlockingQueue<Runnable>(), new ArtifactDownloadThreadFactory());
         List<Runnable> taskList = getTasks();
         if (progressMonitor != null) {
             progressMonitor.beginTask("Downloading", taskList.size());
@@ -86,9 +86,9 @@ public class NexusDownloadManager implements DownloadListener {
         if (!executor.isShutdown()) {
             List<Runnable> jobList = executor.shutdownNow();
             for (Runnable runnable : jobList) {
-                if (runnable instanceof AbsDownLoaderRunnable) {
-                    this.downloadFailed(((AbsDownLoaderRunnable) runnable).getModule(),
-                            ((AbsDownLoaderRunnable) runnable).getUrl(), new UserCanceledException("User canceled"));
+                if (runnable instanceof AbsArtifactDownLoaderRunnable) {
+                    this.downloadFailed(((AbsArtifactDownLoaderRunnable) runnable).getModule(),
+                            ((AbsArtifactDownLoaderRunnable) runnable).getUrl(), new UserCanceledException("User canceled"));
                 }
             }
         }
@@ -118,7 +118,7 @@ public class NexusDownloadManager implements DownloadListener {
 
     private Runnable getTask(ModuleToInstall module, String mvnUri) {
         ArtifactRepositoryBean serverBean = getServerFromModule(mvnUri, module.isFromCustomNexus());
-        return new NexusDownloaderRunnable(module, mvnUri, this, serverBean);
+        return new ArtifactDownloaderRunnable(module, mvnUri, this, serverBean);
     }
 
     private ArtifactRepositoryBean getServerFromModule(String mvnUri, boolean isFromCustomNexus) {
@@ -186,17 +186,17 @@ public class NexusDownloadManager implements DownloadListener {
     }
 }
 
-abstract class AbsDownLoaderRunnable implements Runnable {
+abstract class AbsArtifactDownLoaderRunnable implements Runnable {
 
-    private static Logger logger = Logger.getLogger(AbsDownLoaderRunnable.class);
+    private static Logger logger = Logger.getLogger(AbsArtifactDownLoaderRunnable.class);
 
     protected ModuleToInstall module;
 
     protected String url;
 
-    protected NexusDownloadManager downloadManager;
+    protected ArtifactDownloadManager downloadManager;
 
-    AbsDownLoaderRunnable(ModuleToInstall module, String url, NexusDownloadManager downloadManager) {
+    AbsArtifactDownLoaderRunnable(ModuleToInstall module, String url, ArtifactDownloadManager downloadManager) {
         this.module = module;
         this.url = url;
         this.downloadManager = downloadManager;
@@ -240,18 +240,18 @@ abstract class AbsDownLoaderRunnable implements Runnable {
     }
 }
 
-class NexusDownloaderRunnable extends AbsDownLoaderRunnable {
+class ArtifactDownloaderRunnable extends AbsArtifactDownLoaderRunnable {
 
     private ArtifactRepositoryBean serverBean;
 
-    NexusDownloaderRunnable(ModuleToInstall module, String url, NexusDownloadManager downloadManager,
+    ArtifactDownloaderRunnable(ModuleToInstall module, String url, ArtifactDownloadManager downloadManager,
             ArtifactRepositoryBean serverBean) {
         super(module, url, downloadManager);
         this.serverBean = serverBean;
     }
 
     protected void doDownLoad() throws Exception {
-        AetherNexusDownloader downloadHelper = new AetherNexusDownloader();
+        AetherArtifactDownloader downloadHelper = new AetherArtifactDownloader();
         downloadHelper.addDownloadListener(downloadManager);
         if (serverBean != null) {
             downloadHelper.setTalendlibServer(serverBean);
@@ -260,7 +260,7 @@ class NexusDownloaderRunnable extends AbsDownLoaderRunnable {
     }
 }
 
-class NexusDownloadThreadFactory implements ThreadFactory {
+class ArtifactDownloadThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
