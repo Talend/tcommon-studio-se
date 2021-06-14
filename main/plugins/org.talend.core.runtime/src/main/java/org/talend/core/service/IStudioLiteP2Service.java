@@ -122,13 +122,13 @@ public interface IStudioLiteP2Service extends IService {
 
     public static interface UpdateSiteConfig {
 
-        URI getRelease() throws Exception;
+        URI getRelease(IProgressMonitor monitor) throws Exception;
 
-        void setRelease(URI uri) throws Exception;
+        void setRelease(IProgressMonitor monitor, URI uri) throws Exception;
 
-        URI getUpdate() throws Exception;
+        URI getUpdate(IProgressMonitor monitor) throws Exception;
 
-        void setUpdate(URI uri) throws Exception;
+        void setUpdate(IProgressMonitor monitor, URI uri) throws Exception;
 
     }
 

@@ -60,6 +60,8 @@ public class EclipseCommandLine {
      */
     static public final String TALEND_RELOAD_COMMAND = "-talendReload"; //$NON-NLS-1$
 
+    static public final String TALEND_CONTINUE_LOGON = "-talendContinueLogon";
+
     static public final String LOGIN_ONLINE_UPDATE = "--loginOnlineUpdate";
 
     static public final String ARG_TALEND_BUNDLES_CLEANED = "-talend.studio.bundles.cleaned"; //$NON-NLS-1$

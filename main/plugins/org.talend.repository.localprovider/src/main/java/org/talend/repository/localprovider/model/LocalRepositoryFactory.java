@@ -3395,7 +3395,8 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         try {
             IStudioLiteP2Service p2Service = IStudioLiteP2Service.get();
             if (p2Service != null) {
-                ValidateRequiredFeaturesHook hook = p2Service.validateRequiredFeatures(monitor, project);
+                IProgressMonitor subMonitor = SubMonitor.convert(monitor);
+                ValidateRequiredFeaturesHook hook = p2Service.validateRequiredFeatures(subMonitor, project);
                 if (hook != null && hook.isMissingRequiredFeatures()) {
                     int result = p2Service.showInstallRequiredFeaturesWizard(hook, project);
                     if (IStudioLiteP2Service.RESULT_DONE == result) {
@@ -3404,17 +3405,19 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
                                 EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, false, true);
                         throw new LoginException(LoginException.RESTART);
                     } else if (IStudioLiteP2Service.RESULT_CANCEL == result) {
-                        throw new LoginException("Login cancelled by user");
+                        throw new LoginException(Messages.getString("LocalRepositoryFactory.login.userCancel"));
                     }
                 }
                 ValidatePotentialFeaturesHook potentialHook = p2Service.validatePotentialFeatures(monitor, project);
                 if (potentialHook != null && potentialHook.hasPotentialFeatures()) {
                     int result = p2Service.showUpdateProjectRequiredFeaturesWizard(potentialHook, project);
                     if (IStudioLiteP2Service.RESULT_CANCEL == result) {
-                        throw new LoginException("Login cancelled by user");
+                        throw new LoginException(Messages.getString("LocalRepositoryFactory.login.userCancel"));
                     }
                 }
             }
+        } catch (LoginException e) {
+            throw e;
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
