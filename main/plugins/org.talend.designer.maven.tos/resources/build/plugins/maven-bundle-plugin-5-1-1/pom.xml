@@ -40,6 +40,10 @@
 		     		<groupId>com.google.guava</groupId>
 		     		<artifactId>guava</artifactId>
     		    </exclusion>
+    		    <exclusion>
+		     		<groupId>commons-io</groupId>
+		     		<artifactId>commons-io</artifactId>
+    		    </exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -61,6 +65,11 @@
 		    <groupId>org.apache.maven.shared</groupId>
 		    <artifactId>maven-shared-utils</artifactId>
 		    <version>3.3.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.8.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.bouncycastle</groupId>

@@ -88,6 +88,8 @@ public enum EImage implements IImage {
     LEFTX_ICON("/icons/leftx.png"), //$NON-NLS-1$
     RIGHT_ICON("/icons/right.gif"), //$NON-NLS-1$
     RIGHTX_ICON("/icons/rightx.png"), //$NON-NLS-1$
+    LOWERCASE_ICON("/icons/lowercase.jpg"), //$NON-NLS-1$
+    UPPERCASE_ICON("/icons/uppercase.jpg"), //$NON-NLS-1$
 
     KEY_ICON("/icons/key.gif"), //$NON-NLS-1$
     HIERARCHY_ICON("/icons/hierarchicalLayout.gif"), //$NON-NLS-1$

@@ -102,7 +102,11 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 existedDependencies = new ArrayList<Dependency>();
                 model.setDependencies(existedDependencies);
             }
-
+            boolean isCIMode = false;
+            if (IRunProcessService.get() != null) {
+                isCIMode = IRunProcessService.get().isCIMode();
+            }
+            boolean ignoreCIMode = Boolean.getBoolean("ignore.ci.mode");
             for (ModuleNeeded module : needModules) {
                 Dependency dependency = null;
                 // TDI-37032 add dependency only if jar available in maven
@@ -117,11 +121,8 @@ public abstract class AbstractMavenCodesTemplatePom extends AbstractMavenGeneral
                 } else {
                     isDeployed = true;
                 }
-                boolean isCIMode = false;
-                if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                    IRunProcessService runProcessService = GlobalServiceRegister.getDefault()
-                            .getService(IRunProcessService.class);
-                    isCIMode = runProcessService.isCIMode();
+                if (!isDeployed && ignoreCIMode) {
+                    continue;
                 }
                 if (isCIMode || ignoreModuleInstallationStatus() || isDeployed) {
                     dependency = PomUtil.createModuleDependency(module.getMavenUri());

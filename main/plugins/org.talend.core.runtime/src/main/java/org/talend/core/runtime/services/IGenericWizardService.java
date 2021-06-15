@@ -150,6 +150,8 @@ public interface IGenericWizardService extends IService {
      */
     public ITreeContextualAction getDefaultAction(RepositoryNode node);
 
+    public ITreeContextualAction getGenericAction(String typeName, String location);
+
     public void loadAdditionalJDBC();
 
     public List<String> getAllAdditionalJDBCTypes();

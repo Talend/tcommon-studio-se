@@ -170,8 +170,6 @@ public class ReadTableAction extends AbstractCreateTableAction {
             createGenericSchemaWizard(node, true);
         } else if (ERepositoryObjectType.METADATA_LDAP_SCHEMA.equals(nodeType)) {
             createLDAPSchemaWizard(node, true);
-        } else if (ERepositoryObjectType.METADATA_SALESFORCE_SCHEMA.equals(nodeType)) {
-            createSalesforceSchemaWizard(node, true);
         } else { // handle the schemas of extensive nodes.
             createExtenseNodeSchemaWizard(nodeType, node, true);
         }

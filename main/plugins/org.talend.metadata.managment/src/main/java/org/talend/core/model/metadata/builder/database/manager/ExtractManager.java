@@ -15,6 +15,7 @@ package org.talend.core.model.metadata.builder.database.manager;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -1067,9 +1068,9 @@ public class ExtractManager {
         try {
             if (!tableInfoParameters.isUsedName()) {
                 if (tableInfoParameters.getSqlFiter() != null && !"".equals(tableInfoParameters.getSqlFiter())) { //$NON-NLS-1$
-                    Statement stmt = extractMeta.getConn().createStatement();
+                    PreparedStatement stmt = extractMeta.getConn().prepareStatement(tableInfoParameters.getSqlFiter());
                     extractMeta.setQueryStatementTimeout(stmt);
-                    ResultSet rsTables = stmt.executeQuery(tableInfoParameters.getSqlFiter());
+                    ResultSet rsTables = stmt.executeQuery();
                     itemTablesName = ExtractMetaDataFromDataBase.getTableNamesFromQuery(rsTables, extractMeta.getConn());
                     rsTables.close();
                     stmt.close();

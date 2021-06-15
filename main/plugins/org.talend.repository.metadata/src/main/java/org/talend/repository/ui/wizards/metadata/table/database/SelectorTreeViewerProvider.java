@@ -15,9 +15,9 @@ package org.talend.repository.ui.wizards.metadata.table.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -154,9 +154,9 @@ public class SelectorTreeViewerProvider extends AbstractMetadataExtractorViewPro
                 if (!paras.isUsedName()) {
                     tableNameFilter = new HashSet<String>();
                     if (paras.getSqlFiter() != null && !"".equals(paras.getSqlFiter())) { //$NON-NLS-1$
-                        Statement stmt = extractMeta.getConn().createStatement();
+                        PreparedStatement stmt = extractMeta.getConn().prepareStatement(paras.getSqlFiter());
                         extractMeta.setQueryStatementTimeout(stmt);
-                        ResultSet rsTables = stmt.executeQuery(paras.getSqlFiter());
+                        ResultSet rsTables = stmt.executeQuery();
                         while (rsTables.next()) {
                             String nameKey = rsTables.getString(1).trim();
                             tableNameFilter.add(nameKey);
