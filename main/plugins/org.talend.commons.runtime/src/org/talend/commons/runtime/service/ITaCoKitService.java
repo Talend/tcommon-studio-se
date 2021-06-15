@@ -32,9 +32,11 @@ import org.talend.commons.i18n.internal.Messages;
  */
 public interface ITaCoKitService {
 
-    void start() throws Exception;
+    void start();
 
     boolean isStarted() throws Exception;
+
+    void waitForStart();
 
     String reload(IProgressMonitor monitor) throws Exception;
 
@@ -44,7 +46,7 @@ public interface ITaCoKitService {
 
     boolean isTaCoKitType(Object repoType);
 
-    public static ITaCoKitService getInstance() throws Exception {
+    public static ITaCoKitService getInstance() {
         BundleContext bc = FrameworkUtil.getBundle(ITaCoKitService.class).getBundleContext();
         Collection<ServiceReference<ITaCoKitService>> tacokitServices = Collections.emptyList();
         try {
