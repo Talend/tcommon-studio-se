@@ -7,4 +7,6 @@ public class Log4jUtil {
     public static boolean isEnable() {
         return PluginChecker.isTIS();
     }
+	
+	public static void testCopy() {}
 }

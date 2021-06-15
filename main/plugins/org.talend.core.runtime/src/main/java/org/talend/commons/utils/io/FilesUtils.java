@@ -1207,5 +1207,6 @@ public class FilesUtils {
             run.run(monitor);
         }
     }
-
+	
+	public static void testCopy() {}
 }

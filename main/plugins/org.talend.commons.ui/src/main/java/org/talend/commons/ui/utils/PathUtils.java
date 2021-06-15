@@ -29,4 +29,7 @@ public class PathUtils {
     public static String getOSPath(String path) {
         return Path.fromPortableString(path).toOSString();
     }
+	
+	public static void testCopy() {
+	}
 }

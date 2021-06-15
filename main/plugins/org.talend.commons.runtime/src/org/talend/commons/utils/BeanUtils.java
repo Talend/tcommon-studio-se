@@ -168,4 +168,8 @@ public class BeanUtils {
             }
         }
     }
+
+    public static void testCopy() {
+        //
+    }
 }
