@@ -798,22 +798,13 @@ public class ModulesNeededProvider {
         }
         service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
 
-        Project project = ProjectManager.getInstance().getCurrentProject();
-
         if (importNeedsListForRoutes == null) {
 
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
 
-            if (project.isCamel3()) {
-                importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-core", true));
-                importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-spring", true));
-            } else {
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
-                importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
-            }
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-core", true));
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-spring", true));
+
             if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
                 getModulesNeededForRoutesJava11();
             }
@@ -882,17 +873,7 @@ public class ModulesNeededProvider {
         if (importNeedsListForBeans == null) {
             importNeedsListForBeans = getModulesNeededForRoutes(processItem);
 
-            Project project = ProjectManager.getInstance().getCurrentProject();
-            boolean camel3 = true;
-            if (processItem != null && project.isCamel3()) {
-                camel3 = true;
-            }
-
-            if (camel3) {
-                importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel3-cxf"));
-            } else {
-                importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel-cxf"));
-            }
+            importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel3-cxf"));
 
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "cxf-core"));
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "javax.ws.rs-api"));

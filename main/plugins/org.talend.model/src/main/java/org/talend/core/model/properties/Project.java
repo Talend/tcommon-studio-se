@@ -55,7 +55,6 @@ import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
  *   <li>{@link org.talend.core.model.properties.Project#getMigrationTasks <em>Migration Tasks</em>}</li>
  *   <li>{@link org.talend.core.model.properties.Project#getMigrationTask <em>Migration Task</em>}</li>
  *   <li>{@link org.talend.core.model.properties.Project#isBigData <em>Big Data</em>}</li>
- *   <li>{@link org.talend.core.model.properties.Project#getCamelFamilyVersion <em>Camel Family Version</em>}</li>
  * </ul>
  *
  * @see org.talend.core.model.properties.PropertiesPackage#getProject()
@@ -171,29 +170,6 @@ public interface Project extends EObject {
      * @generated
      */
     void setDescription(String value);
-
-    /**
-     * Returns the value of the '<em><b>Camel Family Version</b></em>' attribute.
-     * The default value is <code>"2"</code>.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Camel Family Version</em>' attribute.
-     * @see #setCamelFamilyVersion(String)
-     * @see org.talend.core.model.properties.PropertiesPackage#getProject_CamelFamilyVersion()
-     * @model default="2"
-     * @generated
-     */
-    String getCamelFamilyVersion();
-
-    /**
-     * Sets the value of the '{@link org.talend.core.model.properties.Project#getCamelFamilyVersion <em>Camel Family Version</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Camel Family Version</em>' attribute.
-     * @see #getCamelFamilyVersion()
-     * @generated
-     */
-    void setCamelFamilyVersion(String value);
 
     /**
      * Returns the value of the '<em><b>Language</b></em>' attribute.

@@ -58,21 +58,6 @@ public class Project {
 
     private IReferenceProjectProvider referenceProjectProvider;
 
-    private boolean camel3 = false;
-
-    public boolean isCamel3() {
-        return "3".equals(project.getCamelFamilyVersion());
-    }
-
-    public void setCamel3(boolean camel3) {
-
-        if (camel3) {
-            project.setCamelFamilyVersion("3");
-        }
-
-        this.camel3 = camel3;
-    }
-
     /**
      * Getter for mainProject.
      *

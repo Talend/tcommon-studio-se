@@ -374,21 +374,12 @@ public interface PropertiesPackage extends EPackage {
 	int PROJECT__BIG_DATA = 34;
 
     /**
-     * The feature id for the '<em><b>Camel Family Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PROJECT__CAMEL_FAMILY_VERSION = 35;
-
-				/**
      * The number of structural features of the '<em>Project</em>' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PROJECT_FEATURE_COUNT = 36;
+    int PROJECT_FEATURE_COUNT = 35;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.properties.impl.PropertyImpl <em>Property</em>}' class.
@@ -9976,17 +9967,6 @@ public interface PropertiesPackage extends EPackage {
     EAttribute getProject_Description();
 
     /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.properties.Project#getCamelFamilyVersion <em>Camel Family Version</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Camel Family Version</em>'.
-     * @see org.talend.core.model.properties.Project#getCamelFamilyVersion()
-     * @see #getProject()
-     * @generated
-     */
-    EAttribute getProject_CamelFamilyVersion();
-
-    /**
      * Returns the meta object for the attribute '{@link org.talend.core.model.properties.Project#getLanguage <em>Language</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Language</em>'.
@@ -16113,14 +16093,6 @@ public interface PropertiesPackage extends EPackage {
          * @generated
          */
         EAttribute PROJECT__DESCRIPTION = eINSTANCE.getProject_Description();
-
-        /**
-         * The meta object literal for the '<em><b>Camel Family Version</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute PROJECT__CAMEL_FAMILY_VERSION = eINSTANCE.getProject_CamelFamilyVersion();
 
         /**
          * The meta object literal for the '<em><b>Language</b></em>' attribute feature.

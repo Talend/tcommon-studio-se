@@ -79,7 +79,6 @@ import org.talend.core.model.properties.UserProjectAuthorization;
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getMigrationTasks <em>Migration Tasks</em>}</li>
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getMigrationTask <em>Migration Task</em>}</li>
  *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#isBigData <em>Big Data</em>}</li>
- *   <li>{@link org.talend.core.model.properties.impl.ProjectImpl#getCamelFamilyVersion <em>Camel Family Version</em>}</li>
  * </ul>
  *
  * @generated
@@ -604,26 +603,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
 	protected boolean bigData = BIG_DATA_EDEFAULT;
 
                 /**
-     * The default value of the '{@link #getCamelFamilyVersion() <em>Camel Family Version</em>}' attribute.
-     * <!-- begin-user-doc -->
-                 * <!-- end-user-doc -->
-     * @see #getCamelFamilyVersion()
-     * @generated
-     * @ordered
-     */
-                protected static final String CAMEL_FAMILY_VERSION_EDEFAULT = "2";
-
-                /**
-     * The cached value of the '{@link #getCamelFamilyVersion() <em>Camel Family Version</em>}' attribute.
-     * <!-- begin-user-doc -->
-                 * <!-- end-user-doc -->
-     * @see #getCamelFamilyVersion()
-     * @generated
-     * @ordered
-     */
-                protected String camelFamilyVersion = CAMEL_FAMILY_VERSION_EDEFAULT;
-
-				/**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
@@ -716,27 +695,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
         description = newDescription;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROJECT__DESCRIPTION, oldDescription, description));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getCamelFamilyVersion() {
-        return camelFamilyVersion;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setCamelFamilyVersion(String newCamelFamilyVersion) {
-        String oldCamelFamilyVersion = camelFamilyVersion;
-        camelFamilyVersion = newCamelFamilyVersion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PropertiesPackage.PROJECT__CAMEL_FAMILY_VERSION, oldCamelFamilyVersion, camelFamilyVersion));
     }
 
     /**
@@ -1447,8 +1405,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
                 return getMigrationTask();
             case PropertiesPackage.PROJECT__BIG_DATA:
                 return isBigData() ? Boolean.TRUE : Boolean.FALSE;
-            case PropertiesPackage.PROJECT__CAMEL_FAMILY_VERSION:
-                return getCamelFamilyVersion();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -1578,9 +1534,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
             case PropertiesPackage.PROJECT__BIG_DATA:
                 setBigData(((Boolean)newValue).booleanValue());
                 return;
-            case PropertiesPackage.PROJECT__CAMEL_FAMILY_VERSION:
-                setCamelFamilyVersion((String)newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -1696,9 +1649,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
             case PropertiesPackage.PROJECT__BIG_DATA:
                 setBigData(BIG_DATA_EDEFAULT);
                 return;
-            case PropertiesPackage.PROJECT__CAMEL_FAMILY_VERSION:
-                setCamelFamilyVersion(CAMEL_FAMILY_VERSION_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -1779,8 +1729,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
                 return migrationTask != null && !migrationTask.isEmpty();
             case PropertiesPackage.PROJECT__BIG_DATA:
                 return bigData != BIG_DATA_EDEFAULT;
-            case PropertiesPackage.PROJECT__CAMEL_FAMILY_VERSION:
-                return CAMEL_FAMILY_VERSION_EDEFAULT == null ? camelFamilyVersion != null : !CAMEL_FAMILY_VERSION_EDEFAULT.equals(camelFamilyVersion);
         }
         return super.eIsSet(featureID);
     }
@@ -1831,8 +1779,6 @@ public class ProjectImpl extends EObjectImpl implements Project {
         result.append(migrationTasks);
         result.append(", bigData: ");
         result.append(bigData);
-        result.append(", camelFamilyVersion: ");
-        result.append(camelFamilyVersion);
         result.append(')');
         return result.toString();
     }

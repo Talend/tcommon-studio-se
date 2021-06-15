@@ -1032,12 +1032,6 @@ public final class ProcessUtils {
         return hasJettyEndpoint;
     }
 
-    public static boolean isCamel3(IProcess process) {
-        Project project = ProjectManager.getInstance().getCurrentProject();
-
-        return project.isCamel3();
-    }
-
     private static boolean hasJettyEndpoint(EList<NodeType> nodesList) {
         for (NodeType node : nodesList) {
             if ("cMessagingEndpoint".equals(node.getComponentName())) {
