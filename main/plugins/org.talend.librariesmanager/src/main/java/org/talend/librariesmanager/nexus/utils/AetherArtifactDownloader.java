@@ -17,9 +17,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.core.download.DownloadListener;
 import org.talend.core.download.IDownloadHelper;
 import org.talend.core.model.general.ModuleStatusProvider;
+import org.talend.core.model.general.ModuleToInstall;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
@@ -43,6 +45,8 @@ public class AetherArtifactDownloader implements IDownloadHelper, DownloadListen
     private long contentLength = -1l;
 
     private File resolvedFile = null;
+
+    private ModuleToInstall module;
 
     /*
      * (non-Javadoc)
@@ -82,7 +86,8 @@ public class AetherArtifactDownloader implements IDownloadHelper, DownloadListen
             boolean canGetNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer() != null;
             // if proxy artifact repository was configured, then do not deploy
             boolean deploy = canGetNexusServer && !TalendLibsServerManager.getInstance().isProxyArtifactRepoConfigured();
-            if (deploy) {
+            if (deploy && StringUtils.isEmpty(parseMvnUrl.getRepositoryUrl()) && (module != null
+                    && !module.isFromCustomNexus())) {
                 MavenArtifactsHandler deployer = new MavenArtifactsHandler();
                 deployer.deploy(resolvedFile, parseMvnUrl);
             }
@@ -177,4 +182,13 @@ public class AetherArtifactDownloader implements IDownloadHelper, DownloadListen
             resolvedFile.delete();
         }
     }
+
+    public ModuleToInstall getModule() {
+        return module;
+    }
+
+    public void setModule(ModuleToInstall module) {
+        this.module = module;
+    }
+
 }

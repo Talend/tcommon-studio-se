@@ -253,6 +253,7 @@ class ArtifactDownloaderRunnable extends AbsArtifactDownLoaderRunnable {
     protected void doDownLoad() throws Exception {
         AetherArtifactDownloader downloadHelper = new AetherArtifactDownloader();
         downloadHelper.addDownloadListener(downloadManager);
+        downloadHelper.setModule(getModule());
         if (serverBean != null) {
             downloadHelper.setTalendlibServer(serverBean);
         }
