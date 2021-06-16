@@ -25,7 +25,7 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.designer.maven.aether.util.AetherNexusDownloadProvider;
+import org.talend.designer.maven.aether.util.AetherArtifactDownloadProvider;
 import org.talend.designer.maven.model.TalendMavenConstants;
 import org.talend.designer.maven.utils.PomUtil;
 import org.talend.librariesmanager.maven.MavenArtifactsHandler;
@@ -56,7 +56,7 @@ public class AetherArtifactDownloader implements IDownloadHelper, DownloadListen
         MavenArtifact parseMvnUrl = MavenUrlHelper.parseMvnUrl(mavenUri);
         if (parseMvnUrl != null) {
             ArtifactRepositoryBean nServer = getNexusServer();
-            AetherNexusDownloadProvider resolver = new AetherNexusDownloadProvider();
+            AetherArtifactDownloadProvider resolver = new AetherArtifactDownloadProvider();
             resolver.addDownloadListener(this);
             try {
                 resolvedFile = resolver.resolveArtifact(parseMvnUrl, nServer);

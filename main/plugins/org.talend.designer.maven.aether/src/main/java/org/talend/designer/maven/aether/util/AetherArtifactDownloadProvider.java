@@ -35,7 +35,7 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.designer.maven.aether.util.exception.ResolveFailedException;
 
-public class AetherNexusDownloadProvider implements TransferListener {
+public class AetherArtifactDownloadProvider implements TransferListener {
 
     private RepositorySystem repositorySystem;
 
@@ -45,7 +45,7 @@ public class AetherNexusDownloadProvider implements TransferListener {
 
     private List<DownloadListener> downloadListeners = new ArrayList<DownloadListener>();
 
-    public AetherNexusDownloadProvider() throws Exception {
+    public AetherArtifactDownloadProvider() throws Exception {
         this.repositorySystem = MavenLibraryResolverProvider.newRepositorySystemForResolver();
         this.repositorySystemSession = MavenLibraryResolverProvider.newSession(repositorySystem,
                 MavenLibraryResolverProvider.getLocalMVNRepository());
