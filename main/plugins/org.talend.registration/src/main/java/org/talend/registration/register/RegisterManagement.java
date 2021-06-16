@@ -449,7 +449,7 @@ public class RegisterManagement {
     }
 
     public void validateRegistration() {
-        if (!NetworkUtil.isNetworkValid()) {
+        if (!NetworkUtil.isNetworkValidByStatus()) {
             return;
         }
         IBrandingService brandingService = (IBrandingService) GlobalServiceRegister.getDefault().getService(
