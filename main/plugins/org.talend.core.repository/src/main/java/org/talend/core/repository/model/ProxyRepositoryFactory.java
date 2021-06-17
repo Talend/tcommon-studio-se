@@ -147,6 +147,7 @@ import org.talend.core.runtime.util.ItemDateParser;
 import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.cwm.helper.SubItemHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.designer.runprocess.IRunProcessService;
@@ -2427,6 +2428,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
     private void doSyncAndInstallCodes(IProgressMonitor monitor) throws SystemException {
         ICoreService coreService = getCoreService();
         if (coreService != null) {
+            CodesJarResourceCache.reset();
             coreService.syncAllRoutines();
             coreService.syncAllBeans();
             TimeMeasurePerformance.step("logOnProject", "sync repository (routines/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2510,6 +2512,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 dynamicDistrManager.reset(null);
             }
         }
+
+        CodesJarResourceCache.reset();
 
         ReferenceProjectProvider.clearTacReferenceList();
         ReferenceProjectProblemManager.getInstance().clearAll();
