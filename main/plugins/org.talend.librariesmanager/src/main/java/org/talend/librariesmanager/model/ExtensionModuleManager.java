@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
@@ -170,16 +169,6 @@ public class ExtensionModuleManager {
         } else if (moduleGroup != null) {
             id = moduleGroup;
             isGroup = true;
-        }
-
-        if ((StringUtils.startsWith(context, "c")
-                || StringUtils.startsWith(context, "tRouteInput") 
-                || StringUtils.startsWith(context, "tRouteOutput")
-                || StringUtils.startsWith(context, "tRouteFault") 
-                || StringUtils.startsWith(context, "tRouteIn")
-                || StringUtils.startsWith(context, "tRouteLoop"))
-                && StringUtils.startsWith(id, "camel-")) {
-            id = RegExUtils.replaceFirst(id, "camel-", "camel3-");
         }
 
         List<ModuleNeeded> modulesNeeded = getModuleNeeded(id, isGroup);

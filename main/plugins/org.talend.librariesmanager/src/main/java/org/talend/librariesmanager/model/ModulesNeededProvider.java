@@ -802,8 +802,8 @@ public class ModulesNeededProvider {
 
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
 
-            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-core", true));
-            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel3-spring", true));
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel-core", true));
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel-spring", true));
 
             if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
                 getModulesNeededForRoutesJava11();
@@ -873,7 +873,7 @@ public class ModulesNeededProvider {
         if (importNeedsListForBeans == null) {
             importNeedsListForBeans = getModulesNeededForRoutes(processItem);
 
-            importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel3-cxf"));
+            importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel-cxf"));
 
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "cxf-core"));
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "javax.ws.rs-api"));
