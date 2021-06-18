@@ -8,7 +8,7 @@
     <discovery label="Talend web site" url="http://www.talend.com"/> 
   </url>  
   <requires>
-    <import plugin="org.bouncycastle.bcprov" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.bouncycastle.bcprov" version="1.68.0" match="greaterOrEqual"/>
     <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.9.8" match="greaterOrEqual"/>
     <import plugin="jackson-core-asl" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>

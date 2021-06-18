@@ -9,21 +9,7 @@
   </parent>
   <artifactId>org.talend.core.ui</artifactId>
   <packaging>eclipse-plugin</packaging>
-  
-  <dependencies>
-  	<dependency>
-	  	<groupId>com.github.oshi</groupId>
-		<artifactId>oshi-core</artifactId>
-		<version>5.2.5</version>
-		<exclusions>
-			<exclusion>
-				<groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-			</exclusion>
-		</exclusions>
-	 </dependency>
-  </dependencies>
-  
+   
   <build>
      	<plugins>
 	      <plugin>
@@ -32,17 +18,33 @@
 	        <version>3.0.2</version>
 	        <executions>
 	          <execution>
-	            <id>copy-dependencies</id>
-	            <phase>generate-resources</phase>
-	            <goals>
-	              <goal>copy-dependencies</goal>
-	            </goals>
-	            <configuration>
-	              <includeScope>runtime</includeScope>
-	              <outputDirectory>${project.basedir}/lib</outputDirectory>
-	              <stripVersion>true</stripVersion>
-	            </configuration>
-	          </execution>
+						<id>copy</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib</outputDirectory>
+							<stripVersion>true</stripVersion>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.oshi</groupId>
+									<artifactId>oshi-core</artifactId>
+									<version>5.2.5</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.java.dev.jna</groupId>
+									<artifactId>jna</artifactId>
+									<version>5.6.0</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.java.dev.jna</groupId>
+									<artifactId>jna-platform</artifactId>
+									<version>5.6.0</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
 	        </executions>
 	      </plugin>
       </plugins>

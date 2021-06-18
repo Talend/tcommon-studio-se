@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.commons.ui.utils.data.text.rules;
 
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IRule;

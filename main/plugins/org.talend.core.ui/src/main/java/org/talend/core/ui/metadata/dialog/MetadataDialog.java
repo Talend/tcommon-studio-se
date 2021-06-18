@@ -379,8 +379,11 @@ public class MetadataDialog extends Dialog {
                 metadataTableEditor = new MetadataTableEditor(outputMetaTable, titleOutput);
             }
             //enable dbcolumn manipulate feature only on Database output component
-            String nodeFamily = outputNode.getComponent().getOriginalFamilyName();
-            String rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            String nodeFamily = "", rootFamily = "";
+            if ( outputNode != null && outputNode.getComponent() != null ) {
+                nodeFamily = outputNode.getComponent().getOriginalFamilyName();
+                rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            }
             if (rootFamily.equals("Databases")) {
                 outputMetaView = new DialogMetadataDBOutputTableEditorView(composite, SWT.NONE, metadataTableEditor, outputReadOnly, true,
                         true, false);
@@ -555,8 +558,11 @@ public class MetadataDialog extends Dialog {
                 metadataTableEditorForOutput = new MetadataTableEditor(outputMetaTable, titleOutput + " (Output)");
             }
             //Enable dbcolumn manipulate feature only on Database output component
-            String nodeFamily = outputNode.getComponent().getOriginalFamilyName();
-            String rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            String nodeFamily = "", rootFamily = "";
+            if ( outputNode != null && outputNode.getComponent() != null ) {
+                nodeFamily = outputNode.getComponent().getOriginalFamilyName();
+                rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            }
             if (rootFamily.equals("Databases")) {
                 outputMetaView = new DialogMetadataDBOutputTableEditorView(compositesSachForm.getRightComposite(), SWT.NONE,
                         metadataTableEditorForOutput, outputReadOnly, true, true, false);

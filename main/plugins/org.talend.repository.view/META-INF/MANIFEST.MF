@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.core.repository,
  org.eclipse.osgi.services,
  org.talend.libraries.apache,
- org.talend.core
+ org.talend.core,
+ javax.inject
 Export-Package: org.talend.repository,
  org.talend.repository.navigator,
  org.talend.repository.tester,

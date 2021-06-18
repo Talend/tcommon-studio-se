@@ -38,5 +38,7 @@
     <import plugin="org.slf4j.api" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.slf4j.impl.log4j12" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.wst.server.discovery" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.ui.genericeditor" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.eclipse.e4.ui.ide" version="0.0.0" match="greaterOrEqual"/>
   </requires>
 </feature>
