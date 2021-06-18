@@ -65,4 +65,5 @@ public final class ProductUtils {
         }
         return null;
     }
+    public static void print() {}
 }
