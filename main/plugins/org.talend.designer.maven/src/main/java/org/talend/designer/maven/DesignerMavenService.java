@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.designer.maven;
 
+import org.apache.maven.settings.Settings;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.IMaven;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.services.IDesignerMavenService;
@@ -33,6 +36,14 @@ public class DesignerMavenService implements IDesignerMavenService {
     @Override
     public void updateCodeJarMavenProject(CodesJarInfo info, boolean needReSync) throws Exception {
         CodesJarM2CacheManager.updateCodesJarProject(info, needReSync);
+    }
+
+    @Override
+    public String getLocalRepositoryPath() throws Exception {
+        final IMaven maven = MavenPlugin.getMaven();
+        maven.reloadSettings();
+        final Settings settings = maven.getSettings();
+        return settings.getLocalRepository();
     }
 
 }

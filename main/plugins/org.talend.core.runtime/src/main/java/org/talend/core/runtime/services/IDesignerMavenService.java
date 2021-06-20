@@ -25,6 +25,8 @@ public interface IDesignerMavenService extends IService {
 
     void updateCodeJarMavenProject(CodesJarInfo info, boolean needReSync) throws Exception;
 
+    String getLocalRepositoryPath() throws Exception;
+
     public static IDesignerMavenService get() {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerMavenService.class)) {
             return GlobalServiceRegister.getDefault().getService(IDesignerMavenService.class);
