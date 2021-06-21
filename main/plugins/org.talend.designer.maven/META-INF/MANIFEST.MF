@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.common.ui.runtime,
  org.talend.core.runtime,
  org.eclipse.jface,
- org.talend.core.repository
+ org.talend.core.repository,
+ org.talend.core
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.designer.maven,
  org.talend.designer.maven.launch,

@@ -17,6 +17,7 @@
    <extension-point id="org.talend.designer.core.ui.editorHandler" name="org.talend.designer.core.ui.editorHandler" schema="schema/org.talend.designer.core.ui.editor.handler.exsd"/>
    <extension-point id="componentFilter" name="Component filter" schema="schema/componentFilter.exsd"/>
    <extension-point id="classpath_adjuster" name="classpath_adjuster" schema="schema/classpath_adjuster.exsd"/>
+   <extension-point id="m2Sync" name="M2 Synchorisation" schema="schema/m2Sync.exsd"/>
 	
    <extension
          point="org.eclipse.core.runtime.preferences">

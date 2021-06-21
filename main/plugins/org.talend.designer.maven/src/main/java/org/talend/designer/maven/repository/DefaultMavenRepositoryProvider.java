@@ -14,12 +14,17 @@ package org.talend.designer.maven.repository;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.maven.AbsM2Sync;
 import org.talend.designer.maven.DesignerMavenPlugin;
 import org.talend.utils.io.FilesUtils;
 
@@ -66,5 +71,38 @@ public final class DefaultMavenRepositoryProvider {
         } catch (Exception e) {
             ExceptionHandler.process(e);
         }
+
+        Collection<AbsM2Sync> m2Syncs = getM2Syncs();
+        for (AbsM2Sync m2Sync : m2Syncs) {
+            try {
+                m2Sync.sync(dest);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        }
     }
+
+    private static Collection<AbsM2Sync> getM2Syncs() {
+        IConfigurationElement[] m2SyncElems = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(AbsM2Sync.EXTENTION_POINT);
+        if (m2SyncElems == null || m2SyncElems.length <= 0) {
+            return Collections.EMPTY_SET;
+        }
+
+        Collection<AbsM2Sync> syncs = new HashSet<>();
+        for (IConfigurationElement m2Sync : m2SyncElems) {
+            try {
+                AbsM2Sync sync = (AbsM2Sync) m2Sync.createExecutableExtension(AbsM2Sync.EXTENTION_CLASS);
+                if (sync == null) {
+                    throw new Exception("Can't initialize m2Sync: " + m2Sync.toString()); //$NON-NLS-1$
+                }
+                syncs.add(sync);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+                continue;
+            }
+        }
+        return syncs;
+    }
+
 }
