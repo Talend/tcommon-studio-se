@@ -2774,7 +2774,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         ILoginTask[] allLoginTasks = LOGIN_TASK_REGISTRY_READER.getAllTaskListInstance();
         for (ILoginTask task : allLoginTasks) {
             if (task.isRequiredAlways()) {
-                task.run(monitor);
+                task.execute(monitor);
             }
         }
     }

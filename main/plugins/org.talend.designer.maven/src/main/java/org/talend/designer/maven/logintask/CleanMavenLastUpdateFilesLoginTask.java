@@ -38,6 +38,9 @@ public class CleanMavenLastUpdateFilesLoginTask extends AbstractLoginTask {
 
     }
 
-
+    @Override
+    public boolean isBackground() {
+        return true;
+    }
 
 }
