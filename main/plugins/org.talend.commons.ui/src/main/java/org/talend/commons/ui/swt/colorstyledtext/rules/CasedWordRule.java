@@ -15,12 +15,12 @@ package org.talend.commons.ui.swt.colorstyledtext.rules;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.IWordDetector;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.util.Assert;
 
 /**
  * An implementation of <code>IRule</code> capable of detecting words Word rules also allow for the association of

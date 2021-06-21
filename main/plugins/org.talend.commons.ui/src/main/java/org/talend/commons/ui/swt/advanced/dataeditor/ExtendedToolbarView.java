@@ -27,11 +27,13 @@ import org.talend.commons.ui.swt.advanced.dataeditor.button.MoveDownPushButtonFo
 import org.talend.commons.ui.swt.advanced.dataeditor.button.MoveUpPushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.MoveUpPushButtonForExtendedTable;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.PastePushButton;
+import org.talend.commons.ui.swt.advanced.dataeditor.button.QuotePushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.RemovePushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.RemovePushButtonForExtendedTable;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.ResetDBTypesPushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.SaveAsGenericSchemaPushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.SelectContextVariablesPushButton;
+import org.talend.commons.ui.swt.advanced.dataeditor.button.CasePushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.extended.table.AbstractExtendedTableViewer;
 
@@ -67,7 +69,11 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     protected ResetDBTypesPushButton resetDBTypesButton;
 
     protected SelectContextVariablesPushButton selectContextVariablesButton;
+    
+    protected CasePushButton caseButton;
 
+    protected QuotePushButton quoteButton;
+    
     /**
      * DOC amaumont MatadataToolbarEditor constructor comment.
      *
@@ -103,7 +109,11 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         pasteButton = createPastePushButton();
 
         addallButton = createAddAllPushButton();
-
+        
+        caseButton = createCasePushButton();
+        
+        quoteButton = createQuotePushButton();
+        
         exportButton = createExportPushButton();
 
         importButton = createImportPushButton();
@@ -167,6 +177,14 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     }
 
     protected SelectContextVariablesPushButton createSelectContextVariablesPushButton() {
+        return null;
+    }
+    
+    protected CasePushButton createCasePushButton() {
+        return null;
+    }
+    
+    protected QuotePushButton createQuotePushButton() {
         return null;
     }
 
@@ -327,6 +345,14 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
         if (getAddallButton() != null) {
             list.add(getAddallButton());
         }
+        
+        if (getCaseButton() != null) {
+            list.add(getCaseButton());
+        }
+        
+        if (getQuoteButton() != null) {
+            list.add(getQuoteButton());
+        }
 
         return list;
     }
@@ -348,6 +374,26 @@ public class ExtendedToolbarView extends AbstractExtendedToolbar {
     public AddAllPushButton getAddallButton() {
         return this.addallButton;
     }
+    
+    /**
+     * Getter for caseButton.
+     *
+     * @return the caseButton
+     */
+    public CasePushButton getCaseButton() {
+        return this.caseButton;
+    }
+    
+    
+    /**
+     * Getter for quoteButton.
+     *
+     * @return the quoteButton
+     */
+    public QuotePushButton getQuoteButton() {
+        return this.quoteButton;
+    }
+    
 }
 
 //

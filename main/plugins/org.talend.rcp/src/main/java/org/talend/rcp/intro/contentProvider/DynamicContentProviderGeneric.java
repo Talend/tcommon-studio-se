@@ -42,7 +42,7 @@ public class DynamicContentProviderGeneric extends DynamicContentProvider {
         if (PluginChecker.isStudioLite()) {
             branding = "LITE";
         } else {
-            System.getProperty("talend.license.branding");
+            branding = System.getProperty("talend.license.branding");
             if (branding == null || "".equals(branding)) {
                 branding = dBranding;
             }

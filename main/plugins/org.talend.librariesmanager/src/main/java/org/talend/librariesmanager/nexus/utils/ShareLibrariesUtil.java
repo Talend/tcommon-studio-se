@@ -150,28 +150,32 @@ public class ShareLibrariesUtil {
      */
     public static void seachArtifacts(IProgressMonitor monitor, IRepositoryArtifactHandler artifactHandler,
             Map<String, List<MavenArtifact>> snapshotArtifactMap, Map<String, List<MavenArtifact>> releaseArtifactMap,
-            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) throws Exception {
+            Set<String> snapshotGroupIdSet, Set<String> releaseGroupIdSet) {
         if (artifactHandler != null) {
-            checkCancel(monitor);
-            List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
-            for (String groupId : releaseGroupIdSet) {
-                searchResults = artifactHandler.search(groupId, null, null, true, false);
-                if (searchResults != null) {
-                    for (MavenArtifact result : searchResults) {
-                        checkCancel(monitor);
-                        ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+            try {
+                checkCancel(monitor);
+                List<MavenArtifact> searchResults = new ArrayList<MavenArtifact>();
+                for (String groupId : releaseGroupIdSet) {
+                    searchResults = artifactHandler.search(groupId, null, null, true, false);
+                    if (searchResults != null) {
+                        for (MavenArtifact result : searchResults) {
+                            checkCancel(monitor);
+                            ShareLibrariesUtil.putArtifactToMap(result, releaseArtifactMap, false);
+                        }
                     }
                 }
-            }
-            checkCancel(monitor);
-            for (String groupId : snapshotGroupIdSet) {
-                searchResults = artifactHandler.search(groupId, null, null, false, true);
-                if (searchResults != null) {
-                    for (MavenArtifact result : searchResults) {
-                        checkCancel(monitor);
-                        ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                checkCancel(monitor);
+                for (String groupId : snapshotGroupIdSet) {
+                    searchResults = artifactHandler.search(groupId, null, null, false, true);
+                    if (searchResults != null) {
+                        for (MavenArtifact result : searchResults) {
+                            checkCancel(monitor);
+                            ShareLibrariesUtil.putArtifactToMap(result, snapshotArtifactMap, true);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
             }
         }
     }

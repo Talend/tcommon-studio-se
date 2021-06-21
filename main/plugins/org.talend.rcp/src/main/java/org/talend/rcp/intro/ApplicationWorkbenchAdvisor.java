@@ -26,8 +26,11 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor;
+import org.talend.commons.exception.LoginException;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.system.EclipseCommandLine;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.utils.LoginTaskRegistryReader;
 import org.talend.core.ui.branding.IBrandingConfiguration;
 import org.talend.core.ui.branding.IBrandingService;
@@ -36,6 +39,7 @@ import org.talend.designer.runprocess.RunProcessPlugin;
 import org.talend.login.ILoginTask;
 import org.talend.rcp.TalendSplashHandler;
 import org.talend.registration.register.RegisterManagement;
+import org.talend.repository.RepositoryWorkUnit;
 
 /**
  * DOC ccarbone class global comment. Detailled comment <br/>
@@ -109,13 +113,19 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
         SubMonitor subMonitor = SubMonitor.convert(monitor, allLoginTasks.length + 1);
 
         // handle the login tasks created using the extension point org.talend.core.repository.login.task
-        for (ILoginTask toBeRun : allLoginTasks) {
-            try {
-                toBeRun.run(subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
-            } catch (Exception e) {
-                log.error("Error while execution a login task.", e); //$NON-NLS-1$
+        ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(new RepositoryWorkUnit<Void>("Applying login tasks") {
+
+            @Override
+            protected void run() throws LoginException, PersistenceException {
+                for (ILoginTask toBeRun : allLoginTasks) {
+                    try {
+                        toBeRun.run(subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
+                    } catch (Exception e) {
+                        log.error("Error while execution a login task.", e); //$NON-NLS-1$
+                    }
+                }
             }
-        }
+        });
 
         super.preStartup();
 

@@ -15,6 +15,7 @@ package org.talend.librariesmanager.ui.views;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.core.text.StringMatcher;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -30,7 +31,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.internal.misc.StringMatcher;
 
 /**
  * A TableViewer wrapper use to wrap an exist TableViewer, and provider a text field to filter item with displayed

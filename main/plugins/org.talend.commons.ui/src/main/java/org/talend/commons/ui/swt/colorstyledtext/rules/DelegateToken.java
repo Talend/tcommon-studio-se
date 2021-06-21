@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.commons.ui.swt.colorstyledtext.rules;
 
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Rule;
 import org.talend.commons.ui.swt.colorstyledtext.jedit.Type;
 

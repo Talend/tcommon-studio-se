@@ -146,7 +146,7 @@ public class TalendMavenResolver {
         getMavenResolver();
     }
 
-    private static MavenResolver getMavenResolver() throws RuntimeException {
+    public static MavenResolver getMavenResolver() throws RuntimeException {
         if (mavenResolver == null) {
             final BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
             ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> mavenResolverService = context
