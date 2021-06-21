@@ -43,6 +43,7 @@ import org.talend.commons.ui.command.CommandStackForComposite;
 import org.talend.commons.ui.runtime.image.EImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.swt.advanced.composite.ThreeCompositesSashForm;
+import org.talend.commons.ui.swt.advanced.dataeditor.ExtendedToolbarView;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
 import org.talend.commons.ui.swt.tableviewer.IModifiedBeanListener;
 import org.talend.commons.ui.swt.tableviewer.ModifiedBeanEvent;
@@ -67,6 +68,7 @@ import org.talend.core.model.utils.NodeUtil;
 import org.talend.core.ui.CoreUIPlugin;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.core.ui.metadata.editor.AbstractMetadataTableEditorView;
+import org.talend.core.ui.metadata.editor.MetadataQuoteToolbarEditorView;
 import org.talend.core.ui.metadata.editor.MetadataTableEditor;
 import org.talend.core.ui.metadata.editor.MetadataTableEditorView;
 import org.talend.core.utils.TalendQuoteUtils;
@@ -376,8 +378,19 @@ public class MetadataDialog extends Dialog {
             } else {
                 metadataTableEditor = new MetadataTableEditor(outputMetaTable, titleOutput);
             }
-            outputMetaView = new DialogMetadataTableEditorView(composite, SWT.NONE, metadataTableEditor, outputReadOnly, true,
-                    true, false);
+            //enable dbcolumn manipulate feature only on Database output component
+            String nodeFamily = "", rootFamily = "";
+            if ( outputNode != null && outputNode.getComponent() != null ) {
+                nodeFamily = outputNode.getComponent().getOriginalFamilyName();
+                rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            }
+            if (rootFamily.equals("Databases")) {
+                outputMetaView = new DialogMetadataDBOutputTableEditorView(composite, SWT.NONE, metadataTableEditor, outputReadOnly, true,
+                        true, false);
+            } else {
+                outputMetaView = new DialogMetadataTableEditorView(composite, SWT.NONE, metadataTableEditor, outputReadOnly, true,
+                        true, false);
+            }
             outputMetaView.setMetadataTalendTypeFilter(NodeUtil.createMetadataTalendTypeFilter(outputNode));
             outputMetaView.setIsRepository(isRepository(outputNode, outputMetaTable));
             initializeMetadataTableView(outputMetaView, outputNode, outputMetaTable);
@@ -544,8 +557,21 @@ public class MetadataDialog extends Dialog {
             } else {
                 metadataTableEditorForOutput = new MetadataTableEditor(outputMetaTable, titleOutput + " (Output)");
             }
-            outputMetaView = new DialogMetadataTableEditorView(compositesSachForm.getRightComposite(), SWT.NONE,
-                    metadataTableEditorForOutput, outputReadOnly, true, true, false);
+            //Enable dbcolumn manipulate feature only on Database output component
+            String nodeFamily = "", rootFamily = "";
+            if ( outputNode != null && outputNode.getComponent() != null ) {
+                nodeFamily = outputNode.getComponent().getOriginalFamilyName();
+                rootFamily = nodeFamily != null ? nodeFamily.split("/")[0] : "";
+            }
+            if (rootFamily.equals("Databases")) {
+                outputMetaView = new DialogMetadataDBOutputTableEditorView(compositesSachForm.getRightComposite(), SWT.NONE,
+                        metadataTableEditorForOutput, outputReadOnly, true, true, false);
+            } else {
+                outputMetaView = new DialogMetadataTableEditorView(compositesSachForm.getRightComposite(), SWT.NONE,
+                        metadataTableEditorForOutput, outputReadOnly, true, true, false);
+            }
+           
+           
             outputMetaView.setMetadataTalendTypeFilter(NodeUtil.createMetadataTalendTypeFilter(outputNode));
             outputMetaView.setIsRepository(isRepository(outputNode, outputMetaTable));
             initializeMetadataTableView(outputMetaView, outputNode, outputMetaTable);
@@ -799,7 +825,22 @@ public class MetadataDialog extends Dialog {
             newTableViewerCreator.setLazyLoad(TableViewerCreator.getRecommandLazyLoad());
         }
     }
+    
+    class DialogMetadataDBOutputTableEditorView extends MetadataTableEditorView {
 
+        public DialogMetadataDBOutputTableEditorView(Composite parentComposite, int mainCompositeStyle,
+                ExtendedTableModel<IMetadataColumn> extendedTableModel, boolean readOnly, boolean toolbarVisible,
+                boolean labelVisible, boolean initGraphicsComponents) {
+            super(parentComposite, mainCompositeStyle, extendedTableModel, readOnly, toolbarVisible, labelVisible,
+                    initGraphicsComponents);
+        }
+
+        @Override
+        protected ExtendedToolbarView initToolBar() {
+            return new MetadataQuoteToolbarEditorView(getMainComposite(), SWT.NONE, this.getExtendedTableViewer(), this.getCurrentDbms());
+        }
+    }
+    
     public static void setSingleAndStruct(boolean isSingle) {
         isSingleAndStruct = isSingle;
     }

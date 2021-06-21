@@ -103,6 +103,8 @@ public class RepositoryConstants {
     public static final String REPOSITORY_CLOUD_APAC_ID = "cloud_apac"; //$NON-NLS-1$
 
     public static final String REPOSITORY_CLOUD_US_WEST_ID = "cloud_us_west"; //$NON-NLS-1$
+    
+    public static final String REPOSITORY_CLOUD_AUS_ID = "cloud_aus"; //$NON-NLS-1$
 
     public static final String REPOSITORY_CLOUD_CUSTOM_ID = "cloud_custom"; //$NON-NLS-1$
 

@@ -178,6 +178,23 @@ public class ExtendedTableModel<B> extends AbstractExtendedControlModel {
     public void setUseEquals(boolean useEquals) {
         beansList.setUseEquals(useEquals);
     }
+    
+   /**
+    *
+    * Replace bean.
+    *
+    * @param bean
+    * @param index can be null
+    */
+   public void replace(B bean, Integer index) {
+       
+       if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+           tableViewer.replace(bean, index);
+           tableViewer.refresh(bean, true, true);
+       }
+       this.beansList.replaceElement(index, bean);
+   }
+
 
     /**
      * DOC amaumont Comment method "remove".

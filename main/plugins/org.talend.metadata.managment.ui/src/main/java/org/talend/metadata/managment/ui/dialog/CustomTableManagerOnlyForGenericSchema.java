@@ -24,6 +24,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.DefaultTableLabelProvider;
+import org.talend.commons.ui.swt.advanced.dataeditor.button.CasePushButton;
+import org.talend.commons.ui.swt.advanced.dataeditor.button.QuotePushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.button.ResetDBTypesPushButton;
 import org.talend.commons.ui.swt.advanced.dataeditor.control.ExtendedPushButton;
 import org.talend.commons.ui.swt.tableviewer.TableViewerCreator;
@@ -88,6 +90,14 @@ public class CustomTableManagerOnlyForGenericSchema {
             ResetDBTypesPushButton resetDBTypesButton = tableEditorView.getExtendedToolbar().getResetDBTypesButton();
             if (resetDBTypesButton != null) {
                 resetDBTypesButton.getButton().setEnabled(false);
+            }
+            CasePushButton caseButton = tableEditorView.getExtendedToolbar().getCaseButton();
+            if (caseButton != null) {
+                caseButton.getButton().setEnabled(false);
+            }
+            QuotePushButton quoteButton = tableEditorView.getExtendedToolbar().getQuoteButton();
+            if (quoteButton != null) {
+                quoteButton.getButton().setEnabled(false);
             }
         } else {
             tableEditorView.getExtendedToolbar().getAddButton().getButton().addSelectionListener(new SelectionListener() {
@@ -168,6 +178,14 @@ public class CustomTableManagerOnlyForGenericSchema {
             ResetDBTypesPushButton resetDBTypesButton = tableEditorView.getExtendedToolbar().getResetDBTypesButton();
             if (resetDBTypesButton != null) {
                 resetDBTypesButton.getButton().setEnabled(false);
+            }
+            CasePushButton caseButton = tableEditorView.getExtendedToolbar().getCaseButton();
+            if (caseButton != null) {
+                caseButton.getButton().setEnabled(false);
+            }
+            QuotePushButton quoteButton = tableEditorView.getExtendedToolbar().getQuoteButton();
+            if (quoteButton != null) {
+                quoteButton.getButton().setEnabled(false);
             }
         }
         if (linkedTable != null) {
