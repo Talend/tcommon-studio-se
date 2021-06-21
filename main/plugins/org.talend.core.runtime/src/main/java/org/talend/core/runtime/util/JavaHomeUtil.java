@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2021 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -41,10 +41,7 @@ public class JavaHomeUtil {
         String defaultVM = pref.get("org.eclipse.jdt.launching.PREF_DEFAULT_ENVIRONMENTS_XML", ""); //$NON-NLS-1$//$NON-NLS-2$
         boolean needSetupJVM = false;
         if (!"".equals(defaultVM)) { //$NON-NLS-1$
-            if (!isJDKSetup()) {
-                // current JVM is not a JDK, means need to change the current setup
-                needSetupJVM = true;
-            } else if (isSetJdkHomeVariable() && !getJDKHomeVariable().equals(getCurrentJavaHomeString())) {
+            if (isSetJdkHomeVariable() && !getJDKHomeVariable().equals(getCurrentJavaHomeString())) {
                 needSetupJVM = true;
             }
         } else {
@@ -58,7 +55,7 @@ public class JavaHomeUtil {
                     currentVM.setInstallLocation(installLocation);
                     currentVM.setName(installLocation.getName());
                 }
-            } 
+            }
         }
     }
     /**
@@ -99,9 +96,7 @@ public class JavaHomeUtil {
             File javaexe = new File(eclipseVm);
             if (javaexe.exists()) {
                 String jdk = getJDKPath(javaexe);
-                if (jdk != null && new File(jdk, "lib/jvm.lib").exists()) {//$NON-NLS-1$
-                    return jdk;
-                }
+                return jdk;
             }
 
         }
@@ -127,13 +122,6 @@ public class JavaHomeUtil {
     public static String getJavaHomeVariable() {
         return System.getenv("JAVA_HOME"); //$NON-NLS-1$
 
-    }
-
-    public static boolean isJDKSetup() {
-        if (getCurrentJavaHomeFile() == null) {
-            return false;
-        }
-        return new File(getCurrentJavaHomeFile(), "lib/jvm.lib").exists(); //$NON-NLS-1$
     }
 
     public static File getCurrentJavaHomeFile() {
