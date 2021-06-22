@@ -78,14 +78,17 @@ public class JavaHomeUtil {
     }
 
     public static String getJDKHomeVariable() {
-        String jdkHome = System.getProperty("jdk.home"); //$NON-NLS-1$
+        String jdkHome = System.getProperty("java.home"); //$NON-NLS-1$
+        if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
+            jdkHome = System.getProperty("jdk.home"); //$NON-NLS-1$
+        }
 
         if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
             jdkHome = getJDKHomeFromEclipseVm();
         }
 
         if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
-            jdkHome = System.getenv("JDK_HOME"); //$NON-NLS-1$
+            jdkHome = System.getenv("JAVA_HOME"); //$NON-NLS-1$
         }
         return jdkHome;
     }
@@ -112,16 +115,6 @@ public class JavaHomeUtil {
         } else {
             return getJDKPath(file.getParentFile());
         }
-    }
-
-    public static boolean isSetJavaHomeVariable() {
-        String javaHomeValue = getJavaHomeVariable();
-        return javaHomeValue != null && !"".equals(javaHomeValue); //$NON-NLS-1$
-    }
-
-    public static String getJavaHomeVariable() {
-        return System.getenv("JAVA_HOME"); //$NON-NLS-1$
-
     }
 
     public static File getCurrentJavaHomeFile() {
