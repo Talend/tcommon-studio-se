@@ -13,6 +13,7 @@
 package org.talend.core.service;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,6 +42,8 @@ public interface IStudioLiteP2Service extends IService {
      * Preload to improve performance
      */
     void preload();
+
+    void disableFeatures(IProgressMonitor monitor, Collection<String> features) throws Exception;
 
     String getSettingsFilePath();
 
