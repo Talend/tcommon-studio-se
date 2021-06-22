@@ -30,9 +30,6 @@ public class JavaHomeUtil {
 
     /**
      * Initialize Java Home to the preferences if needed only.<br>
-     * This will take take first JDK8 if existing.<br>
-     * If not, take JDK7.<br>
-     * If no any JDK found, it will let eclipse set the default one.
      * 
      * @throws CoreException
      */
@@ -78,7 +75,7 @@ public class JavaHomeUtil {
     }
 
     public static String getJDKHomeVariable() {
-        String jdkHome = System.getProperty("java.home"); //$NON-NLS-1$
+        String jdkHome = System.getProperty("job.compilation.jvm"); //$NON-NLS-1$
         if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
             jdkHome = System.getProperty("jdk.home"); //$NON-NLS-1$
         }
