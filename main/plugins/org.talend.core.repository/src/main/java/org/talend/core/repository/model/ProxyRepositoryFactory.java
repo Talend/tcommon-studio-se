@@ -2395,6 +2395,11 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         String specifiedVersion = null;
         String currentVersion = JavaUtils.getProjectJavaVersion();
         String newVersion = null;
+        try {
+            JavaHomeUtil.initializeJavaHome();
+        } catch (CoreException ex) {
+            ExceptionHandler.process(ex);
+        }
         if (CommonUIPlugin.isFullyHeadless()) {
             specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
         }
