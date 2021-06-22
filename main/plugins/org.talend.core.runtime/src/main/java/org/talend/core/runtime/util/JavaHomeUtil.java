@@ -14,6 +14,7 @@ package org.talend.core.runtime.util;
 
 import java.io.File;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -34,8 +35,8 @@ public class JavaHomeUtil {
      * @throws CoreException
      */
     public static void initializeJavaHome() throws CoreException {
-        IEclipsePreferences pref = InstanceScope.INSTANCE.getNode("org.eclipse.jdt.launching"); //$NON-NLS-1$
-        String defaultVM = pref.get("org.eclipse.jdt.launching.PREF_DEFAULT_ENVIRONMENTS_XML", ""); //$NON-NLS-1$//$NON-NLS-2$
+        IEclipsePreferences pref = InstanceScope.INSTANCE.getNode(JavaRuntime.ID_PLUGIN); //$NON-NLS-1$
+        String defaultVM = pref.get(JavaRuntime.PREF_VM_XML, ""); //$NON-NLS-1$//$NON-NLS-2$
         boolean needSetupJVM = false;
         if (!"".equals(defaultVM)) { //$NON-NLS-1$
             if (isSetJdkHomeVariable() && !getJDKHomeVariable().equals(getCurrentJavaHomeString())) {
@@ -79,26 +80,11 @@ public class JavaHomeUtil {
         if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
             jdkHome = System.getProperty("jdk.home"); //$NON-NLS-1$
         }
-
-        if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
-            jdkHome = getJDKHomeFromEclipseVm();
-        }
-
-        if (jdkHome == null || "".equals(jdkHome)) { //$NON-NLS-1$
-            jdkHome = System.getenv("JAVA_HOME"); //$NON-NLS-1$
-        }
-        return jdkHome;
-    }
-
-    private static String getJDKHomeFromEclipseVm() {
-        String eclipseVm = System.getProperty("eclipse.vm"); //$NON-NLS-1$
-        if (eclipseVm != null && !"".equals(eclipseVm)) {
-            File javaexe = new File(eclipseVm);
-            if (javaexe.exists()) {
-                String jdk = getJDKPath(javaexe);
-                return jdk;
+        if (StringUtils.isNoneEmpty(jdkHome)) {
+            File jvmFile = new File(jdkHome);
+            if (jvmFile.exists()) {
+                return getJDKPath(jvmFile);
             }
-
         }
         return null;
     }
