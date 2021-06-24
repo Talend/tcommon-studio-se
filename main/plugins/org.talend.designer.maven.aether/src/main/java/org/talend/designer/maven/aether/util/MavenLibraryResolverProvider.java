@@ -213,7 +213,7 @@ public class MavenLibraryResolverProvider {
         return remoteRepository;
     }
 
-    private RemoteRepository buildRemoteRepository(MavenArtifact aritfact) {
+    public static RemoteRepository buildRemoteRepository(MavenArtifact aritfact) {
         RemoteRepository repository = null;
         if (aritfact.getUsername() == null && aritfact.getPassword() == null) {
             repository = new RemoteRepository.Builder("talend", "default", aritfact.getRepositoryUrl()).build(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -277,7 +277,7 @@ public class MavenLibraryResolverProvider {
         return locator.getService(RepositorySystem.class);
     }
 
-    private RepositorySystemSession newSession(RepositorySystem system, String target) {
+    public static RepositorySystemSession newSession(RepositorySystem system, String target) {
         DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
 
         LocalRepository localRepo = new LocalRepository( /* "target/local-repo" */target);
@@ -287,7 +287,7 @@ public class MavenLibraryResolverProvider {
         return session;
     }
 
-    private String getLocalMVNRepository() {
+    public static String getLocalMVNRepository() {
         String repository = null;
         try {
             repository = MavenPlugin.getMaven().getLocalRepositoryPath();

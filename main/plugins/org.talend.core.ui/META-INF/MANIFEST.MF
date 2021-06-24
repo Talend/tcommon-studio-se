@@ -35,7 +35,8 @@ Require-Bundle: org.apache.commons.lang,
  org.apache.httpcomponents.httpcore,
  org.apache.httpcomponents.httpclient,
  org.slf4j.api,
- org.apache.ant
+ org.apache.ant,
+ org.eclipse.m2e.maven.runtime
 Import-Package: org.eclipse.jdt.internal.ui.workingsets
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,

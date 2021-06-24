@@ -37,5 +37,7 @@ public interface DownloadListener {
      * Notify after download complete.
      */
     void downloadComplete();
-
+    
+    default void downloadFailed(Exception ex) {       
+    }
 }

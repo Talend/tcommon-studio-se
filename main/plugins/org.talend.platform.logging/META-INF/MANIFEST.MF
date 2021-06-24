@@ -8,7 +8,8 @@ Bundle-Vendor: .Talend SA.
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.talend.utils,
- org.apache.log4j
+ org.apache.log4j,
+ org.apache.xerces
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: global
 Eclipse-RegisterBuddy: org.apache.log4j
