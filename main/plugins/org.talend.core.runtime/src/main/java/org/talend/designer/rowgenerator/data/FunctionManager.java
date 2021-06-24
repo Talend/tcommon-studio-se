@@ -109,6 +109,10 @@ public class FunctionManager {
         parser = new RoutineFunctionParser();
         parser.parse();
         talendTypes = parser.getList();
+
+        parser = new RoutineJarsFunctionParser();
+        parser.parse();
+        talendTypes.addAll(parser.getList());
     }
 
     @SuppressWarnings("unchecked")
