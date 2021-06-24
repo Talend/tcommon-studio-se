@@ -13,7 +13,9 @@
 package org.talend.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -36,19 +38,63 @@ public class GlobalServiceRegister {
     // The shared instance
     private static GlobalServiceRegister instance = new GlobalServiceRegister();
 
+    private static final Object instanceLock = new Object();
+
     public static GlobalServiceRegister getDefault() {
+        if (instance == null) {
+            synchronized (instanceLock) {
+                if (instance == null) {
+                    instance = new GlobalServiceRegister();
+                }
+            }
+        }
         return instance;
+    }
+
+    public static void clearCache() {
+        if (instance != null) {
+            synchronized (instanceLock) {
+                if (instance != null) {
+                    instance.clear();
+                    instance = null;
+                }
+            }
+        }
+    }
+
+    private void clear() {
+        clearInvalidExtension();
+        // maybe later need to add new add ones
+    }
+
+    public void clearInvalidExtension() {
+        dqModelServices.clear();
+        services.clear();
+        configurationElements = removeInvalidExtension(configurationElements).toArray(new IConfigurationElement[0]);
+        configurationDQModelElements = removeInvalidExtension(configurationDQModelElements).toArray(new IConfigurationElement[0]);
+        configurationDQDriverElements = removeInvalidExtension(configurationDQDriverElements)
+                .toArray(new IConfigurationElement[0]);
+    }
+
+    private Collection<IConfigurationElement> removeInvalidExtension(IConfigurationElement[] confElems) {
+        Collection<IConfigurationElement> validExtensions = new HashSet<>();
+        for (IConfigurationElement confElem : confElems) {
+            if (confElem.isValid()) {
+                validExtensions.add(confElem);
+            }
+        }
+        return validExtensions;
     }
 
     private Map<Class, IService> services = new HashMap<Class, IService>();
 
     private Map<Class<?>, AbstractDQModelService> dqModelServices = new HashMap<Class<?>, AbstractDQModelService>();
 
-    private static IConfigurationElement[] configurationElements = null;
+    private IConfigurationElement[] configurationElements = null;
 
-    private static IConfigurationElement[] configurationDQModelElements = null;
+    private IConfigurationElement[] configurationDQModelElements = null;
 
-    private static IConfigurationElement[] configurationDQDriverElements = null;
+    private IConfigurationElement[] configurationDQDriverElements = null;
 
     private IConfigurationElement[] getConfigurationElements() {
         if (configurationElements == null) {

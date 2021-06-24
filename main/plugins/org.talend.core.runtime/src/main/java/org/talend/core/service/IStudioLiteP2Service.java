@@ -29,6 +29,10 @@ public interface IStudioLiteP2Service extends IService {
 
     public static final String PROP_USE_NEW_UPDATE_SYSTEM = "talend.studio.update.useNewUpdateSystem";
 
+    public static final String CONFIG_STORAGE_FOLDER = "talend/studioLite/";
+
+    public static final String BUNDLES_INFOS_STORAGE_FOLDER = CONFIG_STORAGE_FOLDER + "bundlesInfo/";
+
     public static final int RESULT_SKIP = 0;
 
     public static final int RESULT_DONE = 1;
@@ -37,6 +41,8 @@ public interface IStudioLiteP2Service extends IService {
      * cancel current action
      */
     public static final int RESULT_CANCEL = 2;
+
+    void setProfileKey(String profKey);
 
     /**
      * Preload to improve performance
@@ -74,6 +80,8 @@ public interface IStudioLiteP2Service extends IService {
      * {@link IStudioLiteP2Service#RESULT_CANCEL}<br/>
      */
     int showUpdateProjectRequiredFeaturesWizard(ValidatePotentialFeaturesHook hook, Project proj);
+
+    int adaptFeaturesForProject(IProgressMonitor monitor, Project proj) throws Exception;
 
     public static IStudioLiteP2Service get() {
         boolean forceLoad = Boolean.getBoolean("talend.studio.studiolite.p2.enable");

@@ -176,8 +176,6 @@ import org.talend.core.runtime.constants.UpdateConstants;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.service.IStudioLiteP2Service;
-import org.talend.core.service.IStudioLiteP2Service.ValidatePotentialFeaturesHook;
-import org.talend.core.service.IStudioLiteP2Service.ValidateRequiredFeaturesHook;
 import org.talend.core.ui.IInstalledPatchService;
 import org.talend.core.ui.branding.IBrandingService;
 import org.talend.core.utils.DialogUtils;
@@ -3395,25 +3393,17 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
         try {
             IStudioLiteP2Service p2Service = IStudioLiteP2Service.get();
             if (p2Service != null) {
+                String profKey = "L_" + project.getTechnicalLabel();
+                p2Service.setProfileKey(profKey);
                 IProgressMonitor subMonitor = SubMonitor.convert(monitor);
-                ValidateRequiredFeaturesHook hook = p2Service.validateRequiredFeatures(subMonitor, project);
-                if (hook != null && hook.isMissingRequiredFeatures()) {
-                    int result = p2Service.showInstallRequiredFeaturesWizard(hook, project);
-                    if (IStudioLiteP2Service.RESULT_DONE == result) {
-                        // when switch product,need to set --disableLoginDialog to avoid pop up logindialog
-                        EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
-                                EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, false, true);
-                        throw new LoginException(LoginException.RESTART);
-                    } else if (IStudioLiteP2Service.RESULT_CANCEL == result) {
-                        throw new LoginException(Messages.getString("LocalRepositoryFactory.login.userCancel"));
-                    }
-                }
-                ValidatePotentialFeaturesHook potentialHook = p2Service.validatePotentialFeatures(monitor, project);
-                if (potentialHook != null && potentialHook.hasPotentialFeatures()) {
-                    int result = p2Service.showUpdateProjectRequiredFeaturesWizard(potentialHook, project);
-                    if (IStudioLiteP2Service.RESULT_CANCEL == result) {
-                        throw new LoginException(Messages.getString("LocalRepositoryFactory.login.userCancel"));
-                    }
+                int adaptResult = p2Service.adaptFeaturesForProject(subMonitor, project);
+                if (IStudioLiteP2Service.RESULT_DONE == adaptResult) {
+                    // when switch product,need to set --disableLoginDialog to avoid pop up logindialog
+                    EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(
+                            EclipseCommandLine.TALEND_DISABLE_LOGINDIALOG_COMMAND, null, false, true);
+                    throw new LoginException(LoginException.RESTART);
+                } else if (IStudioLiteP2Service.RESULT_CANCEL == adaptResult) {
+                    throw new LoginException(Messages.getString("LocalRepositoryFactory.login.userCancel"));
                 }
             }
         } catch (LoginException e) {
