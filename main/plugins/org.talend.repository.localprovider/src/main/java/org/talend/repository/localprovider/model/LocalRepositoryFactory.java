@@ -2782,13 +2782,15 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
             // *need to create all referenece files when copy the item*//
             copyReferenceFiles(originalItem, newItem);
             create(getRepositoryContext().getProject(), newItem, path);
-            if (originalItem.eClass() == PropertiesPackage.Literals.PROCESS_ITEM
-                    || originalItem.eClass() == PropertiesPackage.Literals.JOBLET_PROCESS_ITEM) {
-                xmiResourceManager.copyScreenshotFile(originalItem, newItem);
-            } else {
-                // It is just for the process like m/r.
-                for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
-                    handler.copyScreenShotFile(originalItem, newItem);
+            if (!isDisableScreenshot()) {
+                if (originalItem.eClass() == PropertiesPackage.Literals.PROCESS_ITEM
+                        || originalItem.eClass() == PropertiesPackage.Literals.JOBLET_PROCESS_ITEM) {
+                    xmiResourceManager.copyScreenshotFile(originalItem, newItem);
+                } else {
+                    // It is just for the process like m/r.
+                    for (IRepositoryContentHandler handler : RepositoryContentManager.getHandlers()) {
+                        handler.copyScreenShotFile(originalItem, newItem);
+                    }
                 }
             }
 
