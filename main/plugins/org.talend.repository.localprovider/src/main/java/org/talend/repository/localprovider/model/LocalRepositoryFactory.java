@@ -192,7 +192,7 @@ import org.talend.repository.localprovider.exceptions.IncorrectFileException;
 import org.talend.repository.localprovider.i18n.Messages;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.RepositoryConstants;
-import org.talend.repository.ui.login.LoginHelper;
+import org.talend.repository.ui.utils.GitProviderUtil;
 
 import orgomg.cwm.foundation.businessinformation.BusinessinformationPackage;
 
@@ -3151,10 +3151,10 @@ public class LocalRepositoryFactory extends AbstractEMFRepositoryFactory impleme
     }
 
     private boolean isDisableScreenshot() {
-        if (!LoginHelper.isRemotesConnection()) {
-            return false;
+        if (GitProviderUtil.isProjectInGitMode()) {
+            return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isDisableScreenshot();
         }
-        return CoreRuntimePlugin.getInstance().getProjectPreferenceManager().isDisableScreenshot();
+        return false;
     }
 
     private List<Resource> getReferenceFilesResources(Item item, Resource propertyResource, boolean needLoad) {
