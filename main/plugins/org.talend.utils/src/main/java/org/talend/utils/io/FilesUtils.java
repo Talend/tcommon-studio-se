@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -872,6 +873,27 @@ public final class FilesUtils {
                 file.delete();
             }
         }
+    }
+
+    public static void deleteFile(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (File file2 : files) {
+                    deleteFile(file2.getAbsolutePath());
+                }
+            }
+            file.setWritable(true);
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                // fail to get clear reason and try again
+                file.delete();
+            }
+
+        }
+
     }
 
     /**

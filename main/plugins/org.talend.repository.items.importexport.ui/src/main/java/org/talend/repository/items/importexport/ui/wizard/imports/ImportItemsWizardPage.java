@@ -178,6 +178,7 @@ public class ImportItemsWizardPage extends WizardPage {
         composite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
         createSelectionArea(composite);
+        createImportDependenciesArea(composite);
         createItemListArea(composite);
         createErrorsListArea(composite);
         createAdditionArea(composite);
@@ -357,7 +358,27 @@ public class ImportItemsWizardPage extends WizardPage {
         }
     }
 
-    private void createItemListArea(Composite parent) {
+    protected void createImportDependenciesArea(Composite parent) {
+        Composite dependencyArea = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.marginWidth = 0;
+        layout.makeColumnsEqualWidth = false;
+        dependencyArea.setLayout(layout);
+        Button dependencyBtn = new Button(dependencyArea, SWT.CHECK);
+        dependencyBtn.setText(Messages.getString("ImportItemsWizardPage_importDependenciesText"));
+
+        dependencyBtn.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                super.widgetSelected(e);
+            }
+
+        });
+    }
+
+    protected void createItemListArea(Composite parent) {
         Composite itemsArea = new Composite(parent, SWT.NONE);
         GridLayout layout2 = new GridLayout();
         layout2.numColumns = 2;
@@ -480,7 +501,7 @@ public class ImportItemsWizardPage extends WizardPage {
         setButtonLayoutData(collapseAll);
     }
 
-    private void createErrorsListArea(Composite workArea) {
+    protected void createErrorsListArea(Composite workArea) {
         Composite composite = new Composite(workArea, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.makeColumnsEqualWidth = false;
@@ -708,7 +729,7 @@ public class ImportItemsWizardPage extends WizardPage {
                 setErrorMessage(Messages.getString("ImportItemsWizardPage_noValidItemsInPathMessage")); //$NON-NLS-1$
                 setPageComplete(false);
             } else {
-                populateItems(this.overwriteButton.getSelection());
+                populateItems(this.overwriteButton == null ? false : this.overwriteButton.getSelection());
             }
         }
 
@@ -1019,8 +1040,8 @@ public class ImportItemsWizardPage extends WizardPage {
             }
         }
 
-        final boolean overwrite = overwriteButton.getSelection();
-        final boolean alwaysRegenId = regenIdBtn.getSelection();
+        final boolean overwrite = overwriteButton == null ? false : overwriteButton.getSelection();
+        final boolean alwaysRegenId = regenIdBtn == null ? false : regenIdBtn.getSelection();
         try {
             IRunnableWithProgress iRunnableWithProgress = new IRunnableWithProgress() {
 
