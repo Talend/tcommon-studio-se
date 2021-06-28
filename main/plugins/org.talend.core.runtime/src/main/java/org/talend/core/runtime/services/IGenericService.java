@@ -21,6 +21,7 @@ import org.talend.core.model.components.IComponent;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.process.IElementParameter;
 import org.talend.core.model.process.INode;
+import org.talend.repository.model.RepositoryNode;
 
 /**
  * created by ycbai on 2016年3月24日 Detailled comment
@@ -34,6 +35,13 @@ public interface IGenericService extends IService {
      * @return
      */
     public List<String> getGenericTypeNames();
+
+    /**
+     * Create repository nodes by component service.
+     *
+     * @param curParentNode
+     */
+    public List<RepositoryNode> createNodesFromComponentService(RepositoryNode curParentNode);
 
     /**
      * Call method <code>callBeforeActivate()</code> of <code>parameter</code>.
