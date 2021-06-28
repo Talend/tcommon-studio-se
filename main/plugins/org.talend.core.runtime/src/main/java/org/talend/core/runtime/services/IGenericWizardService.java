@@ -46,12 +46,6 @@ public interface IGenericWizardService extends IService {
      */
     public List<RepositoryNode> createNodesFromComponentService(RepositoryNode curParentNode);
 
-    /**
-     * Get all the names of generic type.
-     *
-     * @return
-     */
-    public List<String> getGenericTypeNames();
 
     /**
      *

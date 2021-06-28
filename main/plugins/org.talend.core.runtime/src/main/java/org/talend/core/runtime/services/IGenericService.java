@@ -29,6 +29,13 @@ import org.talend.core.model.process.INode;
 public interface IGenericService extends IService {
 
     /**
+     * Get all the names of generic type.
+     *
+     * @return
+     */
+    public List<String> getGenericTypeNames();
+
+    /**
      * Call method <code>callBeforeActivate()</code> of <code>parameter</code>.
      *
      *
