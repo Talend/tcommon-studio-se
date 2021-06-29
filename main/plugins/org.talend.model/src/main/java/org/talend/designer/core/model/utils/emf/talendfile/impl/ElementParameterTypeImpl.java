@@ -7,6 +7,7 @@ package org.talend.designer.core.model.utils.emf.talendfile.impl;
 
 import java.util.Collection;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -326,6 +327,10 @@ public class ElementParameterTypeImpl extends EObjectImpl implements ElementPara
 
     public void setRawValue(String newValue) {
         if (newValue != null && newValue.length() > 0 && PasswordEncryptUtil.isPasswordField(getField())) {
+            String oldValue = getValue();
+            if (StudioEncryption.isLatestKeyResult(oldValue) && StringUtils.equals(newValue, getRawValue())) {
+                return;
+            }
             String encryptValue = StudioEncryption.getStudioEncryption(StudioEncryption.EncryptionKeyName.SYSTEM)
                     .encrypt(newValue);
             if (encryptValue != null) {

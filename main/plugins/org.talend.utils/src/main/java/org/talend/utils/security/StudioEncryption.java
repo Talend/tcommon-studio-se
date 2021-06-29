@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -54,6 +55,8 @@ public class StudioEncryption {
 
     private static final Pattern REG_ENCRYPTED_DATA_ROUTINE = Pattern
             .compile("^enc\\:routine\\.encryption\\.key\\.v\\d\\:\\p{Print}+");
+    
+    private static final Map <String, String> LATEST_KEY_DESC = new HashMap<String, String>();
 
     private EncryptionKeyName keyName;
 
@@ -106,6 +109,38 @@ public class StudioEncryption {
         RuntimeException e = new RuntimeException("Can not load encryption key: " + encryptionKeyName);
         LOGGER.error("Can not load encryption key: " + encryptionKeyName, e);
         throw e;
+    }
+    
+    public static boolean isLatestKeyResult(String input) {
+        if (input != null && hasEncryptionSymbol(input)) {
+            EncryptionKeyName keyName = null;
+            if (input.startsWith(PREFIX_PASSWORD + StudioKeyName.KEY_SYSTEM_PREFIX)) {
+                keyName = StudioEncryption.EncryptionKeyName.SYSTEM;
+            } else if (input.startsWith(PREFIX_PASSWORD + StudioKeyName.KEY_ROUTINE_PREFIX)) {
+                keyName = StudioEncryption.EncryptionKeyName.ROUTINE;
+            } else if (input.startsWith(PREFIX_PASSWORD + StudioKeyName.KEY_MIGRATION)) {
+                keyName = StudioEncryption.EncryptionKeyName.MIGRATION;
+            } else if (input.startsWith(PREFIX_PASSWORD + StudioKeyName.KEY_MIGRATION_TOKEN)) {
+                keyName = StudioEncryption.EncryptionKeyName.MIGRATION_TOKEN;
+            }
+            if (keyName != null) {
+                StudioKeySource ks = getKeySource(keyName.name, true);
+                String keyResult = LATEST_KEY_DESC.get(keyName.name);
+                if (keyResult == null) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(PREFIX_PASSWORD);
+                    sb.append(ks.getKeyName());
+                    sb.append(":");
+                    keyResult = sb.toString();
+                    LATEST_KEY_DESC.put(keyName.name, keyResult); 
+                }
+
+                if (input.startsWith(LATEST_KEY_DESC.get(keyName.name))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Encryption getEncryption(StudioKeySource ks) {
