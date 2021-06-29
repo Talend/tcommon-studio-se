@@ -15,6 +15,7 @@ package org.talend.designer.rowgenerator.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -30,17 +31,13 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
-import org.talend.core.model.properties.RoutinesJarItem;
-import org.talend.core.model.repository.ERepositoryObjectType;
-import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
+import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IProxyRepositoryFactory;
-import org.talend.repository.model.IRepositoryService;
 
 /**
  * Created by bhe on Jun 24, 2021
@@ -62,21 +59,8 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
     public void parse() {
         typeMethods.clear();
         try {
-            if (!GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
-                return;
-            }
-            IRepositoryService rpositoryService = (IRepositoryService) GlobalServiceRegister.getDefault()
-                    .getService(IRepositoryService.class);
 
-            IProxyRepositoryFactory factory = rpositoryService.getProxyRepositoryFactory();
-            List<IRepositoryViewObject> routineJarsObjects = factory.getAll(ERepositoryObjectType.ROUTINESJAR);
-            List<CodesJarInfo> jarInfos = new ArrayList<CodesJarInfo>();
-            for (IRepositoryViewObject routineJarObject : routineJarsObjects) {
-                if (routineJarObject.getProperty().getItem() instanceof RoutinesJarItem) {
-                    CodesJarInfo info = CodesJarInfo.create(routineJarObject.getProperty());
-                    jarInfos.add(info);
-                }
-            }
+            Set<CodesJarInfo> jarInfos = CodesJarResourceCache.getAllCodesJars();
 
             jarInfos.forEach(e -> {
                 try {
