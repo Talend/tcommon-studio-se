@@ -35,6 +35,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -79,6 +80,8 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
+import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -90,6 +93,7 @@ import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
+import org.talend.repository.items.importexport.handlers.imports.ImportDependencyRelationsHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
@@ -124,6 +128,8 @@ public class ImportItemsWizardPage extends WizardPage {
     private Text directoryPathField, archivePathField;
 
     protected Button browseDirectoriesButton, browseArchivesButton, fromExchangeButton;
+
+    protected Button dependencyButton;
 
     private FilteredCheckboxTree filteredCheckboxTree;
 
@@ -365,17 +371,36 @@ public class ImportItemsWizardPage extends WizardPage {
         layout.marginWidth = 0;
         layout.makeColumnsEqualWidth = false;
         dependencyArea.setLayout(layout);
-        Button dependencyBtn = new Button(dependencyArea, SWT.CHECK);
-        dependencyBtn.setText(Messages.getString("ImportItemsWizardPage_importDependenciesText"));
-
-        dependencyBtn.addSelectionListener(new SelectionAdapter() {
+        dependencyButton = new Button(dependencyArea, SWT.CHECK);
+        dependencyButton.setText(Messages.getString("ImportItemsWizardPage_importDependenciesText"));
+        dependencyButton.setSelection(getImportDependenciesPref());
+        dependencyButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                super.widgetSelected(e);
+                if (dependencyButton.getSelection()) {
+                    handleImportDependencies();
+                }
             }
 
         });
+    }
+
+    private boolean getImportDependenciesPref() {
+        IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
+        if (repositoryPreferenceStore != null) {
+            String option = repositoryPreferenceStore.getString(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES);
+            return StringUtils.isBlank(option) ? true : Boolean.valueOf(option);
+        }
+        return false;
+    }
+
+    private void saveImportDependenciesPref() {
+        IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
+        if (repositoryPreferenceStore != null) {
+            repositoryPreferenceStore.setValue(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES,
+                    dependencyButton.getSelection() ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
+        }
     }
 
     protected void createItemListArea(Composite parent) {
@@ -409,6 +434,9 @@ public class ImportItemsWizardPage extends WizardPage {
 
             @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
+                if (dependencyButton.getSelection()) {
+                    handleImportDependencies();
+                }
                 filteredCheckboxTree.calculateCheckedLeafNodes();
                 checkSelectedItemErrors();
             }
@@ -664,6 +692,31 @@ public class ImportItemsWizardPage extends WizardPage {
             updateItemsList(selectedArchive, false, false);
         }
 
+    }
+
+    protected void handleImportDependencies() {
+        CheckboxTreeViewer viewer = filteredCheckboxTree.getViewer();
+        if (viewer.getTree().getItemCount() == 0) {
+            return;
+        }
+        TreeItem topItem = viewer.getTree().getTopItem();
+        Object[] checkedElements = viewer.getCheckedElements();
+        if (topItem != null && topItem.getChecked() || checkedElements.length == 0) {
+            // all checked or no item checked, no need handle dependencies
+            return;
+        }
+
+        List<ItemImportNode> checkedNodeList = new ArrayList<ItemImportNode>();
+        Set<ItemImportNode> toSelectSet = new HashSet<ItemImportNode>();
+        for (Object object : checkedElements) {
+            if (object instanceof ItemImportNode) {
+                checkedNodeList.add((ItemImportNode)object);
+                toSelectSet.add((ItemImportNode) object);
+            }
+        }
+        ImportDependencyRelationsHelper.getInstance().checkImportRelationDependency(checkedNodeList, toSelectSet,
+                nodesBuilder.getAllImportItemNode());
+        filteredCheckboxTree.getViewer().setCheckedElements(toSelectSet.toArray());
     }
 
     public void updateItemsList(final String path, final boolean fromDir/* Unuseful */, boolean isneedUpdate) {
@@ -1127,6 +1180,7 @@ public class ImportItemsWizardPage extends WizardPage {
             checkedItemRecords.clear();
             nodesBuilder.clear();
         }
+        saveImportDependenciesPref();
 
         return true;
     }

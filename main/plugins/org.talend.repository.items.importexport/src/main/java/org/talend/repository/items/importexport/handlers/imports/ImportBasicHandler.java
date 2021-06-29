@@ -635,7 +635,7 @@ public class ImportBasicHandler extends AbstractImportExecutableHandler {
                 ProjectDataJsonProvider.loadProjectData(project, projectRootPath, manager);
                 // EmfHelper.loadResource(resource, stream, null);
                 pathWithProjects.put(path, project);
-                ImportDependencyRelationsHelper.getInstance().loadRelations(path.toString(), project.getItemsRelations());
+                ImportDependencyRelationsHelper.getInstance().loadRelations(path, project.getItemsRelations());
             }
             return pathWithProjects.get(path);
         } catch (IOException | PersistenceException e) {
