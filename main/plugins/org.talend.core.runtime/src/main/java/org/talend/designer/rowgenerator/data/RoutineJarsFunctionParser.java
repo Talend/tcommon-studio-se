@@ -106,7 +106,7 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
                             final List<IJavaElement> elements = new ArrayList<IJavaElement>();
 
                             addEveryProjectElements(root, elements,
-                                    getGroupId() + "." + JavaUtils.JAVA_ROUTINESJAR_DIRECTORY + "." + e.getLabel());
+                                    getGroupId() + "." + JavaUtils.JAVA_ROUTINESJAR_DIRECTORY + "." + e.getLabel().toLowerCase());
 
                             // for (IJavaElement element : elements) {
                             // see bug 8055,reversal the getLastName() method
