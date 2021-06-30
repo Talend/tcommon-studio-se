@@ -12,8 +12,10 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,11 +33,16 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.ProcessItem;
+import org.talend.core.model.repository.IRepositoryObject;
 import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.utils.CodesJarResourceCache;
+import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
+import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 
@@ -50,8 +57,32 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
 
     private List<String> systems = new ArrayList<String>();
 
+    private final Set<CodesJarInfo> infos = new HashSet<CodesJarInfo>();
+
     public RoutineJarsFunctionParser() {
         super();
+        initProcessCodesJarInfo();
+    }
+
+    private void initProcessCodesJarInfo() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+            IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
+                    .getService(IRunProcessService.class);
+            IRepositoryObject process = (IRepositoryObject) service.getActiveProcess();
+            Item processItem = process.getProperty().getItem();
+            if (processItem instanceof ProcessItem) {
+                ProcessType pt = ((ProcessItem) processItem).getProcess();
+
+                List<RoutinesParameterType> rps = pt.getParameters().getRoutinesParameter();
+
+                rps.forEach(rp -> {
+                    CodesJarInfo info = CodesJarResourceCache.getCodesJarById(rp.getId());
+                    if (info != null) {
+                        infos.add(info);
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -144,6 +175,21 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
     @Override
     protected ITalendProcessJavaProject getTalendCodeProject() {
         return null;
+    }
+
+    @Override
+    protected Function parseJavaCommentToFunctions(String string, String className, String fullName, String funcName,
+            boolean isSystem) {
+        Function func = super.parseJavaCommentToFunctions(string, className, fullName, funcName, isSystem);
+
+        // set routine jars dependency missing or not
+        infos.forEach(info -> {
+            if (func.getRoutineJarName().equals(info.getLabel())) {
+                func.setRountineJarDependencyMissing(false);
+            }
+        });
+
+        return func;
     }
 
     protected void addEveryProjectElements(IPackageFragmentRoot root, List<IJavaElement> elements, String packageFragment)
