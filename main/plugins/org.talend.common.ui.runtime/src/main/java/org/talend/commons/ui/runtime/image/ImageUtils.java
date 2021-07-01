@@ -146,11 +146,11 @@ public class ImageUtils {
     }
 
     public static ImageDescriptor scale(ImageDescriptor imageDes, ICON_SIZE size) {
+        if (CommonsPlugin.isHeadless()) {
+            return imageDes;
+        }
         if (imageDes != null) {
             if (!checkSize(imageDes, size)) {
-                if (CommonsPlugin.isHeadless()) {
-                    return imageDes;
-                }
                 ImageData imageData = imageDes.getImageData().scaledTo(size.getSize(), size.getSize());
                 return ImageDescriptor.createFromImageData(imageData);
             }
