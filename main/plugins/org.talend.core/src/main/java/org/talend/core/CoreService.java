@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,9 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.routines.RoutineLibraryMananger;
+import org.talend.core.model.utils.ComponentInstallerTaskRegistryReader;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.model.utils.IComponentInstallerTask;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.model.utils.PerlResourcesHelper;
 import org.talend.core.model.utils.ResourceModelHelper;
@@ -518,4 +521,19 @@ public class CoreService implements ICoreService {
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
     }
 
+	/**
+	 * Check and install components
+	 */
+	public void installComponents() {
+		List<IComponentInstallerTask> tasks = ComponentInstallerTaskRegistryReader.getInstance().getTasks();
+		tasks.forEach(task -> {
+			if (task.needInstall()) {
+				try {
+					task.install(null);
+				} catch (Exception e) {
+					ExceptionHandler.process(e);
+				}
+			}
+		});
+	}
 }

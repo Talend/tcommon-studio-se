@@ -55,7 +55,7 @@
                 <artifactId>commons-parent</artifactId>
                 <version>17</version>
                 <type>pom</type>
-            </dependency>             
+            </dependency>
             <!-- It fixes provided dependency scope to compile, because maven-dependency-plugin is setup to include
              only compile and runtime scopes, but provided is also required. It's not possible to setup plugin to
              include all: compile, runtime and provided dependencies -->
@@ -76,11 +76,6 @@
     </dependencyManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>components-couchbase</artifactId>
-			<version>${components.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-salesforce-runtime</artifactId>

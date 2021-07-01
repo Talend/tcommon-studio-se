@@ -2230,6 +2230,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
                     coreService.syncLibraries(currentMonitor);
                     TimeMeasurePerformance.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
+                    
+                    coreService.installComponents();
+                    TimeMeasurePerformance.step("logOnProject", "Install components");
                 }
 
                 try {
