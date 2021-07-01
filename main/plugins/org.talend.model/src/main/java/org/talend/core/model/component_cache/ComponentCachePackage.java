@@ -125,22 +125,13 @@ public interface ComponentCachePackage extends EPackage {
     int COMPONENT_INFO__VERSION = 2;
 
     /**
-     * The feature id for the '<em><b>Translated Family Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPONENT_INFO__TRANSLATED_FAMILY_NAME = 3;
-
-    /**
      * The feature id for the '<em><b>Is Technical</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__IS_TECHNICAL = 4;
+    int COMPONENT_INFO__IS_TECHNICAL = 3;
 
     /**
      * The feature id for the '<em><b>Plugin Dependencies</b></em>' attribute list.
@@ -149,7 +140,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__PLUGIN_DEPENDENCIES = 5;
+    int COMPONENT_INFO__PLUGIN_DEPENDENCIES = 4;
 
     /**
      * The feature id for the '<em><b>Component Names</b></em>' attribute list.
@@ -158,7 +149,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__COMPONENT_NAMES = 6;
+    int COMPONENT_INFO__COMPONENT_NAMES = 5;
 
     /**
      * The feature id for the '<em><b>Import Type</b></em>' containment reference list.
@@ -167,7 +158,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__IMPORT_TYPE = 7;
+    int COMPONENT_INFO__IMPORT_TYPE = 6;
 
     /**
      * The feature id for the '<em><b>Is Visible In Component Definition</b></em>' attribute.
@@ -176,7 +167,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__IS_VISIBLE_IN_COMPONENT_DEFINITION = 8;
+    int COMPONENT_INFO__IS_VISIBLE_IN_COMPONENT_DEFINITION = 7;
 
     /**
      * The feature id for the '<em><b>Uri String</b></em>' attribute.
@@ -185,7 +176,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__URI_STRING = 9;
+    int COMPONENT_INFO__URI_STRING = 8;
 
     /**
      * The feature id for the '<em><b>Path Source</b></em>' attribute.
@@ -194,7 +185,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__PATH_SOURCE = 10;
+    int COMPONENT_INFO__PATH_SOURCE = 9;
 
     /**
      * The feature id for the '<em><b>Repository Type</b></em>' attribute.
@@ -203,7 +194,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__REPOSITORY_TYPE = 11;
+    int COMPONENT_INFO__REPOSITORY_TYPE = 10;
 
     /**
      * The feature id for the '<em><b>Source Bundle Name</b></em>' attribute.
@@ -212,7 +203,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__SOURCE_BUNDLE_NAME = 12;
+    int COMPONENT_INFO__SOURCE_BUNDLE_NAME = 11;
 
     /**
      * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -221,25 +212,16 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__TYPE = 13;
+    int COMPONENT_INFO__TYPE = 12;
 
     /**
-     * The feature id for the '<em><b>Sha1</b></em>' attribute.
+     * The feature id for the '<em><b>Provider Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO__SHA1 = 14;
-
-    /**
-     * The feature id for the '<em><b>Long Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPONENT_INFO__LONG_NAME = 15;
+    int COMPONENT_INFO__PROVIDER_ID = 13;
 
     /**
      * The number of structural features of the '<em>Component Info</em>' class.
@@ -248,7 +230,7 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int COMPONENT_INFO_FEATURE_COUNT = 16;
+    int COMPONENT_INFO_FEATURE_COUNT = 14;
 
     /**
      * The meta object id for the '{@link org.talend.core.model.component_cache.impl.ComponentEntryMapImpl <em>Component Entry Map</em>}' class.
@@ -351,17 +333,6 @@ public interface ComponentCachePackage extends EPackage {
      * @generated
      */
     EAttribute getComponentInfo_Version();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getTranslatedFamilyName <em>Translated Family Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Translated Family Name</em>'.
-     * @see org.talend.core.model.component_cache.ComponentInfo#getTranslatedFamilyName()
-     * @see #getComponentInfo()
-     * @generated
-     */
-    EAttribute getComponentInfo_TranslatedFamilyName();
 
     /**
      * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#isIsTechnical <em>Is Technical</em>}'.
@@ -474,26 +445,15 @@ public interface ComponentCachePackage extends EPackage {
     EAttribute getComponentInfo_Type();
 
     /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getSha1 <em>Sha1</em>}'.
+     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getProviderId <em>Provider Id</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Sha1</em>'.
-     * @see org.talend.core.model.component_cache.ComponentInfo#getSha1()
+     * @return the meta object for the attribute '<em>Provider Id</em>'.
+     * @see org.talend.core.model.component_cache.ComponentInfo#getProviderId()
      * @see #getComponentInfo()
      * @generated
      */
-    EAttribute getComponentInfo_Sha1();
-
-    /**
-     * Returns the meta object for the attribute '{@link org.talend.core.model.component_cache.ComponentInfo#getLongName <em>Long Name</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Long Name</em>'.
-     * @see org.talend.core.model.component_cache.ComponentInfo#getLongName()
-     * @see #getComponentInfo()
-     * @generated
-     */
-    EAttribute getComponentInfo_LongName();
+    EAttribute getComponentInfo_ProviderId();
 
     /**
      * Returns the meta object for class '{@link java.util.Map.Entry <em>Component Entry Map</em>}'.
@@ -503,6 +463,7 @@ public interface ComponentCachePackage extends EPackage {
      * @see java.util.Map.Entry
      * @model keyDataType="org.eclipse.emf.ecore.EString"
      *        valueType="org.talend.core.model.component_cache.ComponentInfo" valueContainment="true" valueMany="true"
+     *        annotation="MapEntry"
      * @generated
      */
     EClass getComponentEntryMap();
@@ -604,14 +565,6 @@ public interface ComponentCachePackage extends EPackage {
         EAttribute COMPONENT_INFO__VERSION = eINSTANCE.getComponentInfo_Version();
 
         /**
-         * The meta object literal for the '<em><b>Translated Family Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute COMPONENT_INFO__TRANSLATED_FAMILY_NAME = eINSTANCE.getComponentInfo_TranslatedFamilyName();
-
-        /**
          * The meta object literal for the '<em><b>Is Technical</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -692,20 +645,12 @@ public interface ComponentCachePackage extends EPackage {
         EAttribute COMPONENT_INFO__TYPE = eINSTANCE.getComponentInfo_Type();
 
         /**
-         * The meta object literal for the '<em><b>Sha1</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Provider Id</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute COMPONENT_INFO__SHA1 = eINSTANCE.getComponentInfo_Sha1();
-
-        /**
-         * The meta object literal for the '<em><b>Long Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute COMPONENT_INFO__LONG_NAME = eINSTANCE.getComponentInfo_LongName();
+        EAttribute COMPONENT_INFO__PROVIDER_ID = eINSTANCE.getComponentInfo_ProviderId();
 
         /**
          * The meta object literal for the '{@link org.talend.core.model.component_cache.impl.ComponentEntryMapImpl <em>Component Entry Map</em>}' class.

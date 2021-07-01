@@ -23,8 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.PredicateUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ISafeRunnable;
@@ -95,6 +93,7 @@ import org.talend.core.repository.model.repositoryObject.SalesforceModuleReposit
 import org.talend.core.repository.recyclebin.RecycleBinManager;
 import org.talend.core.repository.ui.utils.ProjectRepositoryNodeCache;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.runtime.services.IGenericService;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.ui.ICDCProviderService;
 import org.talend.core.ui.ITestContainerProviderService;
@@ -392,10 +391,7 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
     }
 
     private void initNodesFromComponentSerivice(RepositoryNode curParentNode) {
-        IGenericWizardService wizardService = null;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
-            wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
-        }
+        IGenericService wizardService = IGenericService.getService();
         if (wizardService != null) {
             List<RepositoryNode> nodes = wizardService.createNodesFromComponentService(curParentNode);
             for (RepositoryNode repNode : nodes) {

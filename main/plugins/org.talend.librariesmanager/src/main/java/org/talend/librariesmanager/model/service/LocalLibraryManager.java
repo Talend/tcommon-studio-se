@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.bind.DatatypeConverter;
@@ -45,7 +46,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.emf.common.util.EMap;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
@@ -145,17 +145,10 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         File indexFile = new File(LibrariesIndexManager.getInstance().getStudioIndexPath());
         File mvnIndexFile = new File(LibrariesIndexManager.getInstance().getMavenIndexPath());
         if (indexFile.exists() && mvnIndexFile.exists()) {
-            return LibrariesIndexManager.getInstance().getStudioLibIndex().isInitialized();
+            return LibrariesIndexManager.getInstance().isStudioLibInitialized()
+                    && LibrariesIndexManager.getInstance().isMavenLibInitialized();
         }
         return false;
-    }
-
-    @Override
-    public void setInitialized() {
-        LibrariesIndexManager.getInstance().getStudioLibIndex().setInitialized(true);
-        LibrariesIndexManager.getInstance().saveStudioIndexResource();
-        LibrariesIndexManager.getInstance().getMavenLibIndex().setInitialized(true);
-        LibrariesIndexManager.getInstance().saveMavenIndexResource();
     }
 
     @Override
@@ -257,7 +250,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     private void guessMavenRUIFromIndex(File jarFile, boolean useReleaseVersion, Map<String, String> sourceAndMavenUri) {
         // TODO????? should deploy with all versions
-        String urisFromIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath()
+        String urisFromIndex = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex()
                 .get(jarFile.getName());
         boolean deployAsDefault = true;
         if (urisFromIndex != null) {
@@ -455,7 +448,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     private Set<String> guessMavenURI(ModuleNeeded module) {
         String jarNeeded = module.getModuleName();
-        EMap<String, String> mvnURIIndex = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+        Map<String, String> mvnURIIndex = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex();
         Set<String> toResolve = new HashSet<>();
         if (module.getCustomMavenUri() != null) {
             toResolve.add(module.getCustomMavenUri());
@@ -862,7 +855,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void installModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap) {
-        EMap<String, String> libIndex = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+        Map<String, String> libIndex = LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex();
         for (ModuleNeeded module : modules) {
             File fileToDeploy = null;
             String moduleLocation = module.getModuleLocaion();
@@ -891,8 +884,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                     }
                 }
                 if (!found) {
-                    EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex()
-                            .getJarsToRelativePath();
+                    Map<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex();
                     String relativePath = jarsToRelative.get(module.getModuleName());
                     if (relativePath != null && checkJarInstalledFromPlatform(relativePath)) {
                         found = true;
@@ -950,7 +942,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 libPath = file.getAbsolutePath();
             }
             // studio
-            EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+            Map<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex();
             String relativePath = jarsToRelative.get(jarName);
             if (relativePath != null && relativePath.startsWith("platform:/")) { //$NON-NLS-1$
                 boolean jarFound = checkJarInstalledFromPlatform(relativePath);
@@ -1266,6 +1258,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
             service = GlobalServiceRegister.getDefault().getService(IComponentsService.class);
         }
+
         if (service != null) {
             for (IComponent component : service.getComponentsFactory().readComponents()) {
                 try {
@@ -1276,6 +1269,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                 }
             }
         }
+
         calculateModulesIndex(modules, platformURLMap, duplicateLocationJar, mavenURIMap, duplicateMavenUri);
 
         calculateModulesIndexFromExtension(platformURLMap, duplicateLocationJar, mavenURIMap, duplicateMavenUri);
@@ -1293,6 +1287,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
             calculateModulesIndexFromComponentFolder(service, platformURLMap);
         }
 
+        // all of contents will be inside
         saveMavenIndex(mavenURIMap, monitorWrap);
         savePlatfromURLIndex(platformURLMap, monitorWrap);
         
@@ -1527,15 +1522,18 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void savePlatfromURLIndex(Map<String, String> libsToRelativePath, IProgressMonitor... monitorWrap) {
-        EMap<String, String> jarsToRelative = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
         boolean modified = false;
-        for (String key : libsToRelativePath.keySet()) {
-            if (checkJarInstalledFromPlatform(libsToRelativePath.get(key))) {
-                jarsToRelative.put(key, libsToRelativePath.get(key));
-                modified = true;
+        Set<Entry<String, String>> entries = libsToRelativePath.entrySet();
+        for (Entry<String, String> entry : entries) {
+            if (!LibrariesIndexManager.getInstance().containsStudioLibs(entry.getKey())) {
+                if (checkJarInstalledFromPlatform(entry.getValue())) {
+                    LibrariesIndexManager.getInstance().AddStudioLibs(entry.getKey(), entry.getValue());
+                    modified = true;
+                }
             }
         }
         if (modified) {
+            LibrariesIndexManager.getInstance().setStudioIndexInitialized(true);
             LibrariesIndexManager.getInstance().saveStudioIndexResource();
         }
     }
@@ -1548,19 +1546,20 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public void saveMavenIndex(Map<String, String> libsMavenUriToDeploy, IProgressMonitor... monitorWrap) {
-        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+        Map<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex();
         boolean modified = false;
-        for (String key : libsMavenUriToDeploy.keySet()) {
-            String mvnUri = libsMavenUriToDeploy.get(key);
+        Set<Entry<String,String>> entries = libsMavenUriToDeploy.entrySet();
+        for (Entry<String,String> entry : entries) {
+            String key = entry.getKey();
+            String mvnUri = entry.getValue();
             if (!jarsToMavenuri.containsKey(key)
-                    || mvnUri != null && jarsToMavenuri.containsKey(key) && !mvnUri.equals(jarsToMavenuri.get(key))) {
+                    || (mvnUri != null && jarsToMavenuri.containsKey(key) && !mvnUri.equals(jarsToMavenuri.get(key)))) {
                 String valueFromIndex = jarsToMavenuri.get(key);
                 if (valueFromIndex == null) {
-                    jarsToMavenuri.put(key, mvnUri);
+                    LibrariesIndexManager.getInstance().AddMavenLibs(key, mvnUri);
                     modified = true;
                 } else {
                     // merge the two mvnuri value if needed
-                    String newUri = mvnUri;
                     final String[] indexUris = valueFromIndex.split(MavenUrlHelper.MVN_INDEX_SPLITER);
                     final String[] toDeployUris = mvnUri.split(MavenUrlHelper.MVN_INDEX_SPLITER);
                     for (String indexUri : indexUris) {
@@ -1574,12 +1573,13 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                             mvnUri = mvnUri + MavenUrlHelper.MVN_INDEX_SEPARATOR + indexUri;
                         }
                     }
-                    jarsToMavenuri.put(key, newUri);
+                    LibrariesIndexManager.getInstance().AddMavenLibs(key, mvnUri);
                     modified = true;
                 }
             }
         }
         if (modified) {
+            LibrariesIndexManager.getInstance().setMavenIndexInitialized(true);
             LibrariesIndexManager.getInstance().saveMavenIndexResource();
         }
     }
@@ -1651,7 +1651,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public String getMavenUriFromIndex(String jarName) {
-        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+        Map<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex();
         return jarsToMavenuri.get(jarName);
     }
 
@@ -1692,7 +1692,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
      */
     @Override
     public String getPlatformURLFromIndex(String jarName) {
-        EMap<String, String> platformURLMap = LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath();
+        Map<String, String> platformURLMap = LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex();
         return platformURLMap.get(jarName);
     }
 
@@ -1817,7 +1817,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
 
     @Override
     public String getJarNameFromMavenuri(String mavenURI) {
-        EMap<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath();
+        Map<String, String> jarsToMavenuri = LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex();
         for (String key : jarsToMavenuri.keySet()) {
             if (jarsToMavenuri.get(key) == null) {
                 continue;

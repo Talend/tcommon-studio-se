@@ -40,20 +40,6 @@ import org.talend.repository.model.RepositoryNode;
 public interface IGenericWizardService extends IService {
 
     /**
-     * Create repository nodes by component service.
-     *
-     * @param curParentNode
-     */
-    public List<RepositoryNode> createNodesFromComponentService(RepositoryNode curParentNode);
-
-    /**
-     * Get all the names of generic type.
-     *
-     * @return
-     */
-    public List<String> getGenericTypeNames();
-
-    /**
      *
      * Estimate whether <code>repObjType</code> is a generic type or not.
      *

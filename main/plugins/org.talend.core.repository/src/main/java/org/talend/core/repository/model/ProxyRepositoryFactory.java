@@ -40,10 +40,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -70,8 +72,10 @@ import org.talend.commons.exception.SystemException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.runtime.service.ITaCoKitService;
 import org.talend.commons.ui.gmf.util.DisplayUtils;
+import org.talend.commons.ui.runtime.CommonUIPlugin;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.data.container.RootContainer;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.time.TimeMeasurePerformance;
 import org.talend.commons.utils.workbench.resources.ResourceUtils;
@@ -85,7 +89,8 @@ import org.talend.core.context.CommandLineContext;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.exception.TalendInternalPersistenceException;
-import org.talend.core.hadoop.BigDataBasicUtil;
+import org.talend.core.hadoop.IHadoopDistributionService;
+import org.talend.core.model.components.IComponentsService;
 import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.general.Project;
@@ -110,6 +115,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
+import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
@@ -134,10 +140,12 @@ import org.talend.core.repository.utils.ProjectDataJsonProvider;
 import org.talend.core.repository.utils.RepositoryPathProvider;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.hd.IDynamicDistributionManager;
 import org.talend.core.runtime.repository.item.ItemProductKeys;
 import org.talend.core.runtime.services.IGenericWizardService;
 import org.talend.core.runtime.services.IMavenUIService;
 import org.talend.core.runtime.util.ItemDateParser;
+import org.talend.core.runtime.util.JavaHomeUtil;
 import org.talend.core.runtime.util.SharedStudioUtils;
 import org.talend.core.service.ICoreUIService;
 import org.talend.core.utils.CodesJarResourceCache;
@@ -410,7 +418,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 boolean isThrow = true;
-                if (tdqRepService != null && CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+                if (tdqRepService != null && (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()
+                        || item instanceof TDQItem)) {
                     // change MessageBox to DeleteModelElementConfirmDialog
                     InputDialog inputDialog = tdqRepService.getInputDialog(item);
                     if (MessageDialog.OK == inputDialog.open()) {
@@ -2191,9 +2200,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
-                // init dynamic distirbution after `beforeLogon`, before loading libraries.
-                initDynamicDistribution(monitor);
-
                 // init sdk component
                 try {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2224,6 +2230,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     }
                 }
 
+                if (CommonsPlugin.isJUnitTest() || PluginChecker.isSWTBotLoaded()) {
+                    // component init for cmdline is done in another place
+                    currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
+                    currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
+                    IComponentsService.get().getComponentsFactory().getComponents();
+                    TimeMeasurePerformance.step("logOnProject", "Initialize components"); //$NON-NLS-1$
+                }
+
                 ICoreService coreService = getCoreService();
                 if (coreService != null) {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
@@ -2243,8 +2257,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
-                CodesJarResourceCache.initCodesJarCache();
-
                 currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                 currentMonitor.beginTask("Execute before logon migrations tasks", 1); //$NON-NLS-1$
                 ProjectManager.getInstance().getMigrationRecords().clear();
@@ -2263,14 +2275,9 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
 
                 emptyTempFolder(project);
 
-                currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
-                currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.load.componnents"), 1); //$NON-NLS-1$
                 ICoreUIService coreUiService = null;
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
                     coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
-                }
-                if (coreUiService != null) {
-                    coreUiService.componentsReset();
                 }
 
                 fireRepositoryPropertyChange(ERepositoryActionName.PROJECT_PREFERENCES_RELOAD.getName(), null, null);
@@ -2298,6 +2305,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 if (coreService != null) {
+                    updateProjectJavaVersionIfNeed();
                     // clean workspace
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.cleanWorkspace"), 1); //$NON-NLS-1$
 
@@ -2312,27 +2320,13 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synch.repo.items"), 1); //$NON-NLS-1$
 
                     if (!isCommandLineLocalRefProject) {
-                        try {
-                            coreService.syncAllRoutines();
-                            // PTODO need refactor later, this is not good, I think
-                            coreService.syncAllBeans();
-                        } catch (SystemException e1) {
-                            //
-                            ExceptionHandler.process(e1);
-                        }
+                        syncAndInstallCodes(currentMonitor);
                     }
                 }
+
                 if (monitor != null && monitor.isCanceled()) {
                     throw new OperationCanceledException(""); //$NON-NLS-1$
                 }
-                // rules
-                if (coreUiService != null && PluginChecker.isRulesPluginLoaded()) {
-                    coreUiService.syncAllRules();
-                }
-                if (monitor != null && monitor.isCanceled()) {
-                    throw new OperationCanceledException(""); //$NON-NLS-1$
-                }
-                TimeMeasurePerformance.step("logOnProject", "sync repository (routines/rules/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
 
                 // log4j prefs
                 if (coreUiService != null && coreService != null) {
@@ -2351,11 +2345,6 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     ExceptionHandler.process(e);
                 }
 
-                if (runProcessService != null && !isCommandLineLocalRefProject) {
-                    runProcessService.initializeRootPoms(monitor);
-
-                    TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
-                }
                 if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
                     ITDQRepositoryService tdqRepositoryService = GlobalServiceRegister.getDefault()
                             .getService(ITDQRepositoryService.class);
@@ -2363,8 +2352,10 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                         tdqRepositoryService.initProxyRepository();
                     }
                 }
-                // regenerate relationship index
-                if (project.getEmfProject().getItemsRelations().isEmpty()) {
+                // regenerate relationship index if error index found
+                try {
+                    ProjectDataJsonProvider.checkRelationShipSetting(project.getEmfProject());
+                } catch (Exception e) {
                     RelationshipItemBuilder.getInstance().buildAndSaveIndex();
                 }
 
@@ -2389,16 +2380,67 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             throw e;
         }
     }
-
-    private void initDynamicDistribution(IProgressMonitor monitor) {
+    
+    private void updateProjectJavaVersionIfNeed() {
+        String specifiedVersion = null;
+        String currentVersion = JavaUtils.getProjectJavaVersion();
+        String newVersion = null;
         try {
-            if (BigDataBasicUtil.isDynamicDistributionLoaded(monitor)) {
-                BigDataBasicUtil.reloadAllDynamicDistributions(monitor);
-            } else {
-                BigDataBasicUtil.loadDynamicDistribution(monitor);
+            JavaHomeUtil.initializeJavaHome();
+        } catch (CoreException ex) {
+            ExceptionHandler.process(ex);
+        }
+        if (CommonUIPlugin.isFullyHeadless()) {
+            specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
+        }
+        if (specifiedVersion == null) {
+            newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
+        } else {
+            newVersion = specifiedVersion;
+        }
+
+        JavaUtils.updateProjectJavaVersion(newVersion);
+    }
+
+    private void syncAndInstallCodes(IProgressMonitor monitor) {
+        if (CommonsPlugin.isHeadless() || CommonsPlugin.isJUnitTest() || PluginChecker.isSWTBotLoaded()) {
+            try {
+                doSyncAndInstallCodes(monitor);
+            } catch (SystemException e) {
+                ExceptionHandler.process(e);
             }
-        } catch (Exception e) {
-            ExceptionHandler.process(e);
+        } else {
+            Job job = new Job("Synchronize and install codes") {
+
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    try {
+                        doSyncAndInstallCodes(monitor);
+                        return org.eclipse.core.runtime.Status.OK_STATUS;
+                    } catch (Exception e) {
+                        return new org.eclipse.core.runtime.Status(IStatus.ERROR, CoreRepositoryPlugin.PLUGIN_ID, 1,
+                                e.getMessage(), e);
+                    }
+                }
+
+            };
+            job.setUser(false);
+            job.setPriority(Job.LONG);
+            job.schedule();
+        }
+    }
+
+    private void doSyncAndInstallCodes(IProgressMonitor monitor) throws SystemException {
+        ICoreService coreService = getCoreService();
+        if (coreService != null) {
+            CodesJarResourceCache.reset();
+            coreService.syncAllRoutines();
+            coreService.syncAllBeans();
+            TimeMeasurePerformance.step("logOnProject", "sync repository (routines/beans)"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (IRunProcessService.get() != null) {
+            IRunProcessService.get().initializeRootPoms(monitor);
+            TimeMeasurePerformance.step("logOnProject", "install / setup root poms"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -2459,6 +2501,25 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         if (runProcessService != null) {
             runProcessService.clearProjectRelatedSettings();
         }
+
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ICoreUIService.class)) {
+            ICoreUIService coreUiService = GlobalServiceRegister.getDefault().getService(ICoreUIService.class);
+            if (coreUiService != null) {
+                coreUiService.componentsReset();
+            }
+        }
+        
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IHadoopDistributionService.class)) {
+            IHadoopDistributionService hdService = GlobalServiceRegister.getDefault()
+                    .getService(IHadoopDistributionService.class);
+            if (hdService != null) {
+                IDynamicDistributionManager dynamicDistrManager = hdService.getDynamicDistributionManager();
+                dynamicDistrManager.reset(null);
+            }
+        }
+
+        CodesJarResourceCache.reset();
+
         ReferenceProjectProvider.clearTacReferenceList();
         ReferenceProjectProblemManager.getInstance().clearAll();
         fullLogonFinished = false;
@@ -2777,7 +2838,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         ILoginTask[] allLoginTasks = LOGIN_TASK_REGISTRY_READER.getAllTaskListInstance();
         for (ILoginTask task : allLoginTasks) {
             if (task.isRequiredAlways()) {
-                task.run(monitor);
+                task.execute(monitor);
             }
         }
     }

@@ -19,11 +19,11 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getOriginalFamilyName <em>Original Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getPluginExtension <em>Plugin Extension</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getVersion <em>Version</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getTranslatedFamilyName <em>Translated Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#isIsTechnical <em>Is Technical</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getPluginDependencies <em>Plugin Dependencies</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getComponentNames <em>Component Names</em>}</li>
@@ -34,10 +34,8 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getRepositoryType <em>Repository Type</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getSourceBundleName <em>Source Bundle Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getType <em>Type</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getSha1 <em>Sha1</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getLongName <em>Long Name</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.ComponentInfo#getProviderId <em>Provider Id</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo()
  * @model
@@ -122,32 +120,6 @@ public interface ComponentInfo extends EObject {
      * @generated
      */
     void setVersion(String value);
-
-    /**
-     * Returns the value of the '<em><b>Translated Family Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Translated Family Name</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Translated Family Name</em>' attribute.
-     * @see #setTranslatedFamilyName(String)
-     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_TranslatedFamilyName()
-     * @model
-     * @generated
-     */
-    String getTranslatedFamilyName();
-
-    /**
-     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getTranslatedFamilyName <em>Translated Family Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Translated Family Name</em>' attribute.
-     * @see #getTranslatedFamilyName()
-     * @generated
-     */
-    void setTranslatedFamilyName(String value);
 
     /**
      * Returns the value of the '<em><b>Is Technical</b></em>' attribute.
@@ -382,55 +354,29 @@ public interface ComponentInfo extends EObject {
     void setType(String value);
 
     /**
-     * Returns the value of the '<em><b>Sha1</b></em>' attribute.
+     * Returns the value of the '<em><b>Provider Id</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Sha1</em>' attribute isn't clear,
+     * If the meaning of the '<em>Provider Id</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Sha1</em>' attribute.
-     * @see #setSha1(String)
-     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_Sha1()
+     * @return the value of the '<em>Provider Id</em>' attribute.
+     * @see #setProviderId(String)
+     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_ProviderId()
      * @model
      * @generated
      */
-    String getSha1();
+    String getProviderId();
 
     /**
-     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getSha1 <em>Sha1</em>}' attribute.
+     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getProviderId <em>Provider Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Sha1</em>' attribute.
-     * @see #getSha1()
+     * @param value the new value of the '<em>Provider Id</em>' attribute.
+     * @see #getProviderId()
      * @generated
      */
-    void setSha1(String value);
-
-    /**
-     * Returns the value of the '<em><b>Long Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Long Name</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Long Name</em>' attribute.
-     * @see #setLongName(String)
-     * @see org.talend.core.model.component_cache.ComponentCachePackage#getComponentInfo_LongName()
-     * @model
-     * @generated
-     */
-    String getLongName();
-
-    /**
-     * Sets the value of the '{@link org.talend.core.model.component_cache.ComponentInfo#getLongName <em>Long Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Long Name</em>' attribute.
-     * @see #getLongName()
-     * @generated
-     */
-    void setLongName(String value);
+    void setProviderId(String value);
 
 } // ComponentInfo

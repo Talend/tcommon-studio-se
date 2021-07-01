@@ -14,9 +14,12 @@ package org.talend.librariesmanager.model.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
@@ -45,6 +48,12 @@ public class LibrariesIndexManager {
 
     private static final String MAVEN_INDEX = "MavenUriIndex.xml";
 
+    private ReentrantReadWriteLock studioLibLock = new ReentrantReadWriteLock();
+
+    private ReentrantReadWriteLock mavenLibLock = new ReentrantReadWriteLock();
+
+    private static final Logger LOGGER = Logger.getLogger(LibrariesIndexManager.class);
+
     private LibrariesIndexManager() {
         loadIndexResources();
     }
@@ -53,8 +62,9 @@ public class LibrariesIndexManager {
         return manager;
     }
 
-    private synchronized void loadIndexResources() {
+    private void loadIndexResources() {
         try {
+            studioLibLock.writeLock().lock();
             if (!new File(getStudioIndexPath()).exists()) {
                 studioLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
             } else {
@@ -70,6 +80,13 @@ public class LibrariesIndexManager {
                         LibrariesindexPackage.eINSTANCE.getLibrariesIndex());
             }
 
+        } catch (IOException e) {
+            CommonExceptionHandler.process(e);
+        } finally {
+            studioLibLock.writeLock().unlock();
+        }
+        try {
+            mavenLibLock.writeLock().lock();
             if (!new File(getMavenIndexPath()).exists()) {
                 mavenLibIndex = LibrariesindexFactory.eINSTANCE.createLibrariesIndex();
             } else {
@@ -87,16 +104,45 @@ public class LibrariesIndexManager {
 
         } catch (IOException e) {
             CommonExceptionHandler.process(e);
+        } finally {
+            mavenLibLock.writeLock().unlock();
         }
     }
 
     public void saveStudioIndexResource() {
-        saveResource(studioLibIndex, LIBRARIES_INDEX);
+        try {
+            studioLibLock.writeLock().lock();
+            saveResource(studioLibIndex, LIBRARIES_INDEX);
+        } finally {
+            studioLibLock.writeLock().unlock();
+        }
+    }
 
+    public void setStudioIndexInitialized(boolean init) {
+        studioLibLock.writeLock().lock();
+        try {
+            studioLibIndex.setInitialized(init);
+        } finally {
+            studioLibLock.writeLock().unlock();
+        }
+    }
+
+    public void setMavenIndexInitialized(boolean init) {
+        mavenLibLock.writeLock().lock();
+        try {
+            mavenLibIndex.setInitialized(true);
+        } finally {
+            mavenLibLock.writeLock().unlock();
+        }
     }
 
     public void saveMavenIndexResource() {
-        saveResource(mavenLibIndex, MAVEN_INDEX);
+        try {
+            mavenLibLock.writeLock().lock();
+            saveResource(mavenLibIndex, MAVEN_INDEX);
+        } finally {
+            mavenLibLock.writeLock().unlock();
+        }
     }
 
     private void saveResource(EObject eObject, String fileName) {
@@ -111,15 +157,25 @@ public class LibrariesIndexManager {
     }
 
     public void clearAll() {
-        if (studioLibIndex != null) {
-            studioLibIndex.setInitialized(false);
-            studioLibIndex.getJarsToRelativePath().clear();
-            saveStudioIndexResource();
+        try {
+            studioLibLock.writeLock().lock();
+            if (studioLibIndex != null) {
+                studioLibIndex.setInitialized(false);
+                studioLibIndex.getJarsToRelativePath().clear();
+                saveStudioIndexResource();
+            }
+        } finally {
+            studioLibLock.writeLock().unlock();
         }
-        if (mavenLibIndex != null) {
-            mavenLibIndex.setInitialized(false);
-            mavenLibIndex.getJarsToRelativePath().clear();
-            saveMavenIndexResource();
+        try {
+            mavenLibLock.writeLock().lock();
+            if (mavenLibIndex != null) {
+                mavenLibIndex.setInitialized(false);
+                mavenLibIndex.getJarsToRelativePath().clear();
+                saveMavenIndexResource();
+            }
+        } finally {
+            mavenLibLock.writeLock().unlock();
         }
     }
 
@@ -141,25 +197,90 @@ public class LibrariesIndexManager {
         return new Path(getIndexFileInstallFolder()).append(MAVEN_INDEX).toFile().getAbsolutePath();
     }
 
-    public LibrariesIndex getStudioLibIndex() {
-        return studioLibIndex;
-    }
-
-    /**
-     * Getter for mavenLibIndex.
-     *
-     * @return the mavenLibIndex
-     */
-    public LibrariesIndex getMavenLibIndex() {
-        return this.mavenLibIndex;
-    }
-
     public String getMvnUriFromIndex(String jarName) {
         if (mavenLibIndex != null) {
             return this.mavenLibIndex.getJarsToRelativePath().get(jarName);
         }
 
         return null;
+    }
+
+    /**
+     * Get all contents inside studio lib index file, return as unmodifiable map
+     */
+    public Map<String, String> getAllStudioLibsFromIndex() {
+        this.studioLibLock.readLock().lock();
+        try {
+            return Collections.unmodifiableMap(this.studioLibIndex.getJarsToRelativePath().map());
+        } finally {
+            this.studioLibLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Add to studio lib without saving
+     */
+    public void AddStudioLibs(String key, String v) {
+        this.studioLibLock.writeLock().lock();
+        try {
+            this.studioLibIndex.getJarsToRelativePath().put(key, v);
+        } finally {
+            this.studioLibLock.writeLock().unlock();
+        }
+    }
+
+    /**
+     * whether contains key
+     */
+    public boolean containsStudioLibs(String key) {
+        this.studioLibLock.readLock().lock();
+        try {
+            return this.studioLibIndex.getJarsToRelativePath().containsKey(key);
+        } finally {
+            this.studioLibLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Get all contents inside maven lib index file, return as unmodifiable map
+     */
+    public Map<String, String> getAllMavenLibsFromIndex() {
+        this.mavenLibLock.readLock().lock();
+        try {
+            return Collections.unmodifiableMap(this.mavenLibIndex.getJarsToRelativePath().map());
+        } finally {
+            this.mavenLibLock.readLock().unlock();
+        }
+    }
+
+    /**
+     * Add to maven lib without saving
+     */
+    public void AddMavenLibs(String key, String v) {
+        this.mavenLibLock.writeLock().lock();
+        try {
+            this.mavenLibIndex.getJarsToRelativePath().put(key, v);
+        } finally {
+            this.mavenLibLock.writeLock().unlock();
+        }
+    }
+
+    public boolean isStudioLibInitialized() {
+        this.studioLibLock.readLock().lock();
+        try {
+            return this.studioLibIndex.isInitialized();
+        } finally {
+            this.studioLibLock.readLock().unlock();
+        }
+    }
+
+    public boolean isMavenLibInitialized() {
+        this.mavenLibLock.readLock().lock();
+        try {
+            return this.mavenLibIndex.isInitialized();
+        } finally {
+            this.mavenLibLock.readLock().unlock();
+        }
     }
 
 }

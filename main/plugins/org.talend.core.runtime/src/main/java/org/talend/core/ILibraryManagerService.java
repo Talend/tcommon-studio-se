@@ -40,8 +40,6 @@ public interface ILibraryManagerService extends IService {
      */
     public boolean isInitialized();
 
-    public void setInitialized();
-
     public void installModules(Collection<ModuleNeeded> modules, IProgressMonitor monitorWrap);
 
     /**

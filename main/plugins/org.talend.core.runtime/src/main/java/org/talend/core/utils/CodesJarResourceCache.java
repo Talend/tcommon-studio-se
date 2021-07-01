@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -22,6 +23,7 @@ import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IProxyRepositoryService;
+import org.talend.repository.model.IRepositoryService;
 
 public class CodesJarResourceCache {
 
@@ -29,12 +31,14 @@ public class CodesJarResourceCache {
 
     private static final Object LOCK = new Object();
 
-    private static boolean isListenerAdded;
+    private static AtomicBoolean isInitialized = new AtomicBoolean(false);
+
+    private static AtomicBoolean isInitializing = new AtomicBoolean(true);
 
     private static PropertyChangeListener listener;
 
     public static void initCodesJarCache() {
-        synchronized (LOCK) {
+        if (isInitialized.compareAndSet(false, true)) {
             CACHE.clear();
             List<Project> allProjects = new ArrayList<>();
             allProjects.addAll(ProjectManager.getInstance().getAllReferencedProjects(true));
@@ -49,40 +53,43 @@ public class CodesJarResourceCache {
                         }
                     }
                 }
-                addCodesJarChangeListener();
+                if (listener == null) {
+                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
+                        IRunProcessService service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
+                        listener = service.addCodesJarChangeListener();
+                    }
+                }
+                isInitializing.set(false);
             } catch (PersistenceException e) {
-                ExceptionHandler.process(e);
+                throw new RuntimeException("Failed to init resource cache for custom jars", e);
             }
         }
     }
 
     public static Set<CodesJarInfo> getAllCodesJars() {
-        synchronized (LOCK) {
-            return new LinkedHashSet<>(CACHE);
-        }
+        waitForInit();
+        return new LinkedHashSet<>(CACHE);
     }
 
     public static CodesJarInfo getCodesJarById(String id) {
-        synchronized (LOCK) {
-            Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getId().equals(id)).findFirst();
-            if (optional.isPresent()) {
-                return optional.get();
-            }
-            ExceptionHandler.process(new Exception("Codes jar id [" + id + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
-            return null;
+        waitForInit();
+        Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getId().equals(id)).findFirst();
+        if (optional.isPresent()) {
+            return optional.get();
         }
+        ExceptionHandler.process(new Exception("Codes jar id [" + id + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
+        return null;
     }
 
     public static CodesJarInfo getCodesJarByLabel(ERepositoryObjectType type, String projectTechName, String label) {
-        synchronized (LOCK) {
-            Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getType() == type
-                    && info.getLabel().equals(label) && info.getProjectTechName().equals(projectTechName)).findFirst();
-            if (optional.isPresent()) {
-                return optional.get();
-            }
-            ExceptionHandler.process(new Exception("Codes jar [" + label + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
-            return null;
+        waitForInit();
+        Optional<CodesJarInfo> optional = CACHE.stream().filter(info -> info.getType() == type && info.getLabel().equals(label)
+                && info.getProjectTechName().equals(projectTechName)).findFirst();
+        if (optional.isPresent()) {
+            return optional.get();
         }
+        ExceptionHandler.process(new Exception("Codes jar [" + label + "] is not found!")); //$NON-NLS-1$ //$NON-NLS-2$
+        return null;
     }
 
     public static CodesJarInfo getCodesJarByInnerCode(RoutineItem routineItem) throws PersistenceException {
@@ -99,6 +106,7 @@ public class CodesJarResourceCache {
     }
 
     public static void addToCache(Property newProperty) {
+        waitForInit();
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
@@ -113,6 +121,7 @@ public class CodesJarResourceCache {
     }
 
     public static void updateCache(String oldId, String oldLabel, String oldVersion, Property newProperty) {
+        waitForInit();
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
@@ -127,6 +136,7 @@ public class CodesJarResourceCache {
     }
 
     public static void removeCache(Property property) {
+        waitForInit();
         synchronized (LOCK) {
             Iterator<CodesJarInfo> iterator = CACHE.iterator();
             while (iterator.hasNext()) {
@@ -139,18 +149,31 @@ public class CodesJarResourceCache {
         }
     }
 
-    public static void addCodesJarChangeListener() {
-        if (!isListenerAdded) {
-            synchronized (LOCK) {
-                if (!isListenerAdded) {
-                    if (listener == null) {
-                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-                            IRunProcessService service = GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
-                            listener = service.addCodesJarChangeListener();
-                            isListenerAdded = true;
-                        }
-                    }
-                }
+    public static void reset() {
+        if (isInitialized.compareAndSet(true, false)) {
+            if (listener != null) {
+                IRepositoryService.get().getProxyRepositoryFactory().removePropertyChangeListener(listener);
+                listener = null;
+            }
+            isInitializing.set(true);
+        }
+    }
+
+    public static void waitForInit() {
+        initCodesJarCache();
+        int spent = 0;
+        int time = 500;
+        int timeout = 1000 * 60 * 10;
+        while (isInitializing.get()) {
+            try {
+                Thread.sleep(time);
+                spent += time;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (spent >= timeout) {
+                // may be track in dead lock, throw exception to try to break dead lock
+                throw new RuntimeException("Waiting for custom jar cache initialization timeout!"); //$NON-NLS-1$
             }
         }
     }

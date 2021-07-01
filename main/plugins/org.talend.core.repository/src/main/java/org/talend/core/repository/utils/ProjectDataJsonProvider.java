@@ -224,14 +224,15 @@ public class ProjectDataJsonProvider {
             ExceptionHandler.process(e);
         }
     }
+    
+    public static List<ItemRelationsJson> checkRelationShipSetting(Project project) throws PersistenceException {
+        List<ItemRelationsJson> itemRelationsJsonsList = null;
 
-    public static void checkAndRectifyRelationShipSetting(Project project) throws PersistenceException {
         File file = getSavingConfigurationFile(project.getTechnicalLabel(), FileConstants.RELATIONSHIP_FILE_NAME);
         if (file == null || !file.exists()) {
-            return;
+            return itemRelationsJsonsList;
         }
 
-        List<ItemRelationsJson> itemRelationsJsonsList = null;
         TypeReference<List<ItemRelationsJson>> typeReference = new TypeReference<List<ItemRelationsJson>>() {
         };
         FileInputStream input = null;
@@ -243,6 +244,11 @@ public class ProjectDataJsonProvider {
         } finally {
             closeInputStream(input);
         }
+        return itemRelationsJsonsList;
+    }
+
+    public static void checkAndRectifyRelationShipSetting(Project project) throws PersistenceException {
+        List<ItemRelationsJson> itemRelationsJsonsList = checkRelationShipSetting(project);
 
         if (itemRelationsJsonsList == null || itemRelationsJsonsList.isEmpty()) {
             return;

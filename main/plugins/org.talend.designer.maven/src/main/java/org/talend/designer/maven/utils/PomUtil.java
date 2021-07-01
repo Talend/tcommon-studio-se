@@ -655,6 +655,10 @@ public class PomUtil {
         }
         File pomFile = new File(baseFolder, TalendMavenConstants.POM_FILE_NAME);
 
+        return generatePomFile(pomFile, artifact);
+    }
+    
+    public static String generatePomFile(File pomFile, MavenArtifact artifact) throws Exception {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         Model model = createModel(artifact);
         sortModules(model);

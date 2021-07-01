@@ -23,7 +23,6 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ILibraryManagerService;
-import org.talend.core.model.general.ModuleNeeded;
 import org.talend.core.model.process.IProcess;
 import org.talend.core.model.process.IProcess2;
 import org.talend.core.model.properties.Property;
@@ -159,7 +158,7 @@ public abstract class AbsMigrationCheckHandler implements IMigrationCheckHandler
         return hasCompilationError;
     }
 
-    protected void checkModules(Set<String> neededLibraries, Set<ModuleNeeded> allModulesWithStatus, MigrateItemInfo itemInfo) {
+    protected void checkModules(Set<String> neededLibraries, MigrateItemInfo itemInfo) {
         // check libraries status
         if (neededLibraries == null || neededLibraries.isEmpty()) {
             return;

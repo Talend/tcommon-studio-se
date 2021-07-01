@@ -280,7 +280,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             };
             myJob.schedule();
         }
-
         createActions();
         registerActions();
         adviser.getHelper().postWindowOpen();

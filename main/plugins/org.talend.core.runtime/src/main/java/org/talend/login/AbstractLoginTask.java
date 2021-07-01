@@ -47,4 +47,9 @@ public abstract class AbstractLoginTask implements ILoginTask {
         return false;
     }
 
+    @Override
+    public boolean isBackground() {
+        return false;
+    }
+
 }

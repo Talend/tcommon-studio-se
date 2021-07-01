@@ -202,7 +202,6 @@ public class JavaLibrariesService extends AbstractLibrariesService {
         if (!repositoryBundleService.isInitialized()) {
             // 2. Components libraries and libraries from extension
             repositoryBundleService.createModulesIndexFromComponentAndExtension(monitorWrap);
-            repositoryBundleService.setInitialized();
         }
 
         repositoryBundleService.installModules(ModulesNeededProvider.getSystemRunningModules(), null);

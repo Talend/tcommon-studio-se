@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.talend.model/src/main/java"
-    modelPluginID="org.talend.model" modelName="component_cache" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" runtimeVersion="2.2" usedGenPackages="Component.genmodel#//component">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.talend.model/src/main/java" modelPluginID="org.talend.model"
+    modelName="component_cache" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    runtimeVersion="2.2" usedGenPackages="Component.genmodel#//component">
   <foreignModel>component_cache.ecore</foreignModel>
   <genPackages prefix="ComponentCache" basePackage="org.talend.core.model" resource="XML"
       disposableProviderFactory="true" ecorePackage="component_cache.ecore#/">
@@ -14,7 +13,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/originalFamilyName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/pluginExtension"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/version"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/translatedFamilyName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/isTechnical"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/PluginDependencies"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/componentNames"/>
@@ -25,8 +23,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/repositoryType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/sourceBundleName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/sha1"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/longName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentInfo/providerId"/>
     </genClasses>
     <genClasses ecoreClass="component_cache.ecore#//ComponentEntryMap">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute component_cache.ecore#//ComponentEntryMap/key"/>

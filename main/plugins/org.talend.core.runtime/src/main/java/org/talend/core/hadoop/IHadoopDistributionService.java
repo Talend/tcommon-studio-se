@@ -14,6 +14,7 @@ package org.talend.core.hadoop;
 
 import java.util.Map;
 
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.runtime.hd.IDistributionsManager;
 import org.talend.core.runtime.hd.IDynamicDistributionManager;
@@ -63,6 +64,8 @@ public interface IHadoopDistributionService extends IService {
      * If the display is true, the version match for display one of distribution.
      */
     IHDistributionVersion getHadoopDistributionVersion(String version, boolean byDisplay);
+
+    boolean checkDynamicDistributionExtensions(String version);
 
     /**
      *
@@ -128,4 +131,13 @@ public interface IHadoopDistributionService extends IService {
     boolean doSupportMapRTicket(IHDistributionVersion distributionVersion);
 
     IDynamicDistributionManager getDynamicDistributionManager();
+
+    public static IHadoopDistributionService get() {
+        GlobalServiceRegister gsr = GlobalServiceRegister.getDefault();
+        if (gsr.isServiceRegistered(IHadoopDistributionService.class)) {
+            return gsr.getService(IHadoopDistributionService.class);
+        }
+        return null;
+    }
+
 }

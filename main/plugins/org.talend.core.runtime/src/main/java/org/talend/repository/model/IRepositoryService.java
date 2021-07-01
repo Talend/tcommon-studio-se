@@ -22,6 +22,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.general.ModuleNeeded;
@@ -148,5 +149,12 @@ public interface IRepositoryService extends IService {
     boolean isProjectLevelLog4j2();
 
     List<ModuleNeeded> getLog4j2Modules();
+
+    public static IRepositoryService get() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IRepositoryService.class)) {
+            return GlobalServiceRegister.getDefault().getService(IRepositoryService.class);
+        }
+        return null;
+    }
 
 }

@@ -66,8 +66,20 @@ public class NetworkUtil {
 
     private static final String PROP_HTTP_PROXY_SET = "http.proxySet";
 
+    private static final String PROP_NETWORK_STATUS = "network.status"; //$NON-NLS-1$
+
     public static boolean isNetworkValid() {
         return isNetworkValid(DEFAULT_TIMEOUT);
+    }
+
+    public static boolean isNetworkValidByStatus() {
+        String status = System.getProperty(PROP_NETWORK_STATUS);
+        if (status != null) {
+            return Boolean.valueOf(status);
+        }
+        Boolean isValid = isNetworkValid();
+        System.setProperty(PROP_NETWORK_STATUS, isValid.toString());
+        return isValid;
     }
 
     public static boolean isNetworkValid(Integer timeout) {

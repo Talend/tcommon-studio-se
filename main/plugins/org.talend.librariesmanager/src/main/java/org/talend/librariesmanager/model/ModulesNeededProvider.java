@@ -13,32 +13,23 @@
 package org.talend.librariesmanager.model;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.talend.commons.exception.CommonExceptionHandler;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
@@ -53,16 +44,10 @@ import org.talend.core.ILibraryManagerUIService;
 import org.talend.core.PluginChecker;
 import org.talend.core.database.conn.version.EDatabaseVersion4Drivers;
 import org.talend.core.language.ECodeLanguage;
-import org.talend.core.language.LanguageManager;
-import org.talend.core.model.component_cache.ComponentCachePackage;
-import org.talend.core.model.component_cache.ComponentInfo;
-import org.talend.core.model.component_cache.ComponentsCache;
-import org.talend.core.model.component_cache.util.ComponentCacheResourceFactoryImpl;
 import org.talend.core.model.components.ComponentCategory;
-import org.talend.core.model.components.ComponentManager;
 import org.talend.core.model.components.IComponent;
-import org.talend.core.model.components.IComponentsFactory;
 import org.talend.core.model.components.IComponentsService;
+import org.talend.core.model.general.ILibrariesService;
 import org.talend.core.model.general.ILibrariesService.IChangedLibrariesListener;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.ModuleNeeded;
@@ -85,7 +70,6 @@ import org.talend.core.runtime.maven.MavenUrlHelper;
 import org.talend.core.runtime.process.TalendProcessOptionConstants;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.CodesJarResourceCache;
-import org.talend.core.utils.TalendCacheUtils;
 import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.designer.core.model.utils.emf.component.ComponentFactory;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
@@ -95,6 +79,7 @@ import org.talend.librariesmanager.model.service.CustomUriManager;
 import org.talend.librariesmanager.model.service.LibrariesIndexManager;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.documentation.ExportFileResource;
 import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryService;
 
@@ -123,10 +108,6 @@ public class ModulesNeededProvider {
     private static boolean isCreated = false;
 
     private static boolean cleanDone = false;
-
-    private static final String TALEND_COMPONENT_CACHE = "ComponentsCache.";
-
-    private static final String TALEND_FILE_NAME = "cache";
 
     private static final List<IChangedLibrariesListener> listeners = new ArrayList<>();
 
@@ -262,8 +243,8 @@ public class ModulesNeededProvider {
 
     public static Set<String> getAllModuleNamesFromIndex() {
         Set<String> moduleNames = new HashSet<String>();
-        moduleNames.addAll(LibrariesIndexManager.getInstance().getMavenLibIndex().getJarsToRelativePath().keySet());
-        moduleNames.addAll(LibrariesIndexManager.getInstance().getStudioLibIndex().getJarsToRelativePath().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getAllMavenLibsFromIndex().keySet());
+        moduleNames.addAll(LibrariesIndexManager.getInstance().getAllStudioLibsFromIndex().keySet());
         return moduleNames;
     }
 
@@ -278,8 +259,8 @@ public class ModulesNeededProvider {
     public static void reset() {
         // clean the cache
         ExtensionModuleManager.getInstance().clearCache();
-        getModulesNeeded().clear();
-        getAllManagedModules().clear();
+        componentImportNeedsList.clear();
+        allManagedModules.clear();
         systemModules = null;
     }
 
@@ -305,6 +286,7 @@ public class ModulesNeededProvider {
             for (ModuleNeeded neededLibrary : neededLibraries) {
                 boolean alreadyInImports = false;
                 for (ModuleNeeded module : getModulesNeeded()) {
+                    if (module == null) continue;
                     if (module != null && module.getModuleName() != null
                             && module.getModuleName().equals(neededLibrary.getModuleName())) {
                         if (StringUtils.equals(module.getMavenUri(), neededLibrary.getMavenUri())) {
@@ -338,47 +320,12 @@ public class ModulesNeededProvider {
     }
 
     private static List<ModuleNeeded> getModulesNeededForComponents() {
-        initCache();
-        if (isCreated) {
-            List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
-            ComponentsCache cache = ComponentManager.getComponentCache();
-            EMap<String, EList<ComponentInfo>> map = cache.getComponentEntryMap();
-            Set<String> set = map.keySet();
-            Iterator it = set.iterator();
-            Map<String, Boolean> bundlesAvailable = new HashMap<String, Boolean>();
-            while (it.hasNext()) {
-                String key = (String) it.next();
-                EList<ComponentInfo> value = map.get(key);
-                for (ComponentInfo info : value) {
-                    Boolean available = bundlesAvailable.get(info.getSourceBundleName());
-                    if (available == null) {
-                        available = Platform.getBundle(info.getSourceBundleName()) != null;
-                        bundlesAvailable.put(info.getSourceBundleName(), available);
-                    }
-                    if (!available) {
-                        continue;
-                    }
-
-                    EList emfImportList = info.getImportType();
-                    for (int i = 0; i < emfImportList.size(); i++) {
-                        IMPORTType importType = (IMPORTType) emfImportList.get(i);
-                        collectModuleNeeded(key, importType, importNeedsList);
-                    }
-                }
-            }
-            return importNeedsList;
-        } else {
-            List<ModuleNeeded> importNeedsList = new ArrayList<ModuleNeeded>();
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IComponentsService.class)) {
-                IComponentsService service = (IComponentsService) GlobalServiceRegister.getDefault()
-                        .getService(IComponentsService.class);
-                IComponentsFactory compFac = service.getComponentsFactory();
-                for (IComponent comp : compFac.readComponents()) {
-                    importNeedsList.addAll(comp.getModulesNeeded());
-                }
-            }
-            return importNeedsList;
+        IComponentsService componentService = IComponentsService.get();
+        if (componentService == null) {
+            return Collections.emptyList();
         }
+        return componentService.getComponentsFactory().readComponents().stream().flatMap(comp -> comp.getModulesNeeded().stream())
+                .collect(Collectors.toList());
     }
 
     public static void collectModuleNeeded(String context, IMPORTType importType, List<ModuleNeeded> importNeedsList) {
@@ -390,15 +337,6 @@ public class ModulesNeededProvider {
         } else {
             importNeedsList.addAll(importModuleFromExtension);
         }
-    }
-
-    private static boolean createModuleNeededForComponentFromExtension(String context, IMPORTType importType,
-            List<ModuleNeeded> importNeedsList) {
-        List<ModuleNeeded> importModuleNeeded = ExtensionModuleManager.getInstance().getModuleNeededForComponent(context,
-                importType);
-        importNeedsList.addAll(importModuleNeeded);
-
-        return importModuleNeeded.size() > 0;
     }
 
     public static void createModuleNeededForComponent(String context, IMPORTType importType, List<ModuleNeeded> importNeedsList) {
@@ -450,53 +388,6 @@ public class ModulesNeededProvider {
         }
     }
 
-    private static void initCache() {
-        String installLocation = new Path(Platform.getConfigurationLocation().getURL().getPath()).toFile().getAbsolutePath();
-        boolean isNeedClean = !cleanDone && TalendCacheUtils.isSetCleanComponentCache();
-        cleanDone = true;
-        isCreated = hasComponentFile(installLocation) && !isNeedClean;
-        ComponentsCache cache = ComponentManager.getComponentCache();
-        try {
-            if (isCreated) {
-                if (cache.getComponentEntryMap().isEmpty()) {
-                    ComponentsCache loadCache = loadComponentResource(installLocation);
-                    cache.getComponentEntryMap().putAll(loadCache.getComponentEntryMap());
-                }
-            } else {
-                cache.getComponentEntryMap().clear();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            cache.getComponentEntryMap().clear();
-            isCreated = false;
-        }
-    }
-
-    private static boolean hasComponentFile(String installLocation) {
-        String filePath = ModulesNeededProvider.TALEND_COMPONENT_CACHE
-                + LanguageManager.getCurrentLanguage().toString().toLowerCase() + ModulesNeededProvider.TALEND_FILE_NAME;
-        File file = new File(new Path(installLocation).append(filePath).toString());
-        return file.exists();
-    }
-
-    private static ComponentsCache loadComponentResource(String installLocation) throws IOException {
-        String filePath = ModulesNeededProvider.TALEND_COMPONENT_CACHE
-                + LanguageManager.getCurrentLanguage().toString().toLowerCase() + ModulesNeededProvider.TALEND_FILE_NAME;
-        URI uri = URI.createFileURI(installLocation).appendSegment(filePath);
-        ComponentCacheResourceFactoryImpl compFact = new ComponentCacheResourceFactoryImpl();
-        Resource resource = compFact.createResource(uri);
-        Map optionMap = new HashMap();
-        optionMap.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
-        optionMap.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
-        optionMap.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
-        optionMap.put(XMLResource.OPTION_USE_XML_NAME_TO_FEATURE_MAP, new HashMap());
-        optionMap.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
-        resource.load(optionMap);
-        ComponentsCache cache = (ComponentsCache) EcoreUtil.getObjectByType(resource.getContents(),
-                ComponentCachePackage.eINSTANCE.getComponentsCache());
-        return cache;
-    }
-
     /**
      * @deprecated
      */
@@ -521,7 +412,7 @@ public class ModulesNeededProvider {
         if (ComponentCategory.CATEGORY_4_CAMEL.getName().equals(process.getComponentsType())) {
             // route do not save any relationship with beans , so add all for now
             modulesNeeded.addAll(getCodesModuleNeededs(ERepositoryObjectType.BEANS));
-            modulesNeeded.addAll(getModulesNeededForRoutes());
+            modulesNeeded.addAll(getModulesNeededForRoutes(processItem));
         }
         return modulesNeeded;
     }
@@ -782,15 +673,26 @@ public class ModulesNeededProvider {
         return null;
     }
 
-    public static List<ModuleNeeded> getModulesNeededForRoutes() {
+    /**
+     * DOC sunchaoqun Comment method "getModulesNeededForRoutes".
+     * 
+     * @param processes
+     * @return
+     */
+    private static List<ModuleNeeded> getModulesNeededForRoutes(ProcessItem processItem) {
+        ILibrariesService service = null;
+        if (!GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
+            return null;
+        }
+        service = (ILibrariesService) GlobalServiceRegister.getDefault().getService(ILibrariesService.class);
+
         if (importNeedsListForRoutes == null) {
 
             importNeedsListForRoutes = new ArrayList<ModuleNeeded>();
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-core"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "camel-spring"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-context"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-beans"));
-            importNeedsListForRoutes.add(getComponentModuleById("CAMEL", "spring-core"));
+
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel-core", true));
+            importNeedsListForRoutes.addAll(service.getModuleNeeded("camel-spring", true));
+
             if (System.getProperty("java.version") != null && System.getProperty("java.version").startsWith("11")) {
                 getModulesNeededForRoutesJava11();
             }
@@ -800,7 +702,14 @@ public class ModulesNeededProvider {
                 }
             }
         }
+        
+        importNeedsListForRoutes.removeIf(m-> (m==null));
+        
         return importNeedsListForRoutes;
+    }
+
+    public static List<ModuleNeeded> getModulesNeededForRoutes() {
+        return getModulesNeededForRoutes(null);
     }
 
     private static void getModulesNeededForRoutesJava11() {
@@ -838,9 +747,22 @@ public class ModulesNeededProvider {
     }
 
     public static List<ModuleNeeded> getModulesNeededForBeans() {
+        return getModulesNeededForBeans(null);
+    }
+
+    public static List<ModuleNeeded> getModulesNeededForBeans(ExportFileResource[] processes) {
+        ProcessItem processItem = null;
+        if (processes != null && processes.length > 0) {
+            if (processes[0].getItem() instanceof ProcessItem) {
+                processItem = (ProcessItem) processes[0].getItem();
+            }
+        }
+
         if (importNeedsListForBeans == null) {
-            importNeedsListForBeans = getModulesNeededForRoutes();
+            importNeedsListForBeans = getModulesNeededForRoutes(processItem);
+
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "camel-cxf"));
+
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "cxf-core"));
             importNeedsListForBeans.add(getComponentModuleById("CAMEL", "javax.ws.rs-api"));
             for (ModuleNeeded need : importNeedsListForBeans) {
@@ -1048,7 +970,7 @@ public class ModulesNeededProvider {
         List<ModuleNeeded> modulesNeeded = new ArrayList<ModuleNeeded>(getModulesNeeded());
         List<ModuleNeeded> uninstalledModules = new ArrayList<ModuleNeeded>(modulesNeeded.size());
         for (ModuleNeeded module : modulesNeeded) {
-            if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED) {
+            if (module.getStatus() == ELibraryInstallStatus.NOT_INSTALLED && !module.usedByDynamicDistribution()) {
                 uninstalledModules.add(module);
             } // else installed or unknow state so ignor.
         }

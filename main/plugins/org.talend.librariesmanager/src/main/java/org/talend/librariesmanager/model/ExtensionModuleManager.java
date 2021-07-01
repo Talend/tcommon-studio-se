@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
 import org.talend.commons.exception.ExceptionHandler;
@@ -170,6 +170,7 @@ public class ExtensionModuleManager {
             id = moduleGroup;
             isGroup = true;
         }
+
         List<ModuleNeeded> modulesNeeded = getModuleNeeded(id, isGroup);
         for (ModuleNeeded moduleNeeded : modulesNeeded) {
             String msg = importType.getMESSAGE();

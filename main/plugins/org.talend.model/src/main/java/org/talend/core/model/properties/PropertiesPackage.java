@@ -373,7 +373,7 @@ public interface PropertiesPackage extends EPackage {
      */
 	int PROJECT__BIG_DATA = 34;
 
-				/**
+    /**
      * The number of structural features of the '<em>Project</em>' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated

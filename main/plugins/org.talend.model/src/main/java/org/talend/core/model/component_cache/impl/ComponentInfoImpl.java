@@ -34,11 +34,11 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getOriginalFamilyName <em>Original Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getPluginExtension <em>Plugin Extension</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getVersion <em>Version</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getTranslatedFamilyName <em>Translated Family Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#isIsTechnical <em>Is Technical</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getPluginDependencies <em>Plugin Dependencies</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getComponentNames <em>Component Names</em>}</li>
@@ -49,10 +49,8 @@ import org.talend.designer.core.model.utils.emf.component.IMPORTType;
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getRepositoryType <em>Repository Type</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getSourceBundleName <em>Source Bundle Name</em>}</li>
  *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getType <em>Type</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getSha1 <em>Sha1</em>}</li>
- *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getLongName <em>Long Name</em>}</li>
+ *   <li>{@link org.talend.core.model.component_cache.impl.ComponentInfoImpl#getProviderId <em>Provider Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -116,26 +114,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
      * @ordered
      */
     protected String version = VERSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getTranslatedFamilyName() <em>Translated Family Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getTranslatedFamilyName()
-     * @generated
-     * @ordered
-     */
-    protected static final String TRANSLATED_FAMILY_NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getTranslatedFamilyName() <em>Translated Family Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getTranslatedFamilyName()
-     * @generated
-     * @ordered
-     */
-    protected String translatedFamilyName = TRANSLATED_FAMILY_NAME_EDEFAULT;
 
     /**
      * The default value of the '{@link #isIsTechnical() <em>Is Technical</em>}' attribute.
@@ -308,44 +286,24 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
     protected String type = TYPE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getSha1() <em>Sha1</em>}' attribute.
+     * The default value of the '{@link #getProviderId() <em>Provider Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSha1()
+     * @see #getProviderId()
      * @generated
      * @ordered
      */
-    protected static final String SHA1_EDEFAULT = null;
+    protected static final String PROVIDER_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getSha1() <em>Sha1</em>}' attribute.
+     * The cached value of the '{@link #getProviderId() <em>Provider Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSha1()
+     * @see #getProviderId()
      * @generated
      * @ordered
      */
-    protected String sha1 = SHA1_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getLongName() <em>Long Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getLongName()
-     * @generated
-     * @ordered
-     */
-    protected static final String LONG_NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getLongName() <em>Long Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getLongName()
-     * @generated
-     * @ordered
-     */
-    protected String longName = LONG_NAME_EDEFAULT;
+    protected String providerId = PROVIDER_ID_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -427,27 +385,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
         version = newVersion;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__VERSION, oldVersion, version));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getTranslatedFamilyName() {
-        return translatedFamilyName;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setTranslatedFamilyName(String newTranslatedFamilyName) {
-        String oldTranslatedFamilyName = translatedFamilyName;
-        translatedFamilyName = newTranslatedFamilyName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__TRANSLATED_FAMILY_NAME, oldTranslatedFamilyName, translatedFamilyName));
     }
 
     /**
@@ -638,8 +575,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getSha1() {
-        return sha1;
+    public String getProviderId() {
+        return providerId;
     }
 
     /**
@@ -647,32 +584,11 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setSha1(String newSha1) {
-        String oldSha1 = sha1;
-        sha1 = newSha1;
+    public void setProviderId(String newProviderId) {
+        String oldProviderId = providerId;
+        providerId = newProviderId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__SHA1, oldSha1, sha1));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getLongName() {
-        return longName;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setLongName(String newLongName) {
-        String oldLongName = longName;
-        longName = newLongName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__LONG_NAME, oldLongName, longName));
+            eNotify(new ENotificationImpl(this, Notification.SET, ComponentCachePackage.COMPONENT_INFO__PROVIDER_ID, oldProviderId, providerId));
     }
 
     /**
@@ -703,8 +619,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return getPluginExtension();
             case ComponentCachePackage.COMPONENT_INFO__VERSION:
                 return getVersion();
-            case ComponentCachePackage.COMPONENT_INFO__TRANSLATED_FAMILY_NAME:
-                return getTranslatedFamilyName();
             case ComponentCachePackage.COMPONENT_INFO__IS_TECHNICAL:
                 return isIsTechnical();
             case ComponentCachePackage.COMPONENT_INFO__PLUGIN_DEPENDENCIES:
@@ -725,10 +639,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return getSourceBundleName();
             case ComponentCachePackage.COMPONENT_INFO__TYPE:
                 return getType();
-            case ComponentCachePackage.COMPONENT_INFO__SHA1:
-                return getSha1();
-            case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
-                return getLongName();
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_ID:
+                return getProviderId();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -750,9 +662,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return;
             case ComponentCachePackage.COMPONENT_INFO__VERSION:
                 setVersion((String)newValue);
-                return;
-            case ComponentCachePackage.COMPONENT_INFO__TRANSLATED_FAMILY_NAME:
-                setTranslatedFamilyName((String)newValue);
                 return;
             case ComponentCachePackage.COMPONENT_INFO__IS_TECHNICAL:
                 setIsTechnical((Boolean)newValue);
@@ -787,11 +696,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
             case ComponentCachePackage.COMPONENT_INFO__TYPE:
                 setType((String)newValue);
                 return;
-            case ComponentCachePackage.COMPONENT_INFO__SHA1:
-                setSha1((String)newValue);
-                return;
-            case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
-                setLongName((String)newValue);
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_ID:
+                setProviderId((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -813,9 +719,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return;
             case ComponentCachePackage.COMPONENT_INFO__VERSION:
                 setVersion(VERSION_EDEFAULT);
-                return;
-            case ComponentCachePackage.COMPONENT_INFO__TRANSLATED_FAMILY_NAME:
-                setTranslatedFamilyName(TRANSLATED_FAMILY_NAME_EDEFAULT);
                 return;
             case ComponentCachePackage.COMPONENT_INFO__IS_TECHNICAL:
                 setIsTechnical(IS_TECHNICAL_EDEFAULT);
@@ -847,11 +750,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
             case ComponentCachePackage.COMPONENT_INFO__TYPE:
                 setType(TYPE_EDEFAULT);
                 return;
-            case ComponentCachePackage.COMPONENT_INFO__SHA1:
-                setSha1(SHA1_EDEFAULT);
-                return;
-            case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
-                setLongName(LONG_NAME_EDEFAULT);
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_ID:
+                setProviderId(PROVIDER_ID_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -871,8 +771,6 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return PLUGIN_EXTENSION_EDEFAULT == null ? pluginExtension != null : !PLUGIN_EXTENSION_EDEFAULT.equals(pluginExtension);
             case ComponentCachePackage.COMPONENT_INFO__VERSION:
                 return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
-            case ComponentCachePackage.COMPONENT_INFO__TRANSLATED_FAMILY_NAME:
-                return TRANSLATED_FAMILY_NAME_EDEFAULT == null ? translatedFamilyName != null : !TRANSLATED_FAMILY_NAME_EDEFAULT.equals(translatedFamilyName);
             case ComponentCachePackage.COMPONENT_INFO__IS_TECHNICAL:
                 return isTechnical != IS_TECHNICAL_EDEFAULT;
             case ComponentCachePackage.COMPONENT_INFO__PLUGIN_DEPENDENCIES:
@@ -893,10 +791,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
                 return SOURCE_BUNDLE_NAME_EDEFAULT == null ? sourceBundleName != null : !SOURCE_BUNDLE_NAME_EDEFAULT.equals(sourceBundleName);
             case ComponentCachePackage.COMPONENT_INFO__TYPE:
                 return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-            case ComponentCachePackage.COMPONENT_INFO__SHA1:
-                return SHA1_EDEFAULT == null ? sha1 != null : !SHA1_EDEFAULT.equals(sha1);
-            case ComponentCachePackage.COMPONENT_INFO__LONG_NAME:
-                return LONG_NAME_EDEFAULT == null ? longName != null : !LONG_NAME_EDEFAULT.equals(longName);
+            case ComponentCachePackage.COMPONENT_INFO__PROVIDER_ID:
+                return PROVIDER_ID_EDEFAULT == null ? providerId != null : !PROVIDER_ID_EDEFAULT.equals(providerId);
         }
         return super.eIsSet(featureID);
     }
@@ -910,15 +806,13 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
     public String toString() {
         if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
+        StringBuilder result = new StringBuilder(super.toString());
         result.append(" (originalFamilyName: ");
         result.append(originalFamilyName);
         result.append(", pluginExtension: ");
         result.append(pluginExtension);
         result.append(", version: ");
         result.append(version);
-        result.append(", translatedFamilyName: ");
-        result.append(translatedFamilyName);
         result.append(", isTechnical: ");
         result.append(isTechnical);
         result.append(", PluginDependencies: ");
@@ -937,10 +831,8 @@ public class ComponentInfoImpl extends EObjectImpl implements ComponentInfo {
         result.append(sourceBundleName);
         result.append(", type: ");
         result.append(type);
-        result.append(", sha1: ");
-        result.append(sha1);
-        result.append(", longName: ");
-        result.append(longName);
+        result.append(", providerId: ");
+        result.append(providerId);
         result.append(')');
         return result.toString();
     }

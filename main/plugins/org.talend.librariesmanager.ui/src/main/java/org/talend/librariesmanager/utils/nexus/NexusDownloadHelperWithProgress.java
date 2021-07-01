@@ -26,7 +26,7 @@ import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.runtime.maven.MavenArtifact;
 import org.talend.core.runtime.maven.MavenUrlHelper;
-import org.talend.librariesmanager.nexus.utils.NexusDownloader;
+import org.talend.librariesmanager.nexus.utils.AetherArtifactDownloader;
 
 /**
  * created by wchen on Apr 24, 2015 Detailled comment
@@ -110,7 +110,7 @@ public class NexusDownloadHelperWithProgress extends DownloadHelperWithProgress 
     @Override
     protected IDownloadHelper createDownloadHelperDelegate(final DownloadListenerImplementation downloadProgress) {
 
-        NexusDownloader downloadHelper = new NexusDownloader() {
+        AetherArtifactDownloader downloadHelper = new AetherArtifactDownloader() {
 
             /*
              * (non-Javadoc)

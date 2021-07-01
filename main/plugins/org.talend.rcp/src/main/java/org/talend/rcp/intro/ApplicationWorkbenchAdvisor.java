@@ -119,7 +119,7 @@ public class ApplicationWorkbenchAdvisor extends IDEWorkbenchAdvisor {
             protected void run() throws LoginException, PersistenceException {
                 for (ILoginTask toBeRun : allLoginTasks) {
                     try {
-                        toBeRun.run(subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
+                        toBeRun.execute(subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
                     } catch (Exception e) {
                         log.error("Error while execution a login task.", e); //$NON-NLS-1$
                     }

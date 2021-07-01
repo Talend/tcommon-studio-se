@@ -78,7 +78,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link ComponentCachePackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc -->
@@ -92,7 +92,8 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         if (isInited) return (ComponentCachePackage)EPackage.Registry.INSTANCE.getEPackage(ComponentCachePackage.eNS_URI);
 
         // Obtain or create and register package
-        ComponentCachePackageImpl theComponentCachePackage = (ComponentCachePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ComponentCachePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new ComponentCachePackageImpl());
+        Object registeredComponentCachePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+        ComponentCachePackageImpl theComponentCachePackage = registeredComponentCachePackage instanceof ComponentCachePackageImpl ? (ComponentCachePackageImpl)registeredComponentCachePackage : new ComponentCachePackageImpl();
 
         isInited = true;
 
@@ -108,7 +109,6 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         // Mark meta-data to indicate it can't be changed
         theComponentCachePackage.freeze();
 
-  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(ComponentCachePackage.eNS_URI, theComponentCachePackage);
         return theComponentCachePackage;
@@ -173,7 +173,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getComponentInfo_TranslatedFamilyName() {
+    public EAttribute getComponentInfo_IsTechnical() {
         return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(3);
     }
 
@@ -182,7 +182,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getComponentInfo_IsTechnical() {
+    public EAttribute getComponentInfo_PluginDependencies() {
         return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(4);
     }
 
@@ -191,7 +191,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getComponentInfo_PluginDependencies() {
+    public EAttribute getComponentInfo_ComponentNames() {
         return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(5);
     }
 
@@ -200,17 +200,8 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getComponentInfo_ComponentNames() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(6);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EReference getComponentInfo_ImportType() {
-        return (EReference)componentInfoEClass.getEStructuralFeatures().get(7);
+        return (EReference)componentInfoEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -219,7 +210,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_IsVisibleInComponentDefinition() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(8);
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -228,7 +219,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_UriString() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(9);
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -237,7 +228,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_PathSource() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(10);
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -246,7 +237,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_RepositoryType() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(11);
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -255,7 +246,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_SourceBundleName() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(12);
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(11);
     }
 
     /**
@@ -264,25 +255,16 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     public EAttribute getComponentInfo_Type() {
+        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getComponentInfo_ProviderId() {
         return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(13);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getComponentInfo_Sha1() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(14);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getComponentInfo_LongName() {
-        return (EAttribute)componentInfoEClass.getEStructuralFeatures().get(15);
     }
 
     /**
@@ -347,7 +329,6 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         createEAttribute(componentInfoEClass, COMPONENT_INFO__ORIGINAL_FAMILY_NAME);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__PLUGIN_EXTENSION);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__VERSION);
-        createEAttribute(componentInfoEClass, COMPONENT_INFO__TRANSLATED_FAMILY_NAME);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__IS_TECHNICAL);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__PLUGIN_DEPENDENCIES);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__COMPONENT_NAMES);
@@ -358,8 +339,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         createEAttribute(componentInfoEClass, COMPONENT_INFO__REPOSITORY_TYPE);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__SOURCE_BUNDLE_NAME);
         createEAttribute(componentInfoEClass, COMPONENT_INFO__TYPE);
-        createEAttribute(componentInfoEClass, COMPONENT_INFO__SHA1);
-        createEAttribute(componentInfoEClass, COMPONENT_INFO__LONG_NAME);
+        createEAttribute(componentInfoEClass, COMPONENT_INFO__PROVIDER_ID);
 
         componentEntryMapEClass = createEClass(COMPONENT_ENTRY_MAP);
         createEAttribute(componentEntryMapEClass, COMPONENT_ENTRY_MAP__KEY);
@@ -406,7 +386,6 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         initEAttribute(getComponentInfo_OriginalFamilyName(), ecorePackage.getEString(), "originalFamilyName", "", 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_PluginExtension(), ecorePackage.getEString(), "pluginExtension", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_Version(), ecorePackage.getEString(), "version", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getComponentInfo_TranslatedFamilyName(), ecorePackage.getEString(), "translatedFamilyName", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_IsTechnical(), ecorePackage.getEBoolean(), "isTechnical", "false", 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_PluginDependencies(), ecorePackage.getEString(), "PluginDependencies", null, 0, -1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_ComponentNames(), ecorePackage.getEString(), "componentNames", null, 0, -1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -417,8 +396,7 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
         initEAttribute(getComponentInfo_RepositoryType(), ecorePackage.getEString(), "repositoryType", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_SourceBundleName(), ecorePackage.getEString(), "sourceBundleName", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getComponentInfo_Type(), ecorePackage.getEString(), "type", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getComponentInfo_Sha1(), ecorePackage.getEString(), "sha1", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getComponentInfo_LongName(), ecorePackage.getEString(), "longName", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getComponentInfo_ProviderId(), ecorePackage.getEString(), "providerId", null, 0, 1, ComponentInfo.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(componentEntryMapEClass, Map.Entry.class, "ComponentEntryMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getComponentEntryMap_Key(), ecorePackage.getEString(), "key", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -439,10 +417,10 @@ public class ComponentCachePackageImpl extends EPackageImpl implements Component
      * @generated
      */
     protected void createMapEntryAnnotations() {
-        String source = "MapEntry";		
+        String source = "MapEntry";
         addAnnotation
-          (componentEntryMapEClass, 
-           source, 
+          (componentEntryMapEClass,
+           source,
            new String[] {
            });
     }
