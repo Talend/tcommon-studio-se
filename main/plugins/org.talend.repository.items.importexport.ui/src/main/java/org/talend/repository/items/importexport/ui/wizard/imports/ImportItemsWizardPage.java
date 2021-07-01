@@ -131,7 +131,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     protected Button dependencyButton;
 
-    private FilteredCheckboxTree filteredCheckboxTree;
+    protected FilteredCheckboxTree filteredCheckboxTree;
 
     private TableViewer errorsListViewer;
 
@@ -144,13 +144,13 @@ public class ImportItemsWizardPage extends WizardPage {
      */
     private static final String[] ARCHIVE_FILE_MASK = { "*.jar;*.zip;*.tar;*.tar.gz;*.tgz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-    private String previouslyBrowsedDirectoryPath, previouslyBrowsedArchivePath, lastWorkedPath;
+    protected String previouslyBrowsedDirectoryPath, previouslyBrowsedArchivePath, lastWorkedPath;
 
-    private List<ImportItem> selectedItemRecords = new ArrayList<ImportItem>();
+    protected List<ImportItem> selectedItemRecords = new ArrayList<ImportItem>();
 
     private final ImportNodesBuilder nodesBuilder = new ImportNodesBuilder();
 
-    private ResourcesManager resManager;
+    protected ResourcesManager resManager;
 
     private IStructuredSelection selection;
 
@@ -927,7 +927,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     }
 
-    private void populateItems(final boolean overwrite) {
+    protected void populateItems(final boolean overwrite) {
         populateItems(overwrite, false);
     }
 
