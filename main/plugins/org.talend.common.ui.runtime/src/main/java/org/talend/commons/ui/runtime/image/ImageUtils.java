@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageDataProvider;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
+import org.talend.commons.CommonsPlugin;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 
 /**
@@ -104,6 +105,9 @@ public class ImageUtils {
      * RAP.
      */
     public static Image scale(Image image, int percent) {
+        if (CommonsPlugin.isHeadless()) {
+            return image;
+        }
         float scale = percent / 100f;
         int newWidth = (int) (scale * image.getImageData().width);
         int newHeight = (int) (scale * image.getImageData().height);
@@ -113,6 +117,9 @@ public class ImageUtils {
 
     public static Image scale(Image image, ICON_SIZE size) {
         if (image != null && size != null) {
+            if (CommonsPlugin.isHeadless()) {
+                return image;
+            }
             ImageData imageData = image.getImageData().scaledTo(size.getSize(), size.getSize());
             return ImageDescriptor.createFromImageData(imageData).createImage();
         }
@@ -125,8 +132,12 @@ public class ImageUtils {
         if (image != null && size != null) {
             Image img = propertyImgCachedImages.get(id);
             if (img == null || img.isDisposed()) {
-                ImageData imageData = image.getImageData().scaledTo(size.getSize(), size.getSize());
-                img = ImageDescriptor.createFromImageData(imageData).createImage();
+                if (CommonsPlugin.isHeadless()) {
+                    img = image;
+                } else {
+                    ImageData imageData = image.getImageData().scaledTo(size.getSize(), size.getSize());
+                    img = ImageDescriptor.createFromImageData(imageData).createImage();
+                }
                 propertyImgCachedImages.put(id, img);
             }
             return img;
@@ -137,6 +148,9 @@ public class ImageUtils {
     public static ImageDescriptor scale(ImageDescriptor imageDes, ICON_SIZE size) {
         if (imageDes != null) {
             if (!checkSize(imageDes, size)) {
+                if (CommonsPlugin.isHeadless()) {
+                    return imageDes;
+                }
                 ImageData imageData = imageDes.getImageData().scaledTo(size.getSize(), size.getSize());
                 return ImageDescriptor.createFromImageData(imageData);
             }
