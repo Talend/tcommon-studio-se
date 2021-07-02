@@ -9,7 +9,7 @@
     <import feature="org.eclipse.wst.common.fproj" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.wst.common_core.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.wst.xml_core.feature" version="0.0.0" match="greaterOrEqual"/>
-    <import feature="org.talend.jdt.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="com.google.guava" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.emf.ecore" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.emf.ecore.edit" version="0.0.0" match="greaterOrEqual"/>
