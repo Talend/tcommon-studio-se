@@ -137,7 +137,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     private final List<String> errors = new ArrayList<String>();
 
-    private Button overwriteButton;
+    protected Button overwriteButton;
 
     /*
      *
@@ -557,7 +557,7 @@ public class ImportItemsWizardPage extends WizardPage {
      *
      * @param workArea
      */
-    private void createAdditionArea(Composite workArea) {
+    protected void createAdditionArea(Composite workArea) {
         Composite optionsArea = new Composite(workArea, SWT.NONE);
         FormLayout optAreaLayout = new FormLayout();
         optionsArea.setLayout(optAreaLayout);

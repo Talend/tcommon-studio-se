@@ -134,7 +134,7 @@ public class ImportDependencyRelationsHelper {
         return relatedImportNodesList;
     }
 
-    private ItemImportNode getLatestVersionItemImportNode(String id, List<ItemImportNode> allImportItemNodesList) {
+    public ItemImportNode getLatestVersionItemImportNode(String id, List<ItemImportNode> allImportItemNodesList) {
         List<ItemImportNode> allItemImportNodesById = getItemImportNode(allImportItemNodesList,
                 node -> node.getItemRecord().getProperty().getId().equals(id));
         Optional<ItemImportNode> optional = allItemImportNodesById.stream().max((node1, node2) -> VersionUtils
@@ -142,7 +142,7 @@ public class ImportDependencyRelationsHelper {
         return optional.isPresent() ? optional.get() : null;
     }
 
-    private ItemImportNode getItemImportNodeByIdVersion(String id, String version, List<ItemImportNode> allImportItemNodesList) {
+    public ItemImportNode getItemImportNodeByIdVersion(String id, String version, List<ItemImportNode> allImportItemNodesList) {
         List<ItemImportNode> importNodeList = getItemImportNode(allImportItemNodesList, node -> {
             Property property = node.getItemRecord().getProperty();
             return property.getId().equals(id) && property.getVersion().equals(version);
