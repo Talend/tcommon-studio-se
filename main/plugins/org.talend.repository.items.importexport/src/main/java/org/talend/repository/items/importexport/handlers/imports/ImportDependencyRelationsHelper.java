@@ -45,7 +45,7 @@ public class ImportDependencyRelationsHelper {
 
     private Map<IPath, Map<Relation, Set<Relation>>> projectRelationsCache = new HashMap<IPath, Map<Relation, Set<Relation>>>();
 
-    public Map<Relation, Set<Relation>> getImportItemsRelations(String projectFilePath) {
+    public Map<Relation, Set<Relation>> getImportItemsRelations(IPath projectFilePath) {
         Map<Relation, Set<Relation>> relationsMap = new HashMap<Relation, Set<Relation>>();
         if (projectRelationsCache.get(projectFilePath) != null) {
             relationsMap = projectRelationsCache.get(projectFilePath);
