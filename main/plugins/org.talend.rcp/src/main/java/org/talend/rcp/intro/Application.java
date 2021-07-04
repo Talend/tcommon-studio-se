@@ -146,7 +146,7 @@ public class Application implements IApplication {
             try {
                 IStudioLiteP2Service p2Service = IStudioLiteP2Service.get();
                 if (p2Service != null) {
-                    p2Service.preload();
+                    p2Service.preload(new NullProgressMonitor());
                 }
             } catch (Exception e) {
                 ExceptionHandler.process(e);

@@ -110,6 +110,10 @@ public interface IStudioLiteP2Service extends IService {
 
         boolean hasUpdate();
 
+        boolean isReCheckForUpdate();
+
+        boolean isRestart();
+
         boolean performUpdate(IProgressMonitor monitor) throws Exception;
 
     }
