@@ -13,7 +13,6 @@
 package org.talend.core.service;
 
 import java.net.URI;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,18 +41,18 @@ public interface IStudioLiteP2Service extends IService {
      */
     public static final int RESULT_CANCEL = 2;
 
-    void setProfileKey(String profKey);
+    void setProfileKey(String profKey) throws Exception;
+
+    String getProfileKey() throws Exception;
 
     /**
      * Preload to improve performance
      */
-    void preload();
+    void preload(IProgressMonitor monitor) throws Exception;
 
-    void disableFeatures(IProgressMonitor monitor, Collection<String> features) throws Exception;
+    String getSettingsFilePath() throws Exception;
 
-    String getSettingsFilePath();
-
-    UpdateSiteConfig getUpdateSiteConfig();
+    UpdateSiteConfig getUpdateSiteConfig(IProgressMonitor monitor) throws Exception;;
 
     CheckUpdateHook checkForUpdate(IProgressMonitor monitor) throws Exception;
 
@@ -66,7 +65,7 @@ public interface IStudioLiteP2Service extends IService {
      * {@link IStudioLiteP2Service#RESULT_SKIP}<br/>
      * {@link IStudioLiteP2Service#RESULT_CANCEL}<br/>
      */
-    int showInstallRequiredFeaturesWizard(ValidateRequiredFeaturesHook hook, Project proj);
+    int showInstallRequiredFeaturesWizard(ValidateRequiredFeaturesHook hook, Project proj) throws Exception;
 
     ValidatePotentialFeaturesHook validatePotentialFeatures(IProgressMonitor monitor, Project proj) throws Exception;
 
@@ -79,7 +78,7 @@ public interface IStudioLiteP2Service extends IService {
      * {@link IStudioLiteP2Service#RESULT_SKIP}<br/>
      * {@link IStudioLiteP2Service#RESULT_CANCEL}<br/>
      */
-    int showUpdateProjectRequiredFeaturesWizard(ValidatePotentialFeaturesHook hook, Project proj);
+    int showUpdateProjectRequiredFeaturesWizard(ValidatePotentialFeaturesHook hook, Project proj) throws Exception;
 
     int adaptFeaturesForProject(IProgressMonitor monitor, Project proj) throws Exception;
 
