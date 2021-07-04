@@ -56,6 +56,8 @@ public interface IStudioLiteP2Service extends IService {
 
     CheckUpdateHook checkForUpdate(IProgressMonitor monitor) throws Exception;
 
+    boolean performUpdate(IProgressMonitor monitor, CheckUpdateHook hook) throws Exception;
+
     ValidateRequiredFeaturesHook validateRequiredFeatures(IProgressMonitor monitor, Project proj) throws Exception;
 
     /**
