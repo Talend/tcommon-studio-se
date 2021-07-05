@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -70,15 +71,19 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
                     .getService(IRunProcessService.class);
             IRepositoryObject process = (IRepositoryObject) service.getActiveProcess();
             Item processItem = process.getProperty().getItem();
+
+            Set<CodesJarInfo> allSet = CodesJarResourceCache.getAllCodesJars();
+
             if (processItem instanceof ProcessItem) {
                 ProcessType pt = ((ProcessItem) processItem).getProcess();
 
                 List<RoutinesParameterType> rps = pt.getParameters().getRoutinesParameter();
 
                 rps.forEach(rp -> {
-                    CodesJarInfo info = CodesJarResourceCache.getCodesJarById(rp.getId());
-                    if (info != null) {
-                        infos.add(info);
+                    for (CodesJarInfo info : allSet) {
+                        if (StringUtils.equals(info.getId(), rp.getId())) {
+                            infos.add(info);
+                        }
                     }
                 });
             }
