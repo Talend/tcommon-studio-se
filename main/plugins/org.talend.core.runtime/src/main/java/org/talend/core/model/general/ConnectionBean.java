@@ -57,6 +57,8 @@ public class ConnectionBean implements Cloneable {
     private static final String TOKEN = "token"; //$NON-NLS-1$
 
     private static final String URL = "url"; //$NON-NLS-1$
+
+    private static final String STORECREDENTIALS = "storeCredentials"; //$NON-NLS-1$
     /**
      * DOC smallet ConnectionBean constructor comment.
      */
@@ -408,4 +410,22 @@ public class ConnectionBean implements Cloneable {
         return "";
     }
 
+    public boolean isStoreCredentials() {
+        try {
+            if (conDetails.has(STORECREDENTIALS)) {
+                return (Boolean) conDetails.get(STORECREDENTIALS);
+            }
+        } catch (JSONException e) {
+            ExceptionHandler.process(e);
+        }
+        return false;
+    }
+
+    public void setStoreCredentials(boolean store) {
+        try {
+            conDetails.put(STORECREDENTIALS, store);
+        } catch (JSONException e) {
+            ExceptionHandler.process(e);
+        }
+    }
 }
