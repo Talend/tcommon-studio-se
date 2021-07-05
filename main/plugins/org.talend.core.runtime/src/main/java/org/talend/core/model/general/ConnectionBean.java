@@ -59,6 +59,9 @@ public class ConnectionBean implements Cloneable {
     private static final String URL = "url"; //$NON-NLS-1$
 
     private static final String STORECREDENTIALS = "storeCredentials"; //$NON-NLS-1$
+
+    private String credentials = ""; //$NON-NLS-1$
+
     /**
      * DOC smallet ConnectionBean constructor comment.
      */
@@ -180,6 +183,9 @@ public class ConnectionBean implements Cloneable {
     public String getPassword() {
         try {
             if (conDetails.has(PASSWORD)) {
+                if (isStoreCredentials() && credentials != null) {
+                    return this.credentials;
+                }
                 return conDetails.getString(PASSWORD);
             }
         } catch (JSONException e) {
@@ -328,6 +334,7 @@ public class ConnectionBean implements Cloneable {
             toReturn.setWorkSpace(st[i++]);
             toReturn.setComplete(new Boolean(st[i++]));
             toReturn.setToken(new Boolean(st[i++]));
+            toReturn.setStoreCredentials(new Boolean(st[i++]));
             JSONObject dynamicJson = new JSONObject();
             toReturn.getConDetails().put(DYNAMICFIELDS, dynamicJson);
             while (i < st.length) {
@@ -427,5 +434,13 @@ public class ConnectionBean implements Cloneable {
         } catch (JSONException e) {
             ExceptionHandler.process(e);
         }
+    }
+
+    public String getCredentials() {
+        return this.credentials;
+    }
+
+    public void setCredentials(String credentials) {
+        this.credentials = credentials;
     }
 }
