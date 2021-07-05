@@ -210,6 +210,14 @@ public class ProjectPreferenceManager {
        setValue(IRepositoryPrefConstants.ALLOW_SPECIFIC_CHARACTERS_FOR_SCHEMA_COLUMNS, isAllow);
     }
     
+    public boolean isDisableScreenshot() {
+        return getPreferenceStore().getBoolean(IRepositoryPrefConstants.ITEM_DISABLE_SCREENSHOT);
+    }
+
+    public void setDisableScreenshot(boolean isDisable) {
+        getPreferenceStore().setValue(IRepositoryPrefConstants.ITEM_DISABLE_SCREENSHOT, isDisable);
+    }
+
     /**
      * Save the configurations.
      */
