@@ -56,4 +56,6 @@ public interface IRepositoryPrefConstants {
     public static final String ITEM_EXPORT_DEPENDENCIES = "item_export_dependencies";
 
     public static final String ITEM_IMPORT_DEPENDENCIES = "item_import_dependencies";
+
+    public static final String ITEM_DISABLE_SCREENSHOT = "item_disable_screenshot";
 }
