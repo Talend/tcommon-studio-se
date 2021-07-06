@@ -1315,7 +1315,7 @@ public class LocalLibraryManager implements ILibraryManagerService, IChangedLibr
                             // snapshot
                             if (artifactListSnapshot != null && artifactListSnapshot.size() > 0) {
                                 if (ShareLibrariesUtil.isSameFileWithRemote(exsitFile, artifactListSnapshot, customNexusServer,
-                                        customerRepHandler, false)) {
+                                        customerRepHandler, true)) {
                                     existFiles.add(exsitFile);
                                 }
                             }
