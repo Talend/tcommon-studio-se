@@ -524,12 +524,12 @@ public class CoreService implements ICoreService {
 	/**
 	 * Check and install components
 	 */
-	public void installComponents() {
+	public void installComponents(IProgressMonitor monitor) {
 		List<IComponentInstallerTask> tasks = ComponentInstallerTaskRegistryReader.getInstance().getTasks();
 		tasks.forEach(task -> {
 			if (task.needInstall()) {
 				try {
-					task.install(null);
+					task.install(monitor);
 				} catch (Exception e) {
 					ExceptionHandler.process(e);
 				}

@@ -29,5 +29,9 @@ public interface ITaCoKitCarFeature extends ExtraFeature {
     void setDeployCommand(boolean isDeployCommand);
 
     boolean isAutoReloadAfterInstalled();
+    
+    void setDeleteCar(boolean deleteCar);
+    
+    boolean isDeleteCar();
 
 }

@@ -126,6 +126,6 @@ public interface ICoreService extends IService {
 
     public void syncMappingsFileFromSystemToProject();
     
-    void installComponents();
+    void installComponents(IProgressMonitor monitor);
 
 }
