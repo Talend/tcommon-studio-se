@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.designer.rowgenerator.data;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,12 +30,15 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.SourceType;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.model.properties.ProcessItem;
 import org.talend.core.model.repository.IRepositoryObject;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.routines.CodesJarInfo;
 import org.talend.core.runtime.maven.MavenConstants;
 import org.talend.core.runtime.process.ITalendProcessJavaProject;
@@ -44,8 +46,11 @@ import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.designer.core.model.utils.emf.talendfile.ProcessType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.TalendFilePackage;
+import org.talend.designer.core.model.utils.emf.talendfile.impl.ProcessTypeImpl;
 import org.talend.designer.runprocess.IRunProcessService;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryService;
 
 /**
  * Created by bhe on Jun 24, 2021
@@ -73,12 +78,49 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
             Item processItem = process.getProperty().getItem();
 
             Set<CodesJarInfo> allSet = CodesJarResourceCache.getAllCodesJars();
-
+            Set<RoutinesParameterType> rps = new HashSet<RoutinesParameterType>();
             if (processItem instanceof ProcessItem) {
                 ProcessType pt = ((ProcessItem) processItem).getProcess();
 
-                List<RoutinesParameterType> rps = pt.getParameters().getRoutinesParameter();
+                rps.addAll(pt.getParameters().getRoutinesParameter());
 
+                // if it is test process
+                int pidFeature = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 2;
+                int versionFeature = TalendFilePackage.PROCESS_TYPE_FEATURE_COUNT + 4;
+                ProcessTypeImpl pi = (ProcessTypeImpl) pt;
+                if (pi.eClass() != null && StringUtils.equals(pi.eClass().getName(), "TestContainer")) {
+
+                    try {
+                        Object pid = pi.eGet(pidFeature, true, false);
+                        Object version = pi.eGet(versionFeature, true, false);
+                        if (pid != null) {
+                            IProxyRepositoryService svc = IProxyRepositoryService.get();
+                            try {
+                                List<IRepositoryViewObject> vos = svc.getProxyRepositoryFactory().getAllVersion(pid.toString());
+                                for (IRepositoryViewObject vo : vos) {
+                                    if (StringUtils.equals(vo.getVersion(), String.valueOf(version))) {
+                                        Item parentProcessItem = vo.getProperty().getItem();
+                                        if (parentProcessItem instanceof ProcessItem) {
+                                            pt = ((ProcessItem) parentProcessItem).getProcess();
+                                            rps.addAll(pt.getParameters().getRoutinesParameter());
+                                        }
+                                    }
+                                }
+                            } catch (PersistenceException e) {
+                                // ignore
+                            }
+                        }
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+
+            } else if (processItem instanceof JobletProcessItem) {
+                ProcessType pt = ((JobletProcessItem) processItem).getJobletProcess();
+                rps.addAll(pt.getParameters().getRoutinesParameter());
+            }
+
+            if (!rps.isEmpty()) {
                 rps.forEach(rp -> {
                     for (CodesJarInfo info : allSet) {
                         if (StringUtils.equals(info.getId(), rp.getId())) {
@@ -189,7 +231,7 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
 
         // set routine jars dependency missing or not
         infos.forEach(info -> {
-            if (func.getRoutineJarName().equals(info.getLabel())) {
+            if (func.getRoutineJarName().equals(info.getLabel().toLowerCase())) {
                 func.setRountineJarDependencyMissing(false);
             }
         });
