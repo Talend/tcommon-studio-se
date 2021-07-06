@@ -13,6 +13,7 @@
 package org.talend.core.service;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -115,6 +116,8 @@ public interface IStudioLiteP2Service extends IService {
         boolean isReCheckForUpdate();
 
         boolean isRestart();
+
+        Collection<?> getUninstalledIUs();
 
         boolean performUpdate(IProgressMonitor monitor) throws Exception;
 
