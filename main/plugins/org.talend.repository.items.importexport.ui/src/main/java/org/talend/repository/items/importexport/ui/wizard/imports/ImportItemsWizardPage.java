@@ -816,7 +816,7 @@ public class ImportItemsWizardPage extends WizardPage {
         MessageDialog.openError(getContainer().getShell(), Messages.getString("ImportItemsWizardPage_errorTitle"), message); //$NON-NLS-1$
     }
 
-    private void populateItems(final boolean overwrite, boolean keepSelection) {
+    protected void populateItems(final boolean overwrite, boolean keepSelection) {
 
         setPageComplete(true);
         this.selectedItemRecords.clear();
