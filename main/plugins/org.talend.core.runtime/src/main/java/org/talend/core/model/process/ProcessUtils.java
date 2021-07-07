@@ -728,6 +728,46 @@ public final class ProcessUtils {
         }
         return null;
     }
+    
+    private static boolean isRoute(Property property) {
+    	return  property!= null && (ERepositoryObjectType.getType(property).equals(ERepositoryObjectType.PROCESS_ROUTE) || 
+		ERepositoryObjectType.getType(property).equals(ERepositoryObjectType.PROCESS_ROUTE_MICROSERVICE));
+    }
+    
+    public static boolean isRouteWithChildJobs(IProcess process) {
+    	
+        if (process instanceof IProcess2) {
+        	Property p = ((IProcess2) process).getProperty();
+        	if (isRoute(p)) {
+        		return false;
+        	}
+            Item item = p.getItem();
+            return isRouteWithChildJobs(item);
+        } else {
+            for (INode node : process.getGraphicalNodes()) {
+                if (node.getComponent().getName().equals("cTalendJob")) {
+                    return true;
+                }
+            }
+        }
+    	return false;
+    }
+    
+    
+    public static boolean isRouteWithChildJobs(Item item) {
+    	
+        if (item!= null && item instanceof ProcessItem) {
+            for (Object obj : ((ProcessItem) item).getProcess().getNode()) {
+                if (obj instanceof NodeType) {
+                    if (((NodeType) obj).getComponentName().equals("cTalendJob")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
 
     public static int getAssertAmount(IProcess process) {
         int count = 0;
