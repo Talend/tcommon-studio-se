@@ -23,6 +23,7 @@ abstract public class BaseComponentInstallerTask implements IComponentInstallerT
 	private String v;
 	private String c;
 	private String t;
+	private String componentType;
 
 	@Override
 	public int getOrder() {
@@ -75,12 +76,22 @@ abstract public class BaseComponentInstallerTask implements IComponentInstallerT
 	}
 
 	@Override
-	public String getComponentType() {
-		return this.t;
+	public ComponentType getComponentType() {
+		return ComponentType.valueOf(componentType);
 	}
 
 	@Override
 	public void setComponentType(String type) {
-		this.t = type;
+		this.componentType = type;
 	}
+	
+	@Override
+    public String getComponentPackageType() {
+        return t;
+    }
+
+    @Override
+    public void setComponentPackageType(String type) {
+        this.t = type;
+    }
 }

@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.SafeRunner;
 import org.osgi.framework.FrameworkUtil;
+import org.talend.core.model.utils.IComponentInstallerTask.ComponentType;
 import org.talend.core.utils.RegistryReader;
 
 /**
@@ -36,7 +38,8 @@ public class ComponentInstallerTaskRegistryReader extends RegistryReader {
 	private static final String ARTIFACT_ATTRIBUTE = "a";
 	private static final String VERSION_ATTRIBUTE = "v";
 	private static final String CLASSIFIER_ATTRIBUTE = "c";
-	private static final String TYPE_ATTRIBUTE = "t";
+	private static final String PACKAGE_TYPE_ATTRIBUTE = "t";
+	private static final String TYPE_ATTRIBUTE = "ct";
 
 	private List<IComponentInstallerTask> ret = new ArrayList<IComponentInstallerTask>();
 
@@ -64,17 +67,23 @@ public class ComponentInstallerTaskRegistryReader extends RegistryReader {
 	public List<IComponentInstallerTask> getTasks() {
 		if (ret.isEmpty()) {
 			readRegistry();
-			Collections.sort(ret, new Comparator<IComponentInstallerTask>() {
-
-				@Override
-				public int compare(IComponentInstallerTask o1, IComponentInstallerTask o2) {
-					return o1.getOrder() - o2.getOrder();
-				}
-
-			});
+			Collections.sort(ret, new TaskComparator());
 		}
 		return ret;
 	}
+	
+	
+    /**
+     * Get component installer tasks from plugins
+     * @param t ComponentType
+     * @return List<IComponentInstallerTask>
+     */
+    public List<IComponentInstallerTask> getTasks(ComponentType t) {
+        List<IComponentInstallerTask> allTasks = getTasks();
+        allTasks =  allTasks.stream().filter(task -> task.getComponentType() == t).collect(Collectors.toList());
+        Collections.sort(allTasks, new TaskComparator());
+        return allTasks;
+    }
 
 	@Override
 	protected boolean readElement(IConfigurationElement element) {
@@ -99,8 +108,9 @@ public class ComponentInstallerTaskRegistryReader extends RegistryReader {
 					task.setComponenGroupId(element.getAttribute(GROUP_ATTRIBUTE));
 					task.setComponenArtifactId(element.getAttribute(ARTIFACT_ATTRIBUTE));
 					task.setComponenVersion(element.getAttribute(VERSION_ATTRIBUTE));
-					task.setComponenVersion(element.getAttribute(CLASSIFIER_ATTRIBUTE));
-					task.setComponenVersion(element.getAttribute(TYPE_ATTRIBUTE));
+					task.setComponentClassifier(element.getAttribute(CLASSIFIER_ATTRIBUTE));
+					task.setComponentPackageType(element.getAttribute(PACKAGE_TYPE_ATTRIBUTE));
+					task.setComponentType(element.getAttribute(TYPE_ATTRIBUTE));
 					ret.add(task);
 				}
 
@@ -108,6 +118,15 @@ public class ComponentInstallerTaskRegistryReader extends RegistryReader {
 			return true;
 		} // else return false
 		return false;
+	}
+	
+	static class TaskComparator implements Comparator<IComponentInstallerTask>{
+
+        @Override
+        public int compare(IComponentInstallerTask o1, IComponentInstallerTask o2) {
+            return o1.getOrder() - o2.getOrder();
+        }
+	    
 	}
 
 }

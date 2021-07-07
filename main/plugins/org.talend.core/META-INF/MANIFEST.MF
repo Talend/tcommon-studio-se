@@ -24,7 +24,9 @@ Require-Bundle: org.eclipse.debug.core,
  org.talend.utils,
  org.talend.libraries.dom4j-jaxen
 Bundle-Vendor: .Talend SA.
-Export-Package: org.talend.core,
+Export-Package: org.apache.logging.slf4j,
+ org.slf4j.impl,
+ org.talend.core,
  org.talend.core.branding,
  org.talend.core.editor,
  org.talend.core.i18n,
@@ -57,4 +59,5 @@ Export-Package: org.talend.core,
 Import-Package: org.apache.commons.collections4.map
 Bundle-ClassPath: lib/log4j-api-2.12.1.jar,
  lib/log4j-core-2.12.1.jar,
- .
+ .,
+ lib/log4j-slf4j-impl-2.12.1.jar

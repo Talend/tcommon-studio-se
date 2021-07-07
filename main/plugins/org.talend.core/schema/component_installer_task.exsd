@@ -59,12 +59,64 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="order" type="int" >
+         <attribute name="order" type="int">
             <annotation>
                <documentation>
                   This defines the order that the runnable is executed regarding other identical extensions.
 where the &lt;b&gt;highest&lt;/b&gt; are executed first and  the &lt;b&gt;lowest&lt;/b&gt; priority are executed last.
 The default value is &lt;b&gt;normal&lt;/b&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="g" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="a" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="v" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="c" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="ct" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="TCK">
+                  </enumeration>
+                  <enumeration value="TCOMPV0">
+                  </enumeration>
+                  <enumeration value="TCOMPV1">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="t" type="string">
+            <annotation>
+               <documentation>
+                  
                </documentation>
             </annotation>
          </attribute>

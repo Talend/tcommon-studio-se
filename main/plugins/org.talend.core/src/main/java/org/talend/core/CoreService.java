@@ -522,18 +522,18 @@ public class CoreService implements ICoreService {
     }
 
 	/**
-	 * Check and install components
+	 * Check and install non TCK components
 	 */
-	public void installComponents(IProgressMonitor monitor) {
-		List<IComponentInstallerTask> tasks = ComponentInstallerTaskRegistryReader.getInstance().getTasks();
-		tasks.forEach(task -> {
-			if (task.needInstall()) {
-				try {
-					task.install(monitor);
-				} catch (Exception e) {
-					ExceptionHandler.process(e);
-				}
-			}
-		});
-	}
+    public void installComponents(IProgressMonitor monitor) {
+        List<IComponentInstallerTask> tasks = ComponentInstallerTaskRegistryReader.getInstance().getTasks();
+        tasks.forEach(task -> {
+            if (task.getComponentType() != IComponentInstallerTask.ComponentType.TCK && task.needInstall()) {
+                try {
+                    task.install(monitor);
+                } catch (Exception e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        });
+    }
 }

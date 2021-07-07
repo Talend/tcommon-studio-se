@@ -12,7 +12,6 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,6 +21,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *
  */
 public interface IComponentInstallerTask {
+    
+    enum ComponentType{
+        TCK,
+        TCOMPV0,
+        TCOMPV1
+    }
 
 	/**
 	 * Order of the task, smaller means higher priority
@@ -98,7 +103,7 @@ public interface IComponentInstallerTask {
 	 * 
 	 * @return component's type
 	 */
-	String getComponentType();
+	ComponentType getComponentType();
 
 	/**
 	 * Set component's type
@@ -106,6 +111,20 @@ public interface IComponentInstallerTask {
 	 * @param type
 	 */
 	void setComponentType(String type);
+	
+	/**
+     * Get component's package type
+     * 
+     * @return component's type
+     */
+	String getComponentPackageType();
+	
+	/**
+     * Set component's package type
+     * 
+     * @return component's type
+     */
+	void setComponentPackageType(String type);
 
 	/**
 	 * Whether it is necessary to install the component
