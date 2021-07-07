@@ -699,10 +699,8 @@ public class ImportItemsWizardPage extends WizardPage {
         if (viewer.getTree().getItemCount() == 0) {
             return;
         }
-        TreeItem topItem = viewer.getTree().getTopItem();
         Object[] checkedElements = viewer.getCheckedElements();
-        if (topItem != null && topItem.getChecked() || checkedElements.length == 0) {
-            // all checked or no item checked, no need handle dependencies
+        if (checkedElements.length == 0) {
             return;
         }
 
@@ -714,6 +712,11 @@ public class ImportItemsWizardPage extends WizardPage {
                 toSelectSet.add((ItemImportNode) object);
             }
         }
+        if (nodesBuilder.getAllImportItemNode().size() == checkedNodeList.size()) {
+            // already checked all
+            return;
+        }
+
         ImportDependencyRelationsHelper.getInstance().checkImportRelationDependency(checkedNodeList, toSelectSet,
                 nodesBuilder.getAllImportItemNode());
         filteredCheckboxTree.getViewer().setCheckedElements(toSelectSet.toArray());
