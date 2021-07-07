@@ -113,9 +113,9 @@ public interface IStudioLiteP2Service extends IService {
 
         boolean hasUpdate();
 
-        boolean isReCheckForUpdate();
+        boolean needReCheckForUpdate();
 
-        boolean isRestart();
+        boolean needRestartToContinue();
 
         Collection<?> getUninstalledIUs();
 
