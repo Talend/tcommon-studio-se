@@ -54,4 +54,6 @@ public interface IRepositoryPrefConstants {
     public static final String REF_PROJECT_BRANCH_SETTING = "ref_project_branch_setting";
     
     public static final String ITEM_EXPORT_DEPENDENCIES = "item_export_dependencies";
+
+    public static final String ITEM_DISABLE_SCREENSHOT = "item_disable_screenshot";
 }

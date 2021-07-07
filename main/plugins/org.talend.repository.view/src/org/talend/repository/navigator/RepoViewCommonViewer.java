@@ -13,6 +13,7 @@
 package org.talend.repository.navigator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,14 +21,19 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ContentViewer;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -54,6 +60,7 @@ import org.talend.core.repository.ui.actions.MoveObjectAction;
 import org.talend.core.repository.ui.view.RepositoryDropAdapter;
 import org.talend.core.repository.utils.XmiResourceManager;
 import org.talend.repository.model.IRepositoryNode;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.view.sorter.IRepositoryNodeSorter;
 import org.talend.repository.view.sorter.RepositoryNodeSorterRegister;
@@ -237,6 +244,16 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
     @Override
     protected Object[] getSortedChildren(Object parentElementOrTreePath) {
         Object[] children = super.getSortedChildren(parentElementOrTreePath);
+
+        // avoid "> " prefix impacting node order
+        List<ENodeType> systemNodeType = Arrays.asList(ENodeType.SYSTEM_FOLDER, ENodeType.STABLE_SYSTEM_FOLDER);
+        Arrays.sort(children,
+                (a, b) -> a instanceof RepositoryNode && b instanceof RepositoryNode
+                        && !systemNodeType.contains(((RepositoryNode) a).getType())
+                        && !systemNodeType.contains(((RepositoryNode) b).getType())
+                                ? getNodeLabel(this, a).compareTo(getNodeLabel(this, b))
+                                : 0);
+
         // do special sorter for repository
         IRepositoryNodeSorter[] sorters = RepositoryNodeSorterRegister.getInstance().getSorters();
         if (sorters != null) {
@@ -245,6 +262,32 @@ public class RepoViewCommonViewer extends CommonViewer implements INavigatorCont
             }
         }
         return children;
+    }
+
+    /**
+     * Copied from ViewerComparator.getLabel(Viewer viewer, Object e1) and modified to remove "> " prefix
+     */
+    private String getNodeLabel(Viewer viewer, Object e) {
+        String name;
+        if (viewer == null || !(viewer instanceof ContentViewer)) {
+            name = e.toString();
+        } else {
+            IBaseLabelProvider prov = ((ContentViewer) viewer).getLabelProvider();
+            if (prov instanceof ILabelProvider) {
+                ILabelProvider lprov = (ILabelProvider) prov;
+                if (lprov instanceof DecoratingLabelProvider) {
+                    DecoratingLabelProvider dprov = (DecoratingLabelProvider) lprov;
+                    lprov = dprov.getLabelProvider();
+                }
+                name = lprov.getText(e);
+            } else {
+                name = e.toString();
+            }
+        }
+        if (name == null) {
+            name = "";//$NON-NLS-1$
+        }
+        return StringUtils.strip(name, "> "); //$NON-NLS-1$
     }
 
     /**
