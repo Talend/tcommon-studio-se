@@ -374,6 +374,13 @@ public class TalendTextUtils {
         // for bug 12092
         boolean isSqlKeyword = KeywordsValidator.isSqlKeyword(temp, name.getProduct());
 
+        /*******************************************
+         * This is a temp fix for snowflake database https://jira.talendforge.org/browse/TUP-31883
+         *******************************************/
+        if (EDatabaseTypeName.GENERAL_JDBC.equals(name) && temp.toUpperCase().equals("KEY")) {
+            isSqlKeyword = false;
+        }
+
         boolean isH2 = EDatabaseTypeName.H2 == name;
 
         // if the database type is IBMDB2/ORACLE and the field name contain lowercase character, should add quotes

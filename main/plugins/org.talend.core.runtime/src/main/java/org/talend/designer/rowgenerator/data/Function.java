@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.core.runtime.i18n.Messages;
 import org.talend.utils.json.JSONArray;
 import org.talend.utils.json.JSONException;
@@ -44,6 +45,10 @@ public class Function implements Cloneable {
     private TalendType talendType;
 
     private boolean isUserDefined;
+
+    private boolean rountineJarDependencyMissing = true;
+
+    private String fullQualifiedName;
 
     /**
      * yzhang Function constructor comment.
@@ -515,6 +520,40 @@ public class Function implements Cloneable {
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getFullQualifiedName() {
+        return fullQualifiedName;
+    }
+
+    public void setFullQualifiedName(String fullQualifiedName) {
+        this.fullQualifiedName = fullQualifiedName;
+    }
+
+    public String getRoutineJarName() {
+        String[] fqns = fullQualifiedName.split("\\.");
+        if (fqns.length > 1) {
+            return fqns[fqns.length - 2];
+        }
+        return null;
+    }
+
+    public boolean isRoutineJar() {
+        if (this.fullQualifiedName == null || this.fullQualifiedName.isEmpty()) {
+            return false;
+        }
+        return this.fullQualifiedName.contains("." + JavaUtils.JAVA_ROUTINESJAR_DIRECTORY + ".");
+    }
+
+    public boolean isRoutineJarDependencyMissing() {
+        if (!this.isRoutineJar()) {
+            return false;
+        }
+        return this.rountineJarDependencyMissing;
+    }
+
+    public void setRountineJarDependencyMissing(boolean rountineJarDependencyMissing) {
+        this.rountineJarDependencyMissing = rountineJarDependencyMissing;
     }
 
     @SuppressWarnings("unchecked")
