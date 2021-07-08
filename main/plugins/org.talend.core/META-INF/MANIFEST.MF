@@ -58,4 +58,5 @@ Import-Package: org.apache.commons.collections4.map,
  org.slf4j
 Bundle-ClassPath: lib/log4j-api-2.12.1.jar,
  lib/log4j-core-2.12.1.jar,
- .
+ .,
+ lib/log4j-slf4j-impl-2.12.1.jar
