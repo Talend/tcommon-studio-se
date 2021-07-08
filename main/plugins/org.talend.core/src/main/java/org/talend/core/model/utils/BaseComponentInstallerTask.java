@@ -12,14 +12,6 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-
-import org.apache.commons.lang3.StringUtils;
-import org.talend.commons.exception.ExceptionHandler;
-import org.talend.utils.io.FilesUtils;
-
 /**
  * @author bhe created on Jul 1, 2021
  *
@@ -110,48 +102,4 @@ abstract public class BaseComponentInstallerTask implements IComponentInstallerT
         this.t = type;
     }
 
-    public File moveFile(File compFile) {
-        if (compFile == null || !isMovingFile(compFile)) {
-            return compFile;
-        }
-
-        String targetFileName = getExpectedArtifactName();
-        File targetFile = Paths.get(compFile.getParent(), targetFileName).toFile();
-        try {
-            FilesUtils.copyFile(compFile, targetFile);
-            compFile.delete();
-            return targetFile;
-        } catch (IOException e) {
-            ExceptionHandler.process(e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected boolean isMovingFile(File compFile) {
-        if (compFile == null) {
-            return false;
-        }
-        return !StringUtils.equalsIgnoreCase(compFile.getName(), getExpectedArtifactName());
-    }
-
-    protected String getExpectedArtifactName() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(a);
-        sb.append("-");
-        sb.append(v);
-
-        if (!StringUtils.isEmpty(c)) {
-            sb.append("-");
-            sb.append(c);
-        }
-
-        if (StringUtils.isEmpty(t)) {
-            sb.append(".jar");
-        } else {
-            sb.append(".");
-            sb.append(t);
-        }
-        
-        return sb.toString();
-    }
 }
