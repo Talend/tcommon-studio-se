@@ -75,6 +75,11 @@ public class RoutineJarsFunctionParser extends AbstractTalendFunctionParser {
             IRunProcessService service = (IRunProcessService) GlobalServiceRegister.getDefault()
                     .getService(IRunProcessService.class);
             IRepositoryObject process = (IRepositoryObject) service.getActiveProcess();
+
+            if (process == null || process.getProperty() == null || process.getProperty().getItem() == null) {
+                return;
+            }
+
             Item processItem = process.getProperty().getItem();
 
             Set<CodesJarInfo> allSet = CodesJarResourceCache.getAllCodesJars();
