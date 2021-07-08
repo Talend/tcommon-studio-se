@@ -62,6 +62,8 @@ public class EclipseCommandLine {
 
     static public final String TALEND_CONTINUE_LOGON = "-talendContinueLogon";
 
+    static public final String TALEND_CONTINUE_UPDATE = "-talendContinueUpdate";
+
     static public final String LOGIN_ONLINE_UPDATE = "--loginOnlineUpdate";
 
     static public final String ARG_TALEND_BUNDLES_CLEANED = "-talend.studio.bundles.cleaned"; //$NON-NLS-1$

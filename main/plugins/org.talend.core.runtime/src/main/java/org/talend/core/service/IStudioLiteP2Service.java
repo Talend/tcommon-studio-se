@@ -48,8 +48,10 @@ public interface IStudioLiteP2Service extends IService {
 
     /**
      * Preload to improve performance
+     * 
+     * @return restart or not
      */
-    void preload(IProgressMonitor monitor) throws Exception;
+    boolean preload(IProgressMonitor monitor) throws Exception;
 
     String getSettingsFilePath() throws Exception;
 
@@ -113,7 +115,7 @@ public interface IStudioLiteP2Service extends IService {
 
         boolean hasUpdate();
 
-        boolean needReCheckForUpdate();
+        boolean isPatchSystemUpdate();
 
         boolean needRestartToContinue();
 

@@ -143,18 +143,21 @@ public class Application implements IApplication {
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
                 return IApplication.EXIT_RELAUNCH;
             }
-            try {
-                IStudioLiteP2Service p2Service = IStudioLiteP2Service.get();
-                if (p2Service != null) {
-                    p2Service.preload(new NullProgressMonitor());
-                }
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
             StudioSSLContextProvider.setSSLSystemProperty();
             HttpProxyUtil.initializeHttpProxy();
             TalendProxySelector.getInstance();
             NetworkUtil.loadAuthenticator();
+            try {
+                IStudioLiteP2Service p2Service = IStudioLiteP2Service.get();
+                if (p2Service != null) {
+                    boolean restart = p2Service.preload(new NullProgressMonitor());
+                    if (restart) {
+                        return IApplication.EXIT_RELAUNCH;
+                    }
+                }
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
 
             // setup MavenResolver properties
             // before set, must check user setting first.
