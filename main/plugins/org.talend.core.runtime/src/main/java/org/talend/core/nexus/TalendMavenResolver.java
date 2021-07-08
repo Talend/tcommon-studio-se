@@ -23,8 +23,6 @@ import org.ops4j.pax.url.mvn.MavenResolver;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ManagedService;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.network.IProxySelectorProvider;
 import org.talend.commons.utils.network.TalendProxySelector;
@@ -49,39 +47,6 @@ public class TalendMavenResolver {
     private static MavenResolver mavenResolver = null;
 
     private static final String MVN_USER_SETTING_KEY = "org.ops4j.pax.url.mvn.settings";
-
-    /**
-     *
-     * DOC wchen TalendMavenResolver constructor comment.
-     */
-    static {
-        // the tracker is use in case the service is modifed
-        final BundleContext context = CoreRuntimePlugin.getInstance().getBundle().getBundleContext();
-        ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver> serviceTracker = new ServiceTracker<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>(
-                context, org.ops4j.pax.url.mvn.MavenResolver.class,
-                new ServiceTrackerCustomizer<org.ops4j.pax.url.mvn.MavenResolver, org.ops4j.pax.url.mvn.MavenResolver>() {
-
-                    @Override
-                    public org.ops4j.pax.url.mvn.MavenResolver addingService(
-                            ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference) {
-                        return context.getService(reference);
-                    }
-
-                    @Override
-                    public void modifiedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
-                            org.ops4j.pax.url.mvn.MavenResolver service) {
-                        mavenResolver = null;
-
-                    }
-
-                    @Override
-                    public void removedService(ServiceReference<org.ops4j.pax.url.mvn.MavenResolver> reference,
-                            org.ops4j.pax.url.mvn.MavenResolver service) {
-                        mavenResolver = null;
-                    }
-                });
-        serviceTracker.open();
-    }
 
     public static void updateMavenResolver(String resolverKey, Dictionary<String, String> props) throws Exception {
         if (!needUpdate(resolverKey)) {
