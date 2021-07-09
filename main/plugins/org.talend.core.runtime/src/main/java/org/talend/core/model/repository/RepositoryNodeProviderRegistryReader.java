@@ -76,32 +76,15 @@ public class RepositoryNodeProviderRegistryReader extends RegistryReader {
 
     private static RepositoryNodeProviderRegistryReader instance;
 
-    private static final Object instanceLock = new Object();
-
     public static RepositoryNodeProviderRegistryReader getInstance() {
         if (instance == null) {
-            synchronized (instanceLock) {
+            synchronized (RepositoryNodeProviderRegistryReader.class) {
                 if (instance == null) {
                     instance = new RepositoryNodeProviderRegistryReader();
                 }
             }
         }
         return instance;
-    }
-
-    public static void clearCache() {
-        if (instance != null) {
-            synchronized (instanceLock) {
-                if (instance != null) {
-                    instance.clear();
-                    instance = null;
-                }
-            }
-        }
-    }
-
-    private void clear() {
-        // currently nothing to do
     }
 
     private RepositoryNodeProviderRegistryReader() {
