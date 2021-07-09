@@ -50,11 +50,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>couchbase</artifactId>
-			<version>${tacokit.components.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.talend.components</groupId>
 			<artifactId>cosmosDB</artifactId>
 			<version>${tacokit.components.version}</version>
 			<exclusions>
