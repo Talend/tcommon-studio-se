@@ -67,7 +67,6 @@ import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.internal.progress.ProgressManager;
 import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.navigator.CommonViewer;
-import org.eclipse.ui.navigator.CommonViewerSorter;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -120,6 +119,7 @@ import org.talend.repository.viewer.content.listener.ResourcePostChangeRunnableL
 import org.talend.repository.viewer.filter.PerspectiveFilterHelper;
 import org.talend.repository.viewer.filter.RepositoryNodeFilterHelper;
 import org.talend.repository.viewer.filter.listener.RepoViewPerspectiveListener;
+import org.talend.repository.viewer.sorter.RepoCommonViewerSorter;
 
 /**
  * DOC sgandon class global comment. Detailled comment <br/>
@@ -513,7 +513,10 @@ public class RepoViewCommonNavigator extends CommonNavigator implements IReposit
             });
         }
         expandTreeRootIfOnlyOneRoot();
-        viewer.setSorter(new CommonViewerSorter());
+        // viewer.setSorter(new CommonViewerSorter());
+        RepoCommonViewerSorter sorter = new RepoCommonViewerSorter();
+        sorter.setContentService(viewer.getNavigatorContentService());
+        viewer.setSorter(sorter);
         refreshContentDescription();
 
         // refresh for filters
