@@ -2137,37 +2137,7 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
      * @throws LoginException
      */
     public void logOnProject(Project project, IProgressMonitor monitor) throws LoginException, PersistenceException {
-        // to fix the ops4j and m2e.core maven handler conflict issue TUP-31484 begin
-        ServiceReference<?> urlService = null;
-        BundleContext bundleContext = CoreRepositoryPlugin.getDefault().getBundle().getBundleContext();
-        try {
-            // loop to get the m2e.core service
-            for (ServiceReference<?> ref : bundleContext
-                    .getServiceReferences(org.osgi.service.url.URLStreamHandlerService.class, null)) {
-                Object value = ref.getProperty(URLConstants.URL_HANDLER_PROTOCOL);
-                if (value != null && value instanceof String[]) {
-                    String pArray[] = (String[]) value;
-                    if (pArray.length > 0 && "mvn".equals(pArray[0])) {
-                        if ("org.eclipse.m2e.core".equals(ref.getBundle().getSymbolicName())) {
-                            urlService = ref;
-                            break;
-                        }
-                    }
-                }
-            }
-            // remove m2e.core service
-            if (urlService != null) {
-                if (urlService instanceof ServiceReferenceImpl<?>) {
-                    ServiceReferenceImpl<?> s = (ServiceReferenceImpl<?>) urlService;
-                    ServiceRegistrationImpl<?> registration = s.getRegistration();
-                    registration.unregister();
-                }
-            }
-        } catch (Exception e1) {
-            log.error("Unable to unregister service of " + org.osgi.service.url.URLStreamHandlerService.class, e1);
-        }
-        // ===== TUP-31484 end
-
+        unregisterM2EServiceBeforeLogon();
         try {
             TimeMeasurePerformance.begin("logOnProject", "logon project name '" + project.getLabel()+"'"); //$NON-NLS-1$ //$NON-NLS-2$
             try {
@@ -2411,7 +2381,38 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             throw e;
         }
     }
-    
+
+    // to fix the ops4j and m2e.core maven handler conflict issue TUP-31484
+    private void unregisterM2EServiceBeforeLogon() {
+        ServiceReference<?> urlService = null;
+        BundleContext bundleContext = CoreRepositoryPlugin.getDefault().getBundle().getBundleContext();
+        try {
+            // loop to get the m2e.core service
+            for (ServiceReference<?> ref : bundleContext.getServiceReferences(org.osgi.service.url.URLStreamHandlerService.class,
+                    null)) {
+                Object value = ref.getProperty(URLConstants.URL_HANDLER_PROTOCOL);
+                if (value != null && value instanceof String[]) {
+                    String pArray[] = (String[]) value;
+                    if (pArray.length > 0 && "mvn".equals(pArray[0])) {
+                        if ("org.eclipse.m2e.core".equals(ref.getBundle().getSymbolicName())) {
+                            urlService = ref;
+                            break;
+                        }
+                    }
+                }
+            }
+            // remove m2e.core service
+            if (urlService != null) {
+                if (urlService instanceof ServiceReferenceImpl<?>) {
+                    ServiceReferenceImpl<?> s = (ServiceReferenceImpl<?>) urlService;
+                    ServiceRegistrationImpl<?> registration = s.getRegistration();
+                    registration.unregister();
+                }
+            }
+        } catch (Exception e1) {
+            log.error("Unable to unregister service of " + org.osgi.service.url.URLStreamHandlerService.class, e1);
+        }
+    }
     private void updateProjectJavaVersionIfNeed() {
         String specifiedVersion = null;
         String currentVersion = JavaUtils.getProjectJavaVersion();
