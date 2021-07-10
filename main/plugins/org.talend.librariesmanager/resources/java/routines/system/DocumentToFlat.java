@@ -48,7 +48,7 @@ public class DocumentToFlat {
 			loopXpath = doc.createXPath(currentLoop);
 		}
 		loopXpath.setNamespaceURIs(xmlNameSpaceMap);
-		nodes = loopXpath.selectNodes(doc);
+		nodes = convertToList(loopXpath.selectNodes(doc));
 		if(this.isOptional && nodes.size() == 0 && !top) {
 			setParentAsLoop();
 			flat();
@@ -184,7 +184,7 @@ public class DocumentToFlat {
 	public void flatForLookup(boolean isOptionalLoop) {
 		XPath loopXpath = doc.createXPath(currentLoop);
 		loopXpath.setNamespaceURIs(xmlNameSpaceMap);
-		nodes = loopXpath.selectNodes(doc);
+		nodes = convertToList(loopXpath.selectNodes(doc));
 		if(isOptionalLoop && nodes.size() == 0 && !top) {
 			setParentAsLoop();
 			flatForLookup(isOptionalLoop);
@@ -246,6 +246,14 @@ public class DocumentToFlat {
 	
 	public void setIsOptional(boolean isLoopOptional) {
 		this.isOptional = isLoopOptional;
+	}
+	
+	public List<AbstractNode> convertToList(Object nodes) {
+		if (nodes == null) {
+			return null;
+		} else {
+			return (List) nodes;
+		}
 	}
 	
 }
