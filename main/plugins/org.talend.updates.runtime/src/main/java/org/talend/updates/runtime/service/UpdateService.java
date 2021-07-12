@@ -137,9 +137,6 @@ public class UpdateService implements IUpdateService {
                 UpdateTools.deployCars(monitor, tmpInstallFolder, false);
                 tmpInstallFolder.delete();
             }
-            if (isNeedRestart) {
-                SharedStudioUtils.updateExtraFeatureFile();
-            }
         }
         return isNeedRestart;
     }

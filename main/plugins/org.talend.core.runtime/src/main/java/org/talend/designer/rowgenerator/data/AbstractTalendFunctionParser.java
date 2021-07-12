@@ -196,6 +196,7 @@ public abstract class AbstractTalendFunctionParser extends AbstractFunctionParse
                 function.setName(funcName);
                 function.setDescription(des);
                 function.setParameters(Arrays.asList(paras));
+                function.setFullQualifiedName(fullName);
                 if (!category.equals(EMPTY_STRING)) {
                     function.setCategory(category);
                 }

@@ -110,6 +110,7 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.properties.RoutineItem;
 import org.talend.core.model.properties.SpagoBiServer;
 import org.talend.core.model.properties.Status;
+import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.properties.User;
 import org.talend.core.model.properties.impl.FolderItemImpl;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
@@ -411,7 +412,8 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                 }
 
                 boolean isThrow = true;
-                if (tdqRepService != null && CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+                if (tdqRepService != null && (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()
+                        || item instanceof TDQItem)) {
                     // change MessageBox to DeleteModelElementConfirmDialog
                     InputDialog inputDialog = tdqRepService.getInputDialog(item);
                     if (MessageDialog.OK == inputDialog.open()) {
