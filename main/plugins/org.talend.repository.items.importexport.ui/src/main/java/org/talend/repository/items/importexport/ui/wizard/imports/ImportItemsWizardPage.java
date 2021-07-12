@@ -386,7 +386,7 @@ public class ImportItemsWizardPage extends WizardPage {
         });
     }
 
-    private boolean getImportDependenciesPref() {
+    protected boolean getImportDependenciesPref() {
         IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
         if (repositoryPreferenceStore != null) {
             String option = repositoryPreferenceStore.getString(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES);
@@ -395,7 +395,7 @@ public class ImportItemsWizardPage extends WizardPage {
         return false;
     }
 
-    private void saveImportDependenciesPref() {
+    protected void saveImportDependenciesPref() {
         IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
         if (repositoryPreferenceStore != null) {
             repositoryPreferenceStore.setValue(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES,

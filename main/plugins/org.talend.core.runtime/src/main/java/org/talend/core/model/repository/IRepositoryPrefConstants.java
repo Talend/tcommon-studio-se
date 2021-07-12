@@ -57,5 +57,7 @@ public interface IRepositoryPrefConstants {
 
     public static final String ITEM_IMPORT_DEPENDENCIES = "item_import_dependencies";
 
+    public static final String ITEM_IMPORT_BRANCH_DEPENDENCIES = "item_import_from_branch_dependencies";
+
     public static final String ITEM_DISABLE_SCREENSHOT = "item_disable_screenshot";
 }
