@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.talend.studio</groupId>
         <artifactId>studio-maven-repository-tos</artifactId>
-        <version>7.4.1-SNAPSHOT</version>
+        <version>8.0.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 	<artifactId>studio-tacokit-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<tacokit.components.version>1.23.0-SNAPSHOT</tacokit.components.version>
+		<tacokit.components.version>1.24.0-SNAPSHOT</tacokit.components.version>
 	</properties>
 	<repositories>
 		<repository>

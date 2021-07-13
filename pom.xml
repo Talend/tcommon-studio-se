@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.talend.studio</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>7.4.1-SNAPSHOT</version>
+		<version>8.0.1-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 	<artifactId>tcommon-studio-se</artifactId>
@@ -74,7 +74,6 @@
 		<module>main/features/org.talend.jdt.feature</module>
 		<module>main/features/org.talend.m2e.feature</module>
 		<module>main/features/org.talend.platform.feature</module>
-		<module>main/features/org.talend.help.di.feature</module>
 		<module>main/plugins/org.talend.common.ui.runtime</module>
 		<module>main/plugins/org.talend.commons.runtime</module>
 		<module>main/plugins/org.talend.commons.ui</module>
