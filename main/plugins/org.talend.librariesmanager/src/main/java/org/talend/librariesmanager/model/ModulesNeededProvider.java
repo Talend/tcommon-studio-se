@@ -88,6 +88,7 @@ import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.core.utils.CodesJarResourceCache;
 import org.talend.core.utils.TalendCacheUtils;
 import org.talend.core.utils.TalendQuoteUtils;
+import org.talend.designer.core.model.utils.emf.component.ComponentFactory;
 import org.talend.designer.core.model.utils.emf.component.IMPORTType;
 import org.talend.designer.core.model.utils.emf.talendfile.RoutinesParameterType;
 import org.talend.librariesmanager.i18n.Messages;
@@ -803,6 +804,7 @@ public class ModulesNeededProvider {
     }
 
     private static void getModulesNeededForRoutesJava11() {
+    	/*  
         importNeedsListForRoutes.add(getModuleNeededForName("istack-commons-runtime-3.0.8.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.bind-api-2.3.2.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("jakarta.xml.soap-api-1.4.1.jar"));
@@ -813,6 +815,11 @@ public class ModulesNeededProvider {
         importNeedsListForRoutes.add(getModuleNeededForName("txw2-2.3.2.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("jakarta.jws-api-1.1.1.jar"));
         importNeedsListForRoutes.add(getModuleNeededForName("org.apache.servicemix.specs.jaxws-api-2.2-2.9.0.jar"));
+    	*/
+    	
+        IMPORTType importType = ComponentFactory.eINSTANCE.createIMPORTType();
+        importType.setMODULEGROUP("esb-java-11-group");
+        importType.setREQUIRED(true);
     }
 
     /**
