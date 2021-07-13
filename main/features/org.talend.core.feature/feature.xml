@@ -20,8 +20,8 @@
     <import feature="org.eclipse.emf.workspace" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.gef" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.gmf.runtime.notation" version="0.0.0" match="greaterOrEqual"/>
-    <import feature="org.talend.jdt.feature" version="0.0.0" match="greaterOrEqual"/>
-    <import feature="org.talend.platform.feature" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.jdt" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.platform" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.tos.libraries.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.utils.feature" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="javax.activation" version="0.0.0" match="greaterOrEqual"/>

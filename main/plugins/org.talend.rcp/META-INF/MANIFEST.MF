@@ -34,7 +34,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.talend.commons.runtime,
  org.talend.core.runtime,
  org.eclipse.e4.ui.workbench,
- javax.inject
+ javax.inject,
+ org.eclipse.m2e.core
 Eclipse-LazyStart: true
 Export-Package: org.talend.rcp,
  org.talend.rcp.intro,

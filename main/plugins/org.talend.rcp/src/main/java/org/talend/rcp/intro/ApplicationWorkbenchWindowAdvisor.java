@@ -17,12 +17,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
@@ -40,6 +43,8 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.m2e.core.internal.MavenPluginActivator;
+import org.eclipse.m2e.core.internal.MvnProtocolHandlerService;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -69,7 +74,11 @@ import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.internal.registry.PerspectiveDescriptor;
 import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.url.URLConstants;
+import org.osgi.service.url.URLStreamHandlerService;
 import org.talend.commons.CommonsPlugin;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
@@ -126,6 +135,8 @@ import org.talend.repository.ui.views.IRepositoryView;
  */
 @SuppressWarnings("restriction")
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
+
+    private static Logger log = Logger.getLogger(ApplicationWorkbenchWindowAdvisor.class);
 
     private List<IAction> actions = new ArrayList<IAction>();
 
@@ -537,6 +548,28 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             @Override
             public void postShutdown(IWorkbench workbench) {
                 ProxyRepositoryFactory.getInstance().logOffProject();
+                // because of the m2e.core and ops4j service conflict, we force to unregister m2e service before logon
+                // project. but will cause the exception "java.lang.IllegalStateException: The service has been
+                // unregistered" when m2e.core bundle stop . so here try to register the service back before shutdown
+                registerM2EServiceBeforeShutdown();
+            }
+
+            private void registerM2EServiceBeforeShutdown() {
+                try {
+                    Hashtable<String, Object> properties = new Hashtable<>();
+                    properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { "mvn" });
+                    MavenPluginActivator m2eDefault = MavenPluginActivator.getDefault();
+                    BundleContext bundleContext = m2eDefault.getBundle().getBundleContext();
+                    ServiceRegistration<URLStreamHandlerService> registerService = bundleContext
+                            .registerService(URLStreamHandlerService.class, new MvnProtocolHandlerService(), properties);
+                    Field declaredField = m2eDefault.getClass().getDeclaredField("protocolHandlerService");
+                    declaredField.setAccessible(true);
+                    declaredField.set(m2eDefault, registerService);
+
+                } catch (Exception e) {
+                    log.error("Unable to register service back before shutdown "
+                            + org.osgi.service.url.URLStreamHandlerService.class, e);
+                }
             }
         });
     }
