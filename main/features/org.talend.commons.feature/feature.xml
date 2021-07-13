@@ -18,6 +18,7 @@
   <plugin id="org.talend.common.ui.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.common.ui.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.commons.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="com.google.guava" download-size="0" install-size="0" version="27.1.0" unpack="false"/>
   <plugin id="org.talend.commons.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.commons.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.commons.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
