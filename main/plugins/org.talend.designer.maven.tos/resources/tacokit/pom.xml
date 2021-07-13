@@ -48,21 +48,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>cosmosDB</artifactId>
-			<version>${tacokit.components.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.httpcomponents</groupId>
-					<artifactId>httpclient</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
 		</dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
