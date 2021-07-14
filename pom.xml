@@ -32,36 +32,6 @@
 		</repository>
 	</repositories>
 	<modules>
-		<module>i18n/features/org.talend.babel.all.tos.feature</module>
-		<module>i18n/plugins/org.talend.common.ui.runtime.nl</module>
-		<module>i18n/plugins/org.talend.commons.runtime.nl</module>
-		<module>i18n/plugins/org.talend.commons.ui.nl</module>
-		<module>i18n/plugins/org.talend.core.nl</module>
-		<module>i18n/plugins/org.talend.core.repository.nl</module>
-		<module>i18n/plugins/org.talend.core.runtime.nl</module>
-		<module>i18n/plugins/org.talend.core.ui.nl</module>
-		<module>i18n/plugins/org.talend.cwm.mip.edit.nl</module>
-		<module>i18n/plugins/org.talend.cwm.mip.nl</module>
-		<module>i18n/plugins/org.talend.designer.maven.ui.nl</module>
-		<module>i18n/plugins/org.talend.help.nl</module>
-		<module>i18n/plugins/org.talend.helpers.nl</module>
-		<module>i18n/plugins/org.talend.librariesmanager.nl</module>
-		<module>i18n/plugins/org.talend.librariesmanager.ui.nl</module>
-		<module>i18n/plugins/org.talend.metadata.managment.nl</module>
-		<module>i18n/plugins/org.talend.metadata.managment.ui.nl</module>
-		<module>i18n/plugins/org.talend.migrationTool.nl</module>
-		<module>i18n/plugins/org.talend.model.edit.nl</module>
-		<module>i18n/plugins/org.talend.model.nl</module>
-		<module>i18n/plugins/org.talend.presentation.onboarding.nl</module>
-		<module>i18n/plugins/org.talend.rcp.nl</module>
-		<module>i18n/plugins/org.talend.registration.nl</module>
-		<module>i18n/plugins/org.talend.repository.items.importexport.nl</module>
-		<module>i18n/plugins/org.talend.repository.items.importexport.ui.nl</module>
-		<module>i18n/plugins/org.talend.repository.localprovider.nl</module>
-		<module>i18n/plugins/org.talend.repository.mdm.nl</module>
-		<module>i18n/plugins/org.talend.repository.metadata.nl</module>
-		<module>i18n/plugins/org.talend.repository.view.nl</module>
-		<module>i18n/plugins/org.talend.resources.nl</module>
 		<module>main/features/org.talend.commons.feature</module>
 		<module>main/features/org.talend.core.feature</module>
         <module>main/features/org.talend.fragment.jars.common.feature</module>

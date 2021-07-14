@@ -42,34 +42,22 @@
     <import plugin="org.eclipse.collections" version="0.0.0" match="greaterOrEqual"/>
   </requires>  
   <plugin id="org.talend.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.core.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.core.repository" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.core.repository.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.core.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.core.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.core.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.core.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.cwm.mip" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.cwm.mip.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.datatools.xml" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.designer.maven.aether" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.librariesmanager" download-size="0" install-size="0" version="0.0.0"/>
-  <plugin id="org.talend.librariesmanager.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.librariesmanager.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.librariesmanager.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.maven.resolver" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.metadata.managment" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.metadata.managment.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.metadata.managment.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.metadata.managment.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.migrationTool" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.migrationTool.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.model" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.model.edit" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
-  <plugin id="org.talend.model.edit.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
-  <plugin id="org.talend.model.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.osgi.lib.loader" download-size="0" install-size="0" version="0.0.0" unpack="false" fragment="true"/>
   <plugin id="org.talend.resources" download-size="0" install-size="0" version="0.0.0"/>
-  <plugin id="org.talend.resources.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.themes.core" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 </feature>
