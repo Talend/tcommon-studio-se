@@ -12,25 +12,40 @@
 // ============================================================================
 package org.talend.core.model.utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.osgi.framework.FrameworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ILibraryManagerService;
+import org.talend.core.runtime.projectsetting.IProjectSettingTemplateConstants;
+
 /**
  * @author bhe created on Jul 1, 2021
  *
  */
 abstract public class BaseComponentInstallerTask implements IComponentInstallerTask {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseComponentInstallerTask.class);
+
     private int order;
 
-    private String g;
-
-    private String a;
-
-    private String v;
-
-    private String c;
-
-    private String t;
-
-    private String componentType;
+    private Set<ComponentGAV> gavs = new HashSet<ComponentGAV>();
 
     @Override
     public int getOrder() {
@@ -43,63 +58,113 @@ abstract public class BaseComponentInstallerTask implements IComponentInstallerT
     }
 
     @Override
-    public String getComponentGroupId() {
-        return this.g;
+    public Set<ComponentGAV> getComponentGAV() {
+        return gavs;
     }
 
     @Override
-    public void setComponenGroupId(String groupId) {
-        this.g = groupId;
+    public void addComponentGAV(ComponentGAV gav) {
+        gavs.add(gav);
     }
 
     @Override
-    public String getComponenArtifactId() {
-        return this.a;
+    public Set<ComponentGAV> getComponentGAV(int componentType) {
+        return this.gavs.stream().filter(gav -> (gav.getComponentType() & componentType) > 0).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get implementation class of installer
+     * 
+     * @return implementation class of installer
+     */
+    abstract protected Class<? extends BaseComponentInstallerTask> getInstallerClass();
+
+    /**
+     * Get jar file directory
+     * 
+     * @return jar file directory
+     */
+    protected File getJarFileDir() {
+        URL jarFolder = FileLocator.find(FrameworkUtil.getBundle(getInstallerClass()), new Path("repository"), null);
+        File jarFileDir = null;
+        if (jarFolder != null) {
+            try {
+                jarFileDir = new File(FileLocator.toFileURL(jarFolder).getPath());
+
+                if (jarFileDir.isDirectory()) {
+                    return jarFileDir;
+                }
+
+            } catch (IOException e) {
+                LOGGER.error("Can't find jar file", e);
+            }
+        }
+        LOGGER.info("Can't find jar file from folder {}", jarFolder);
+        return null;
     }
 
     @Override
-    public void setComponenArtifactId(String artifactId) {
-        this.a = artifactId;
+    public boolean needInstall() {
+        boolean toInstall = false;
+        Set<ComponentGAV> tcompv0Gavs = this.getComponentGAV(COMPONENT_TYPE_TCOMPV0);
+
+        ILibraryManagerService librairesManagerService = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(ILibraryManagerService.class);
+        if (librairesManagerService != null) {
+            for (ComponentGAV gav : tcompv0Gavs) {
+                File jarFile = librairesManagerService.resolveStatusLocally(gav.toMavenUri());
+                if (jarFile == null) {
+                    LOGGER.info("Component: {} was not installed", gav.toString());
+                    toInstall = true;
+                    break;
+                }
+            }
+        }
+
+        if (toInstall) {
+            LOGGER.info("Component: {} is going to be installed", Arrays.toString(tcompv0Gavs.toArray()));
+        }
+        return toInstall;
     }
 
     @Override
-    public String getComponenVersion() {
-        return this.v;
+    public boolean install(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
+        if (!this.needInstall()) {
+            return false;
+        }
+
+        if (getJarFileDir() == null) {
+            return false;
+        }
+
+        try {
+            FileUtils.copyDirectory(getJarFileDir(), getM2RepositoryPath(), false);
+            LOGGER.info("Jars inside: {} were copied to {}", getJarFileDir(), getM2RepositoryPath());
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("install error", e);
+        }
+        return false;
     }
 
-    @Override
-    public void setComponenVersion(String version) {
-        this.v = version;
-    }
-
-    @Override
-    public String getComponentClassifier() {
-        return this.c;
-    }
-
-    @Override
-    public void setComponentClassifier(String classifier) {
-        this.c = classifier;
-    }
-
-    @Override
-    public ComponentType getComponentType() {
-        return ComponentType.valueOf(componentType);
-    }
-
-    @Override
-    public void setComponentType(String type) {
-        this.componentType = type;
-    }
-
-    @Override
-    public String getComponentPackageType() {
-        return t;
-    }
-
-    @Override
-    public void setComponentPackageType(String type) {
-        this.t = type;
+    private File getM2RepositoryPath() {
+        String configFolder = Platform.getConfigurationLocation().getURL().getPath();
+        File mavenUserSettingFile = new File(configFolder, IProjectSettingTemplateConstants.MAVEN_USER_SETTING_TEMPLATE_FILE_NAME);
+        File m2Repo = null;
+        if (mavenUserSettingFile.exists()) {
+            m2Repo = new File(MavenPlugin.getMaven().getLocalRepositoryPath());
+        }
+        if (m2Repo == null) {
+            File m2Folder = new File(configFolder, ".m2");
+            m2Repo = new File(m2Folder, "repository");
+        }
+        if (!m2Repo.exists()) {
+            m2Repo.mkdirs();
+        }
+        return m2Repo;
     }
 
 }

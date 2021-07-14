@@ -49,6 +49,9 @@
 
    <element name="componentInstallerTask">
       <complexType>
+         <sequence>
+            <element ref="componentGAV" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
@@ -59,7 +62,7 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="order" type="int">
+         <attribute name="order" type="string">
             <annotation>
                <documentation>
                   This defines the order that the runnable is executed regarding other identical extensions.
@@ -68,6 +71,11 @@ The default value is &lt;b&gt;normal&lt;/b&gt;
                </documentation>
             </annotation>
          </attribute>
+      </complexType>
+   </element>
+
+   <element name="componentGAV">
+      <complexType>
          <attribute name="g" type="string">
             <annotation>
                <documentation>
@@ -89,7 +97,7 @@ The default value is &lt;b&gt;normal&lt;/b&gt;
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="c" type="string">
+         <attribute name="t" type="string">
             <annotation>
                <documentation>
                   
@@ -104,21 +112,12 @@ The default value is &lt;b&gt;normal&lt;/b&gt;
             </annotation>
             <simpleType>
                <restriction base="string">
-                  <enumeration value="TCK">
+                  <enumeration value="1">
                   </enumeration>
-                  <enumeration value="TCOMPV0">
-                  </enumeration>
-                  <enumeration value="TCOMPV1">
+                  <enumeration value="2">
                   </enumeration>
                </restriction>
             </simpleType>
-         </attribute>
-         <attribute name="t" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
          </attribute>
       </complexType>
    </element>

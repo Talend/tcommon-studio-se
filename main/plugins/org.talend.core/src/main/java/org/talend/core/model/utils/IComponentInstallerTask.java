@@ -13,6 +13,7 @@
 package org.talend.core.model.utils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -21,125 +22,59 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *
  */
 public interface IComponentInstallerTask {
-    
-    enum ComponentType{
-        TCK,
-        TCOMPV0,
-        TCOMPV1
-    }
 
-	/**
-	 * Order of the task, smaller means higher priority
-	 * 
-	 * @return Order of the task
-	 */
-	int getOrder();
+    int COMPONENT_TYPE_TCOMPV0 = 1;
 
-	/**
-	 * Set order of the task
-	 * 
-	 * @param order
-	 */
-	void setOrder(int order);
+    int COMPONENT_TYPE_TCOMPV1 = 2;
 
-	/**
-	 * Get component's group ID
-	 * 
-	 * @return group ID of component
-	 */
-	String getComponentGroupId();
-
-	/**
-	 * Set component's group ID
-	 * 
-	 * @param groupId
-	 */
-	void setComponenGroupId(String groupId);
-
-	/**
-	 * Get component's artifact ID
-	 * 
-	 * @return artifact ID of component
-	 */
-	String getComponenArtifactId();
-
-	/**
-	 * Set component's artifact ID
-	 * 
-	 * @param artifactId
-	 */
-	void setComponenArtifactId(String artifactId);
-
-	/**
-	 * Get component's version
-	 * 
-	 * @return component's version
-	 */
-	String getComponenVersion();
-
-	/**
-	 * Set component's version
-	 * 
-	 * @param version
-	 */
-	void setComponenVersion(String version);
-
-	/**
-	 * Get component's classifier
-	 * 
-	 * @return component's classifier
-	 */
-	String getComponentClassifier();
-
-	/**
-	 * Set component's classifier
-	 * 
-	 * @param classifier
-	 */
-	void setComponentClassifier(String classifier);
-
-	/**
-	 * Get component's type
-	 * 
-	 * @return component's type
-	 */
-	ComponentType getComponentType();
-
-	/**
-	 * Set component's type
-	 * 
-	 * @param type
-	 */
-	void setComponentType(String type);
-	
-	/**
-     * Get component's package type
+    /**
+     * Order of the task, smaller means higher priority
      * 
-     * @return component's type
+     * @return Order of the task
      */
-	String getComponentPackageType();
-	
-	/**
-     * Set component's package type
+    int getOrder();
+
+    /**
+     * Set order of the task
      * 
-     * @return component's type
+     * @param order
      */
-	void setComponentPackageType(String type);
+    void setOrder(int order);
 
-	/**
-	 * Whether it is necessary to install the component
-	 * 
-	 * @return
-	 */
-	boolean needInstall();
+    /**
+     * Get all component gavs
+     * 
+     * @return Set<ComponentGAV>
+     */
+    Set<ComponentGAV> getComponentGAV();
 
-	/**
-	 * Install the component
-	 * 
-	 * @param monitor
-	 * @throws InvocationTargetException
-	 * @throws InterruptedException
-	 */
-	boolean install(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException;
+    /**
+     * @param componentType 1 - tcompv0, 2 - tcompv1
+     * @return Set<ComponentGAV>
+     */
+    Set<ComponentGAV> getComponentGAV(int componentType);
+
+    /**
+     * Add component gav
+     * 
+     * @param gav
+     */
+    void addComponentGAV(ComponentGAV gav);
+
+    /**
+     * Whether it is necessary to install the component
+     * 
+     * @return
+     */
+    boolean needInstall();
+
+    /**
+     * Install the component
+     * 
+     * @param monitor
+     * @throws InvocationTargetException
+     * @throws InterruptedException
+     */
+    boolean install(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException;
 
 }
