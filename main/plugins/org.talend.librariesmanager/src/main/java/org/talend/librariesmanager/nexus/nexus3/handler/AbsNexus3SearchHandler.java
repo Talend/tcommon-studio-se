@@ -137,10 +137,6 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                     resultList.add(artifact);
                 }
 
-                if (StringUtils.equals(artifact.getGroupId(), "org.talend.libraries")
-                        && StringUtils.contains(artifact.getArtifactId(), "aws-java-sdk-bundle")) {
-                    log.info(artifact.toString());
-                }
             }
         }
 

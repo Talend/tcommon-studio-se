@@ -15,13 +15,11 @@ package org.talend.librariesmanager.maven;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.core.model.general.ModuleNeeded.ELibraryInstallStatus;
 import org.talend.core.model.general.ModuleStatusProvider;
-import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.IRepositoryArtifactHandler;
+import org.talend.core.nexus.ArtifactRepositoryBean;
 import org.talend.core.nexus.RepositoryArtifactHandlerManager;
 import org.talend.core.nexus.TalendLibsServerManager;
 import org.talend.core.nexus.TalendMavenResolver;
@@ -36,8 +34,6 @@ import org.talend.utils.io.FilesUtils;
  *
  */
 public class MavenArtifactsHandler {
-
-    private static Logger log = Logger.getLogger(MavenArtifactsHandler.class);
 
     public MavenArtifactsHandler() {
     }
@@ -125,11 +121,6 @@ public class MavenArtifactsHandler {
         ArtifactRepositoryBean customNexusServer = TalendLibsServerManager.getInstance().getCustomNexusServer();
         IRepositoryArtifactHandler hander = RepositoryArtifactHandlerManager.getRepositoryHandler(customNexusServer);
         if (hander != null) {
-            if (StringUtils.equals(artifact.getGroupId(), "org.talend.libraries")
-                    && StringUtils.contains(artifact.getArtifactId(), "aws-java-sdk-bundle")) {
-                Exception e = new Exception("debug stack");
-                log.warn(artifact.toString(), e);
-            }
             hander.deploy(content, artifact.getGroupId(), artifact.getArtifactId(), artifact.getClassifier(), artifact.getType(),
                     artifact.getVersion());
         }
