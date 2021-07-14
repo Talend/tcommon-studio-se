@@ -154,7 +154,7 @@ public class ImportDependencyRelationsHelperTest {
     @Test
     public void testGetLatestVersionItemImportNode() {
         ItemImportNode latestVersionNode = helperInstance.getLatestVersionItemImportNode(propertyList.get(2).getId(),
-                allImportItemNodesList);
+                null, allImportItemNodesList);
         Property latestVersionProperty = latestVersionNode.getItemRecord().getProperty();
         Property property3 = propertyList.get(3);
         Assert.assertEquals(latestVersionProperty.getId(), property3.getId());

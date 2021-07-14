@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.model.properties.ItemRelation;
@@ -36,6 +37,8 @@ import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
  * DOC jding  class global comment. Detailled comment
  */
 public class ImportDependencyRelationsHelper {
+
+    private static final String SEPRATOR = ":";
 
     private static final ImportDependencyRelationsHelper instance = new ImportDependencyRelationsHelper();
 
@@ -120,10 +123,20 @@ public class ImportDependencyRelationsHelper {
         Set<Relation> dependencyRelations = relationsMap.get(collect.get(0));
         dependencyRelations.stream().forEach(relation -> {
             ItemImportNode relatedNode = null;
+            String projectLabel = null;
+            String id = relation.getId();
+            if (id.contains(SEPRATOR)) {
+                String[] split = id.split(SEPRATOR);
+                if (split.length > 1) {
+                    projectLabel = split[0];
+                    id = split[1];
+                }
+            }
             if (RelationshipItemBuilder.LATEST_VERSION.equals(relation.getVersion())) {
-                relatedNode = getLatestVersionItemImportNode(relation.getId(), allImportItemNodesList);
+                relatedNode = getLatestVersionItemImportNode(id, projectLabel, allImportItemNodesList);
             } else {
-                relatedNode = getItemImportNodeByIdVersion(relation.getId(), relation.getVersion(), allImportItemNodesList);
+                relatedNode = getItemImportNodeByIdVersion(id, projectLabel, relation.getVersion(),
+                        allImportItemNodesList);
             }
             if (relatedNode != null && !toSelectSet.contains(relatedNode)) {
                 // avoid loop
@@ -134,18 +147,29 @@ public class ImportDependencyRelationsHelper {
         return relatedImportNodesList;
     }
 
-    public ItemImportNode getLatestVersionItemImportNode(String id, List<ItemImportNode> allImportItemNodesList) {
-        List<ItemImportNode> allItemImportNodesById = getItemImportNode(allImportItemNodesList,
-                node -> node.getItemRecord().getProperty().getId().equals(id));
+    public ItemImportNode getLatestVersionItemImportNode(String id, String projectTecLabel,
+            List<ItemImportNode> allImportItemNodesList) {
+        List<ItemImportNode> allItemImportNodesById = getItemImportNode(allImportItemNodesList, node -> {
+            boolean projectFlag = true;
+            if (StringUtils.isNotBlank(projectTecLabel)) {
+                projectFlag = node.getProjectNode().getProject().getTechnicalLabel().equals(projectTecLabel);
+            }
+            return node.getItemRecord().getProperty().getId().equals(id) && projectFlag;
+        });
         Optional<ItemImportNode> optional = allItemImportNodesById.stream().max((node1, node2) -> VersionUtils
                 .compareTo(node1.getItemRecord().getProperty().getVersion(), node2.getItemRecord().getProperty().getVersion()));
         return optional.isPresent() ? optional.get() : null;
     }
 
-    public ItemImportNode getItemImportNodeByIdVersion(String id, String version, List<ItemImportNode> allImportItemNodesList) {
+    public ItemImportNode getItemImportNodeByIdVersion(String id, String version, String projectTecLabel,
+            List<ItemImportNode> allImportItemNodesList) {
         List<ItemImportNode> importNodeList = getItemImportNode(allImportItemNodesList, node -> {
+            boolean projectFlag = true;
+            if (StringUtils.isNotBlank(projectTecLabel)) {
+                projectFlag = node.getProjectNode().getProject().getTechnicalLabel().equals(projectTecLabel);
+            }
             Property property = node.getItemRecord().getProperty();
-            return property.getId().equals(id) && property.getVersion().equals(version);
+            return property.getId().equals(id) && property.getVersion().equals(version) && projectFlag;
         });
         return importNodeList == null ? null : importNodeList.get(0);
     }
