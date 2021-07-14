@@ -137,12 +137,12 @@ public class ComponentInstallerTaskRegistryReader extends RegistryReader {
         if (gavElements != null) {
             for (IConfigurationElement e : gavElements) {
                 ComponentGAV gav = new ComponentGAV();
-                gav.setGroupId(element.getAttribute(GROUP_ATTRIBUTE));
-                gav.setArtifactId(element.getAttribute(ARTIFACT_ATTRIBUTE));
-                gav.setVersion(element.getAttribute(VERSION_ATTRIBUTE));
-                gav.setClassifier(element.getAttribute(CLASSIFIER_ATTRIBUTE));
-                gav.setType(element.getAttribute(PACKAGE_TYPE_ATTRIBUTE));
-                gav.setComponentType(Integer.valueOf(element.getAttribute(TYPE_ATTRIBUTE)));
+                gav.setGroupId(e.getAttribute(GROUP_ATTRIBUTE));
+                gav.setArtifactId(e.getAttribute(ARTIFACT_ATTRIBUTE));
+                gav.setVersion(e.getAttribute(VERSION_ATTRIBUTE));
+                gav.setClassifier(e.getAttribute(CLASSIFIER_ATTRIBUTE));
+                gav.setType(e.getAttribute(PACKAGE_TYPE_ATTRIBUTE));
+                gav.setComponentType(Integer.valueOf(e.getAttribute(TYPE_ATTRIBUTE)));
                 task.addComponentGAV(gav);
             }
         }
