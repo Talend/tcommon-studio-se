@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Nl Fragment
-Bundle-SymbolicName: org.talend.cwm.mip.nl
-Bundle-Version: 8.0.1.qualifier
-Fragment-Host: org.talend.cwm.mip
-Bundle-Vendor: .Talend SA.

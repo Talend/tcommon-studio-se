@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Nl
-Bundle-SymbolicName: org.talend.core.ui.nl
-Bundle-Version: 8.0.1.qualifier
-Bundle-Vendor: .Talend SA.
-Fragment-Host: org.talend.core.ui
