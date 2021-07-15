@@ -14,6 +14,7 @@
     <import plugin="jackson-mapper-asl" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.xalan" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.xerces" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="com.google.guava" version="27.1.0" match="equivalent"/>
   </requires>  
   <plugin id="org.talend.common.ui.runtime" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.common.ui.runtime.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
