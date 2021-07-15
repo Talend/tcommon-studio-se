@@ -35,6 +35,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -79,6 +80,8 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.PluginChecker;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryPrefConstants;
+import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -90,6 +93,7 @@ import org.talend.designer.maven.tools.AggregatorPomsHelper;
 import org.talend.designer.maven.tools.MavenPomSynchronizer;
 import org.talend.repository.items.importexport.handlers.ImportExportHandlersManager;
 import org.talend.repository.items.importexport.handlers.imports.ImportCacheHelper;
+import org.talend.repository.items.importexport.handlers.imports.ImportDependencyRelationsHelper;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.manager.ResourcesManager;
@@ -125,26 +129,28 @@ public class ImportItemsWizardPage extends WizardPage {
 
     protected Button browseDirectoriesButton, browseArchivesButton, fromExchangeButton;
 
-    private FilteredCheckboxTree filteredCheckboxTree;
+    protected Button dependencyButton;
+
+    protected FilteredCheckboxTree filteredCheckboxTree;
 
     private TableViewer errorsListViewer;
 
     private final List<String> errors = new ArrayList<String>();
 
-    private Button overwriteButton;
+    protected Button overwriteButton;
 
     /*
      *
      */
     private static final String[] ARCHIVE_FILE_MASK = { "*.jar;*.zip;*.tar;*.tar.gz;*.tgz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-    private String previouslyBrowsedDirectoryPath, previouslyBrowsedArchivePath, lastWorkedPath;
+    protected String previouslyBrowsedDirectoryPath, previouslyBrowsedArchivePath, lastWorkedPath;
 
-    private List<ImportItem> selectedItemRecords = new ArrayList<ImportItem>();
+    protected List<ImportItem> selectedItemRecords = new ArrayList<ImportItem>();
 
     private final ImportNodesBuilder nodesBuilder = new ImportNodesBuilder();
 
-    private ResourcesManager resManager;
+    protected ResourcesManager resManager;
 
     private IStructuredSelection selection;
 
@@ -178,6 +184,7 @@ public class ImportItemsWizardPage extends WizardPage {
         composite.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
         createSelectionArea(composite);
+        createImportDependenciesArea(composite);
         createItemListArea(composite);
         createErrorsListArea(composite);
         createAdditionArea(composite);
@@ -357,7 +364,46 @@ public class ImportItemsWizardPage extends WizardPage {
         }
     }
 
-    private void createItemListArea(Composite parent) {
+    protected void createImportDependenciesArea(Composite parent) {
+        Composite dependencyArea = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.marginWidth = 0;
+        layout.makeColumnsEqualWidth = false;
+        dependencyArea.setLayout(layout);
+        dependencyButton = new Button(dependencyArea, SWT.CHECK);
+        dependencyButton.setText(Messages.getString("ImportItemsWizardPage_importDependenciesText"));
+        dependencyButton.setSelection(getImportDependenciesPref());
+        dependencyButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (dependencyButton.getSelection()) {
+                    handleImportDependencies();
+                }
+            }
+
+        });
+    }
+
+    protected boolean getImportDependenciesPref() {
+        IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
+        if (repositoryPreferenceStore != null) {
+            String option = repositoryPreferenceStore.getString(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES);
+            return StringUtils.isBlank(option) ? true : Boolean.valueOf(option);
+        }
+        return false;
+    }
+
+    protected void saveImportDependenciesPref() {
+        IPreferenceStore repositoryPreferenceStore = RepositoryManager.getRepositoryPreferenceStore();
+        if (repositoryPreferenceStore != null) {
+            repositoryPreferenceStore.setValue(IRepositoryPrefConstants.ITEM_IMPORT_DEPENDENCIES,
+                    dependencyButton.getSelection() ? Boolean.TRUE.toString() : Boolean.FALSE.toString());
+        }
+    }
+
+    protected void createItemListArea(Composite parent) {
         Composite itemsArea = new Composite(parent, SWT.NONE);
         GridLayout layout2 = new GridLayout();
         layout2.numColumns = 2;
@@ -388,6 +434,9 @@ public class ImportItemsWizardPage extends WizardPage {
 
             @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
+                if (dependencyButton.getSelection()) {
+                    handleImportDependencies();
+                }
                 filteredCheckboxTree.calculateCheckedLeafNodes();
                 checkSelectedItemErrors();
             }
@@ -480,7 +529,7 @@ public class ImportItemsWizardPage extends WizardPage {
         setButtonLayoutData(collapseAll);
     }
 
-    private void createErrorsListArea(Composite workArea) {
+    protected void createErrorsListArea(Composite workArea) {
         Composite composite = new Composite(workArea, SWT.NONE);
         GridLayout layout = new GridLayout();
         layout.makeColumnsEqualWidth = false;
@@ -508,7 +557,7 @@ public class ImportItemsWizardPage extends WizardPage {
      *
      * @param workArea
      */
-    private void createAdditionArea(Composite workArea) {
+    protected void createAdditionArea(Composite workArea) {
         Composite optionsArea = new Composite(workArea, SWT.NONE);
         FormLayout optAreaLayout = new FormLayout();
         optionsArea.setLayout(optAreaLayout);
@@ -645,6 +694,34 @@ public class ImportItemsWizardPage extends WizardPage {
 
     }
 
+    protected void handleImportDependencies() {
+        CheckboxTreeViewer viewer = filteredCheckboxTree.getViewer();
+        if (viewer.getTree().getItemCount() == 0) {
+            return;
+        }
+        Object[] checkedElements = viewer.getCheckedElements();
+        if (checkedElements.length == 0) {
+            return;
+        }
+
+        List<ItemImportNode> checkedNodeList = new ArrayList<ItemImportNode>();
+        Set<ItemImportNode> toSelectSet = new HashSet<ItemImportNode>();
+        for (Object object : checkedElements) {
+            if (object instanceof ItemImportNode) {
+                checkedNodeList.add((ItemImportNode)object);
+                toSelectSet.add((ItemImportNode) object);
+            }
+        }
+        if (nodesBuilder.getAllImportItemNode().size() == checkedNodeList.size()) {
+            // already checked all
+            return;
+        }
+
+        ImportDependencyRelationsHelper.getInstance().checkImportRelationDependency(checkedNodeList, toSelectSet,
+                nodesBuilder.getAllImportItemNode());
+        filteredCheckboxTree.getViewer().setCheckedElements(toSelectSet.toArray());
+    }
+
     public void updateItemsList(final String path, final boolean fromDir/* Unuseful */, boolean isneedUpdate) {
         // if not force to update, and same as before path, nothing to do.
         if (!isneedUpdate && path.equals(lastWorkedPath)) {
@@ -708,7 +785,7 @@ public class ImportItemsWizardPage extends WizardPage {
                 setErrorMessage(Messages.getString("ImportItemsWizardPage_noValidItemsInPathMessage")); //$NON-NLS-1$
                 setPageComplete(false);
             } else {
-                populateItems(this.overwriteButton.getSelection());
+                populateItems(this.overwriteButton == null ? false : this.overwriteButton.getSelection());
             }
         }
 
@@ -742,7 +819,7 @@ public class ImportItemsWizardPage extends WizardPage {
         MessageDialog.openError(getContainer().getShell(), Messages.getString("ImportItemsWizardPage_errorTitle"), message); //$NON-NLS-1$
     }
 
-    private void populateItems(final boolean overwrite, boolean keepSelection) {
+    protected void populateItems(final boolean overwrite, boolean keepSelection) {
 
         setPageComplete(true);
         this.selectedItemRecords.clear();
@@ -853,7 +930,7 @@ public class ImportItemsWizardPage extends WizardPage {
 
     }
 
-    private void populateItems(final boolean overwrite) {
+    protected void populateItems(final boolean overwrite) {
         populateItems(overwrite, false);
     }
 
@@ -1019,8 +1096,8 @@ public class ImportItemsWizardPage extends WizardPage {
             }
         }
 
-        final boolean overwrite = overwriteButton.getSelection();
-        final boolean alwaysRegenId = regenIdBtn.getSelection();
+        final boolean overwrite = overwriteButton == null ? false : overwriteButton.getSelection();
+        final boolean alwaysRegenId = regenIdBtn == null ? false : regenIdBtn.getSelection();
         try {
             IRunnableWithProgress iRunnableWithProgress = new IRunnableWithProgress() {
 
@@ -1106,6 +1183,7 @@ public class ImportItemsWizardPage extends WizardPage {
             checkedItemRecords.clear();
             nodesBuilder.clear();
         }
+        saveImportDependenciesPref();
 
         return true;
     }
