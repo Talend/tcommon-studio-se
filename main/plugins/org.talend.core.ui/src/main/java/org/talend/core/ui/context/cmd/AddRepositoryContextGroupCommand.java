@@ -29,7 +29,6 @@ import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.JobletProcessItem;
 import org.talend.core.ui.context.ContextManagerHelper;
 import org.talend.core.ui.context.IContextModelManager;
 import org.talend.core.ui.editor.command.ContextRemoveParameterCommand;
@@ -183,7 +182,7 @@ public class AddRepositoryContextGroupCommand extends Command {
         }
 
         // remove the params which is unchecked
-        Set<String> jobletIds = new HashSet<String>();
+        Set<String> nonContextIds = new HashSet<String>();
         Set<String> chekedIds = new HashSet<String>();
         for (IContextParameter param : existParas) {
             if (param.isBuiltIn()) {
@@ -193,12 +192,12 @@ public class AddRepositoryContextGroupCommand extends Command {
             if (!chekedIds.contains(sourceId)) {
                 chekedIds.add(sourceId);
                 Item repositoryContextItemById = ContextUtils.getRepositoryContextItemById(sourceId);
-                if (repositoryContextItemById instanceof JobletProcessItem) {
-                    jobletIds.add(sourceId);
+                if (!(repositoryContextItemById instanceof ContextItem)) {
+                    nonContextIds.add(sourceId);
                     continue;
                 }
             }
-            if (jobletIds.contains(sourceId)) {
+            if (nonContextIds.contains(sourceId)) {
                 continue;
             }
             new ContextRemoveParameterCommand(manager, param.getName(), param.getSource()).execute();
