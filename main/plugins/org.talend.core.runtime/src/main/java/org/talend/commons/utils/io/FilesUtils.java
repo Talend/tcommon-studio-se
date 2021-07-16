@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -1206,6 +1207,27 @@ public class FilesUtils {
         } else {
             run.run(monitor);
         }
+    }
+
+    public static void deleteFile(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (File file2 : files) {
+                    deleteFile(file2.getAbsolutePath());
+                }
+            }
+            file.setWritable(true);
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                // fail to get clear reason and try again
+                file.delete();
+            }
+
+        }
+
     }
 
 }
