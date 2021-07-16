@@ -171,7 +171,7 @@ public class ImportDependencyRelationsHelper {
             Property property = node.getItemRecord().getProperty();
             return property.getId().equals(id) && property.getVersion().equals(version) && projectFlag;
         });
-        return importNodeList == null ? null : importNodeList.get(0);
+        return importNodeList == null || importNodeList.isEmpty() ? null : importNodeList.get(0);
     }
 
     private List<ItemImportNode> getItemImportNode(List<ItemImportNode> allImportItemNodesList,
