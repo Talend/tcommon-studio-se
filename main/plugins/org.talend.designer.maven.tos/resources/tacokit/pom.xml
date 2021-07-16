@@ -10,7 +10,6 @@
 	<artifactId>studio-tacokit-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<properties>
-		<tacokit.components.version>1.24.0-SNAPSHOT</tacokit.components.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -49,26 +48,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>couchbase</artifactId>
-			<version>${tacokit.components.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
 		</dependency>
-		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>cosmosDB</artifactId>
-			<version>${tacokit.components.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.httpcomponents</groupId>
-					<artifactId>httpclient</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>
 	</dependencies>
 	<build>
 		<plugins>

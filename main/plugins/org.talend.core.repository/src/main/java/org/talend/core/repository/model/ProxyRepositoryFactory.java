@@ -2203,6 +2203,14 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     // in case, to avoid block logon
                     ExceptionHandler.process(e);
                 }
+                
+                ICoreService coreService = getCoreService();
+                if (coreService != null) {
+                    currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
+                    currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.installComponents"), 1); 
+                    coreService.installComponents(currentMonitor);
+                    TimeMeasurePerformance.step("logOnProject", "Install components");
+                }
 
                 // init sdk component
                 try {
@@ -2242,12 +2250,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
                     TimeMeasurePerformance.step("logOnProject", "Initialize components"); //$NON-NLS-1$
                 }
 
-                ICoreService coreService = getCoreService();
                 if (coreService != null) {
                     currentMonitor = subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE);
                     currentMonitor.beginTask(Messages.getString("ProxyRepositoryFactory.synchronizeLibraries"), 1); //$NON-NLS-1$
                     coreService.syncLibraries(currentMonitor);
                     TimeMeasurePerformance.step("logOnProject", "Sync components libraries"); //$NON-NLS-1$
+                    
                 }
 
                 try {

@@ -191,6 +191,10 @@ public interface ExtraFeature extends Comparable<Object> {
     }
 
     default public void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile) {
+        syncComponentsToInstalledFolder(progress, downloadedCompFile, true);
+    }
+
+    public default void syncComponentsToInstalledFolder(IProgressMonitor progress, File downloadedCompFile, boolean deleteCompFile) {
         // try to move install success to installed folder
         if (progress == null) {
             progress = new NullProgressMonitor();
@@ -203,7 +207,9 @@ public interface ExtraFeature extends Comparable<Object> {
             final File installedComponentFile = new File(installedComponentFolder, downloadedCompFile.getName());
             if (!installedComponentFile.equals(downloadedCompFile)) { // not in same folder
                 FilesUtils.copyFile(downloadedCompFile, installedComponentFile);
-                downloadedCompFile.delete();
+                if (deleteCompFile) {
+                    downloadedCompFile.delete();
+                }
                 progress.worked(1);
             }
 
@@ -212,7 +218,7 @@ public interface ExtraFeature extends Comparable<Object> {
             ExceptionHandler.process(e);
         }
     }
-
+    
     default void shareComponent(IProgressMonitor progress, File installedCompFile) {
         if (!isShareEnable()) {
             return;

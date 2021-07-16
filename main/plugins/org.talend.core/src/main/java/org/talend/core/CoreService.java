@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,9 @@ import org.talend.core.model.relationship.RelationshipItemBuilder;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryManager;
 import org.talend.core.model.routines.RoutineLibraryMananger;
+import org.talend.core.model.utils.ComponentInstallerTaskRegistryReader;
 import org.talend.core.model.utils.ContextParameterUtils;
+import org.talend.core.model.utils.IComponentInstallerTask;
 import org.talend.core.model.utils.JavaResourcesHelper;
 import org.talend.core.model.utils.PerlResourcesHelper;
 import org.talend.core.model.utils.ResourceModelHelper;
@@ -235,8 +238,7 @@ public class CoreService implements ICoreService {
     @Override
     public void removeJobLaunch(IRepositoryViewObject objToDelete) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-            IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(
-                    IDesignerCoreService.class);
+            IDesignerCoreService designerCoreService = (IDesignerCoreService) GlobalServiceRegister.getDefault().getService(IDesignerCoreService.class);
             designerCoreService.removeJobLaunch(objToDelete);
         }
     }
@@ -244,8 +246,7 @@ public class CoreService implements ICoreService {
     @Override
     public void deleteRoutinefile(IRepositoryViewObject objToDelete) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                    ICodeGeneratorService.class);
+            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(ICodeGeneratorService.class);
             codeGenService.createRoutineSynchronizer().deleteRoutinefile(objToDelete);
         }
     }
@@ -253,16 +254,14 @@ public class CoreService implements ICoreService {
     @Override
     public void deleteBeanfile(IRepositoryViewObject objToDelete) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                    ICodeGeneratorService.class);
+            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(ICodeGeneratorService.class);
             codeGenService.createRoutineSynchronizer().deleteRoutinefile(objToDelete);
         }
     }
 
     @Override
     public boolean checkJob(String name) throws BusinessException {
-        IJobCheckService jobCheckService = (IJobCheckService) GlobalServiceRegister.getDefault().getService(
-                IJobCheckService.class);
+        IJobCheckService jobCheckService = (IJobCheckService) GlobalServiceRegister.getDefault().getService(IJobCheckService.class);
         if (jobCheckService != null) {
             return jobCheckService.checkJob(name);
         }
@@ -277,8 +276,7 @@ public class CoreService implements ICoreService {
     @Override
     public void syncAllRoutines() throws SystemException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                    ICodeGeneratorService.class);
+            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(ICodeGeneratorService.class);
             ITalendSynchronizer talendSynchronizer = codeGenService.createRoutineSynchronizer();
             talendSynchronizer.syncAllRoutinesForLogOn();
             talendSynchronizer.syncAllInnerCodesForLogOn();
@@ -288,8 +286,7 @@ public class CoreService implements ICoreService {
     @Override
     public void syncAllBeans() throws SystemException {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ICodeGeneratorService.class)) {
-            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(
-                    ICodeGeneratorService.class);
+            ICodeGeneratorService codeGenService = (ICodeGeneratorService) GlobalServiceRegister.getDefault().getService(ICodeGeneratorService.class);
             ITalendSynchronizer talendSynchronizer = codeGenService.createRoutineSynchronizer();
             if (talendSynchronizer != null) {
                 talendSynchronizer.syncAllBeansForLogOn();
@@ -314,8 +311,7 @@ public class CoreService implements ICoreService {
     @Override
     public void deleteAllJobs(boolean fromPluginModel) {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IRunProcessService.class)) {
-            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(
-                    IRunProcessService.class);
+            IRunProcessService runProcessService = (IRunProcessService) GlobalServiceRegister.getDefault().getService(IRunProcessService.class);
             runProcessService.deleteAllJobs(false);
         }
     }
@@ -362,7 +358,7 @@ public class CoreService implements ICoreService {
             URL url = MetadataTalendType.getProjectForderURLOfMappingsFile();
             if (url != null) {
                 // set the project mappings url
-                System.setProperty(ProcessorUtilities.PROP_MAPPINGS_URL, url.toString()); //$NON-NLS-1$
+                System.setProperty(ProcessorUtilities.PROP_MAPPINGS_URL, url.toString()); // $NON-NLS-1$
                 IFolder xmlMappingFolder = talendJavaProject.getResourceSubFolder(null, JavaUtils.JAVA_XML_MAPPING);
 
                 File mappingSource = new File(url.getPath());
@@ -400,8 +396,7 @@ public class CoreService implements ICoreService {
             protected void run() throws LoginException, PersistenceException {
                 try {
                     File sysMappingfolder = new File(MetadataTalendType.getSystemForderURLOfMappingsFile().getPath());
-                    IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject())
-                            .getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
+                    IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject()).getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
                     if (!projectMappingFolder.exists()) {
                         projectMappingFolder.create(true, true, null);
                     }
@@ -500,9 +495,8 @@ public class CoreService implements ICoreService {
                 }
                 if (service != null) {
                     try {
-                        IFolder prefSettingFolder = ResourceUtils.getFolder(
-                                ResourceModelHelper.getProject(ProjectManager.getInstance().getCurrentProject()),
-                                RepositoryConstants.SETTING_DIRECTORY, false);
+                        IFolder prefSettingFolder =
+                                ResourceUtils.getFolder(ResourceModelHelper.getProject(ProjectManager.getInstance().getCurrentProject()), RepositoryConstants.SETTING_DIRECTORY, false);
                         if (!prefSettingFolder.exists()) {
                             prefSettingFolder.create(true, true, null);
                         }
@@ -518,4 +512,17 @@ public class CoreService implements ICoreService {
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
     }
 
+    /**
+     * Check and install components
+     */
+    public void installComponents(IProgressMonitor monitor) {
+        List<IComponentInstallerTask> tasks = ComponentInstallerTaskRegistryReader.getInstance().getTasks();
+        tasks.forEach(task -> {
+            try {
+                task.install(monitor);
+            } catch (Exception e) {
+                ExceptionHandler.process(e);
+            }
+        });
+    }
 }

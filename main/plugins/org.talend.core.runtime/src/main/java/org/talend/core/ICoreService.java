@@ -125,5 +125,11 @@ public interface ICoreService extends IService {
     public IMetadataTable convert(MetadataTable originalTable);
 
     public void syncMappingsFileFromSystemToProject();
+    
+    /**
+     * Install components
+     * @param monitor
+     */
+    void installComponents(IProgressMonitor monitor);
 
 }
