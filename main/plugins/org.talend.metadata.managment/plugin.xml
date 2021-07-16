@@ -73,9 +73,8 @@
             context="Hive wizard"
             language="java"
             message="Wizard for hive HDP 2.0"
-            name="httpclient-4.1.2.jar" mvn_uri="mvn:org.talend.libraries/httpclient-4.1.2/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.http/lib/httpclient-4.1.2.jar">
+            name="httpclient-4.5.13.jar" mvn_uri="mvn:org.apache.httpcomponents/httpclient/4.5.13" 
+            required="true">
       </libraryNeeded>
        <libraryNeeded
             context="Hive wizard"
