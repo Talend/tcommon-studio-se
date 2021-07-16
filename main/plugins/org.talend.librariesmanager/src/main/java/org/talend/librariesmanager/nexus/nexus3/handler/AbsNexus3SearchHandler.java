@@ -122,8 +122,11 @@ public abstract class AbsNexus3SearchHandler implements INexus3SearchHandler {
                 artifact.setVersion(jsonObject.getString("version")); //$NON-NLS-1$
                 JSONArray assertsArray = jsonObject.getJSONArray("assets"); //$NON-NLS-1$                
                 artifact.setType(getPackageType(assertsArray));
-                fillCheckSumData(assertsArray, artifact);
-                resultList.add(artifact);
+                if (artifact.getType() != null) {
+                    fillCheckSumData(assertsArray, artifact);
+                    resultList.add(artifact);
+                }
+
             }
         }
 
